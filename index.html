@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title id="meta-title">Meet Singles Near You | Adult Dating</title>
+  <meta id="meta-desc" name="description" content="Connect with verified adult singles in your local area today.">
+  <meta id="og-title" property="og:title" content="Meet Singles Near You">
+  <meta id="og-desc" property="og:description" content="Connect with verified adult singles in your local area today.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <link rel="icon" id="site-favicon" href="https://cdn-icons-png.flaticon.com/512/2589/2589175.png">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            heading: ['"Outfit"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: 'var(--color-brand-50)',
+              100: 'var(--color-brand-100)',
+              500: 'var(--color-brand-500)',
+              600: 'var(--color-brand-600)',
+              700: 'var(--color-brand-700)',
+            },
+            accent: {
+              500: 'var(--color-accent-500)',
+              600: 'var(--color-accent-600)',
+            }
+          },
+          boxShadow: {
+            'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+            'card': '0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 10px -7px rgba(0, 0, 0, 0.05)',
+            'glow': '0 0 25px -5px var(--color-brand-500)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Theme CSS Variables -->
+  <style>
+    :root {
+      /* Twilight Light Theme Default */
+      --color-brand-50: #f5f3ff;
+      --color-brand-100: #ede9fe;
+      --color-brand-500: #7c3aed;
+      --color-brand-600: #6d28d9;
+      --color-brand-700: #5b21b6;
+      --color-accent-500: #ec4899;
+      --color-accent-600: #db2777;
+      --bg-gradient-from: #f8fafc;
+      --bg-gradient-via: #f1f5f9;
+      --bg-gradient-to: #ede9fe;
+      --radius-btn: 9999px;
+      --radius-card: 1.25rem;
+    }
+
+    [data-theme="soft-light"] {
+      --color-brand-50: #f0f9ff;
+      --color-brand-100: #e0f2fe;
+      --color-brand-500: #0284c7;
+      --color-brand-600: #0369a1;
+      --color-brand-700: #075985;
+      --color-accent-500: #f43f5e;
+      --color-accent-600: #e11d48;
+      --bg-gradient-from: #ffffff;
+      --bg-gradient-via: #f0f9ff;
+      --bg-gradient-to: #e0f2fe;
+    }
+
+    [data-theme="premium-purple"] {
+      --color-brand-50: #faf5ff;
+      --color-brand-100: #f3e8ff;
+      --color-brand-500: #9333ea;
+      --color-brand-600: #7e22ce;
+      --color-brand-700: #6b21a8;
+      --color-accent-500: #f43f5e;
+      --color-accent-600: #e11d48;
+      --bg-gradient-from: #fcfaef;
+      --bg-gradient-via: #f5f3ff;
+      --bg-gradient-to: #f3e8ff;
+    }
+
+    [data-theme="clean-blue"] {
+      --color-brand-50: #eff6ff;
+      --color-brand-100: #dbeafe;
+      --color-brand-500: #2563eb;
+      --color-brand-600: #1d4ed8;
+      --color-brand-700: #1e40af;
+      --color-accent-500: #10b981;
+      --color-accent-600: #059669;
+      --bg-gradient-from: #ffffff;
+      --bg-gradient-via: #f8fafc;
+      --bg-gradient-to: #dbeafe;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--bg-gradient-from), var(--bg-gradient-via), var(--bg-gradient-to));
+      min-height: 100vh;
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-custom {
+      border-radius: var(--radius-btn);
+    }
+
+    .card-custom {
+      border-radius: var(--radius-card);
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
+      50% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.8); }
+    }
+
+    .animate-pulse-glow {
+      animation: pulseGlow 2s infinite;
+    }
+
+    /* Skeleton loader */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s infinite;
+    }
+    @keyframes skeleton-loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body class="font-sans text-slate-800 antialiased flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Global Fullscreen Spinner -->
+  <div id="global-loader" class="fixed inset-0 z-50 bg-white/90 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-300">
+    <div class="relative flex items-center justify-center">
+      <div class="w-16 h-16 border-4 border-brand-100 border-t-brand-600 rounded-full animate-spin"></div>
+      <i class="fa-solid fa-heart text-brand-600 absolute text-xl animate-pulse"></i>
+    </div>
+    <p id="loader-text" class="mt-4 text-sm font-semibold text-slate-600 tracking-wide">Loading secure system...</p>
+  </div>
+
+  <!-- Age Verification Modal (Public) -->
+  <div id="age-modal" class="fixed inset-0 z-40 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel card-custom max-w-md w-full p-6 text-center shadow-2xl border border-white/40 transform transition-all animate-bounce-short">
+      <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-black">
+        18+
+      </div>
+      <h2 id="age-modal-title" class="font-heading text-2xl font-bold text-slate-900 mb-2">Age Verification Required</h2>
+      <p id="age-modal-desc" class="text-slate-600 text-sm mb-6 leading-relaxed">
+        This website contains adult dating content. By clicking enter, you confirm that you are at least 18 years of age or the legal age of majority in your jurisdiction.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button id="age-btn-enter" class="flex-1 py-3 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition shadow-lg hover:shadow-glow">
+          I am 18 or Older
+        </button>
+        <button id="age-btn-exit" class="py-3 px-6 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition">
+          Exit
+        </button>
+      </div>
+      <p class="text-xs text-slate-400 mt-4"><i class="fa-solid fa-shield-halved mr-1"></i> Safe & Anonymous Verification</p>
+    </div>
+  </div>
+
+  <!-- PUBLIC LANDING PAGE WRAPPER -->
+  <div id="app-public" class="flex-grow flex flex-col hidden">
+    <!-- Header -->
+    <header class="w-full py-4 px-4 sm:px-8 border-b border-white/30 glass-panel sticky top-0 z-30">
+      <div class="max-w-6xl mx-auto flex items-center justify-between">
+        <a href="#" class="flex items-center gap-2 text-decoration-none">
+          <img id="site-logo" src="https://cdn-icons-png.flaticon.com/512/2589/2589175.png" alt="Logo" class="h-9 w-auto object-contain">
+          <span id="site-brand-name" class="font-heading font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900">
+            Twilight<span class="text-brand-600">Dating</span>
+          </span>
+        </a>
+        <div class="flex items-center gap-3">
+          <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            <span id="header-status-text">Active Singles Online</span>
+          </span>
+          <span id="geo-pill" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+            <i class="fa-solid fa-location-dot text-brand-500"></i>
+            <span id="geo-location-display">Near You</span>
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8 sm:py-12 flex flex-col gap-12">
+      
+      <!-- HERO SECTION -->
+      <section class="text-center max-w-3xl mx-auto space-y-6 pt-4">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs sm:text-sm font-semibold">
+          <i class="fa-solid fa-fire text-accent-500"></i>
+          <span id="hero-badge-text">#1 Matchmaking Platform for Adults</span>
+        </div>
+        
+        <h1 id="hero-headline" class="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight">
+          Meet New People & Local Singles <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-accent-500" id="hero-location-text">Near You</span>
+        </h1>
+        
+        <p id="hero-subtext" class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          Discover genuine local connections. Instant profile access, verified adult members, and private interactions tailored to your location.
+        </p>
+
+        <!-- Dynamic Primary CTA -->
+        <div class="pt-2">
+          <button id="hero-primary-cta" class="cta-trigger w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-extrabold text-lg sm:text-xl btn-custom shadow-xl hover:shadow-glow transition-all transform hover:-translate-y-0.5 animate-pulse-glow flex items-center justify-center gap-3 mx-auto">
+            <span id="hero-cta-btn-text">JOIN FREE NOW</span>
+            <i class="fa-solid fa-arrow-right text-base"></i>
+          </button>
+        </div>
+
+        <!-- Trust Features Bar -->
+        <div class="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center border-t border-slate-200/60 mt-8">
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">100%</p>
+            <p class="text-xs text-slate-500">Verified Profiles</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">Free</p>
+            <p class="text-xs text-slate-500">Quick Registration</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">24/7</p>
+            <p class="text-xs text-slate-500">Active Matches</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">Private</p>
+            <p class="text-xs text-slate-500">Safe Environment</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dynamic OFFERS CONTAINER -->
+      <section class="space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-200/80 pb-3">
+          <h2 class="font-heading text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-star text-amber-400"></i> Featured Opportunities
+          </h2>
+          <span class="text-xs font-medium text-slate-500" id="offers-count-badge">Loading offers...</span>
+        </div>
+
+        <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Dynamic Offer Cards Render Here -->
+        </div>
+      </section>
+
+      <!-- SOCIAL PROOF SECTION -->
+      <section id="social-proof-section" class="glass-panel card-custom p-6 sm:p-8 shadow-card border border-white/60">
+        <div class="text-center max-w-xl mx-auto space-y-3 mb-6">
+          <h3 id="sp-headline" class="font-heading text-xl font-bold text-slate-900">Real Connections Every Day</h3>
+          <p id="sp-subtext" class="text-sm text-slate-600">Thousands of local members are active right now looking for private conversations and casual meetups.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div class="p-4 rounded-xl bg-white/60 border border-slate-100">
+            <div class="text-2xl font-extrabold text-brand-600 mb-1" id="sp-stat-1">14,290+</div>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Members</div>
+          </div>
+          <div class="p-4 rounded-xl bg-white/60 border border-slate-100">
+            <div class="text-2xl font-extrabold text-accent-500 mb-1" id="sp-stat-2">98.4%</div>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Satisfaction Rate</div>
+          </div>
+          <div class="p-4 rounded-xl bg-white/60 border border-slate-100">
+            <div class="text-2xl font-extrabold text-emerald-600 mb-1" id="sp-stat-3">&lt; 2 Mins</div>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Average Match Time</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Cookie / Privacy Banner -->
+    <div id="privacy-banner" class="fixed bottom-0 inset-x-0 z-30 bg-slate-900/95 text-white p-4 shadow-2xl backdrop-blur-md hidden transition-all">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left leading-relaxed">
+          We use cookies and analytical tracking to ensure optimal redirection performance and offer customization. By browsing, you agree to our policies.
+        </p>
+        <button id="accept-cookies-btn" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-lg whitespace-nowrap transition">
+          Accept & Continue
+        </button>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="w-full border-t border-slate-200/80 bg-white/50 backdrop-blur-md py-8 px-4 mt-auto">
+      <div class="max-w-6xl mx-auto text-center space-y-4">
+        <div class="flex flex-wrap justify-center gap-6 text-xs font-medium text-slate-600">
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-privacy">Privacy Policy</a>
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-terms">Terms of Service</a>
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-cookie">Cookie Policy</a>
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-contact">Contact & Support</a>
+        </div>
+        <p class="text-xs text-slate-400 max-w-2xl mx-auto leading-relaxed" id="footer-disclaimer">
+          18+ ADULT CONTENT NOTICE: All members and models appearing on this service are 18 years of age or older. This site serves as a promotional landing hub for verified third-party CPA adult dating networks.
+        </p>
+        <p class="text-xs text-slate-400 font-semibold" id="footer-copyright">
+          &copy; <span id="year-span">2026</span> TwilightDating System. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ADMIN PANEL WRAPPER (#admin) -->
+  <div id="app-admin" class="flex-grow flex flex-col hidden bg-slate-100 min-h-screen">
+    
+    <!-- ADMIN AUTH LOGIN MODAL -->
+    <div id="admin-login-view" class="flex-grow flex items-center justify-center p-4">
+      <div class="bg-white card-custom p-8 max-w-md w-full shadow-2xl border border-slate-200 space-y-6">
+        <div class="text-center space-y-2">
+          <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-2xl flex items-center justify-center mx-auto text-xl font-bold">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <h2 class="font-heading text-2xl font-extrabold text-slate-900">Admin Authentication</h2>
+          <p class="text-xs text-slate-500">Sign in with Firebase credentials to manage campaigns.</p>
+        </div>
+
+        <form id="admin-login-form" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Address</label>
+            <input type="email" id="login-email" required class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="admin@example.com">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Password</label>
+            <input type="password" id="login-password" required class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="••••••••">
+          </div>
+          <button type="submit" id="login-submit-btn" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition text-sm shadow-md">
+            Authenticate Session
+          </button>
+        </form>
+
+        <div id="firebase-config-warning" class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 space-y-1 hidden">
+          <p class="font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Firebase Unconfigured</p>
+          <p>Please update the <code class="bg-amber-100 px-1 rounded">APP_CONFIG.firebase</code> object inside <code class="bg-amber-100 px-1 rounded">index.html</code> to enable authentication.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUTHENTICATED ADMIN DASHBOARD -->
+    <div id="admin-dashboard-view" class="flex-grow flex flex-col md:flex-row hidden">
+      
+      <!-- Responsive Mobile Admin Header -->
+      <div class="md:hidden bg-slate-900 text-white p-4 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-brand-500"></i>
+          <span class="font-bold text-sm">CPA Engine Admin</span>
+        </div>
+        <button id="mobile-menu-btn" class="p-2 text-slate-300 hover:text-white">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+      </div>
+
+      <!-- Admin Sidebar Navigation -->
+      <aside id="admin-sidebar" class="w-full md:w-64 bg-slate-900 text-slate-300 flex-shrink-0 p-4 flex flex-col justify-between hidden md:flex border-r border-slate-800 z-30">
+        <div class="space-y-6">
+          <div class="px-3 py-2 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-sm text-white leading-none">CPA Control</h3>
+                <span class="text-[10px] text-slate-400">v2.4 Production</span>
+              </div>
+            </div>
+          </div>
+
+          <nav class="space-y-1">
+            <button data-tab="tab-dashboard" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-white bg-slate-800 transition">
+              <i class="fa-solid fa-chart-pie w-4 text-brand-400"></i> Analytics Dashboard
+            </button>
+            <button data-tab="tab-offers" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition">
+              <i class="fa-solid fa-list-check w-4 text-emerald-400"></i> CPA Offers Management
+            </button>
+            <button data-tab="tab-appearance" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition">
+              <i class="fa-solid fa-palette w-4 text-purple-400"></i> Landing Page Customizer
+            </button>
+            <button data-tab="tab-tracking" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition">
+              <i class="fa-solid fa-link w-4 text-amber-400"></i> Tracking & Geo Parameters
+            </button>
+            <button data-tab="tab-system" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition">
+              <i class="fa-solid fa-server w-4 text-sky-400"></i> Firebase & System Status
+            </button>
+          </nav>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 space-y-3">
+          <div class="px-3 py-2 rounded-xl bg-slate-800/60 text-xs space-y-1">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Admin</p>
+            <p id="admin-user-email" class="text-slate-200 font-mono truncate">admin@firebase.local</p>
+          </div>
+          <button id="admin-logout-btn" class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white transition">
+            <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Admin Content Area -->
+      <main class="flex-grow p-4 sm:p-8 overflow-y-auto max-w-7xl">
+        
+        <!-- TOP STATUS HEADER -->
+        <div class="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+          <div>
+            <h1 id="admin-tab-title" class="font-heading text-2xl font-extrabold text-slate-900">Analytics Dashboard</h1>
+            <p class="text-xs text-slate-500">Real-time performance metrics and offer campaign status.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <a href="#" target="_blank" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center gap-1.5">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Preview Live Page
+            </a>
+            <button id="force-save-btn" class="px-4 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-lg shadow transition flex items-center gap-1.5">
+              <i class="fa-solid fa-floppy-disk"></i> Save Settings
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 1: DASHBOARD -->
+        <div id="tab-dashboard" class="admin-tab-content space-y-6">
+          <!-- Metrics Cards Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider">Total Views</span>
+                <i class="fa-solid fa-eye text-brand-500"></i>
+              </div>
+              <div class="text-2xl font-extrabold text-slate-900" id="stat-total-views">0</div>
+              <p class="text-[11px] text-emerald-600 mt-1"><i class="fa-solid fa-arrow-trend-up"></i> Live page impressions</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider">Total Clicks</span>
+                <i class="fa-solid fa-mouse-pointer text-accent-500"></i>
+              </div>
+              <div class="text-2xl font-extrabold text-slate-900" id="stat-total-clicks">0</div>
+              <p class="text-[11px] text-emerald-600 mt-1"><i class="fa-solid fa-arrow-trend-up"></i> Dynamic CTA redirects</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider">Click-Through Rate</span>
+                <i class="fa-solid fa-percent text-amber-500"></i>
+              </div>
+              <div class="text-2xl font-extrabold text-slate-900" id="stat-ctr">0.0%</div>
+              <p class="text-[11px] text-slate-400 mt-1">Calculated Clicks / Views</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider">Active Offers</span>
+                <i class="fa-solid fa-box-open text-emerald-500"></i>
+              </div>
+              <div class="text-2xl font-extrabold text-slate-900" id="stat-active-offers">0</div>
+              <p class="text-[11px] text-slate-400 mt-1">Currently live on campaign page</p>
+            </div>
+          </div>
+
+          <!-- Click Log Table -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-4 border-b border-slate-200 flex items-center justify-between">
+              <h3 class="font-bold text-slate-900 text-sm">Recent Click Events (Live Log)</h3>
+              <button id="clear-analytics-btn" class="text-xs text-red-600 hover:text-red-700 font-semibold">Clear Logs</button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-600">
+                <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b border-slate-200">
+                  <tr>
+                    <th class="p-3">Timestamp</th>
+                    <th class="p-3">Offer Title</th>
+                    <th class="p-3">Location Token</th>
+                    <th class="p-3">SubID / ClickID</th>
+                    <th class="p-3">Device / Ref</th>
+                  </tr>
+                </thead>
+                <tbody id="analytics-table-body" class="divide-y divide-slate-100">
+                  <tr>
+                    <td colspan="5" class="p-4 text-center text-slate-400">No click logs recorded yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: OFFER MANAGEMENT -->
+        <div id="tab-offers" class="admin-tab-content space-y-6 hidden">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-slate-900 text-lg">Configured CPA Offers</h3>
+            <button id="add-offer-btn" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5">
+              <i class="fa-solid fa-plus"></i> Add New Offer
+            </button>
+          </div>
+
+          <div id="admin-offers-list" class="space-y-4">
+            <!-- Dynamic Admin Offer Cards -->
+          </div>
+        </div>
+
+        <!-- TAB 3: LANDING PAGE CUSTOMIZER -->
+        <div id="tab-appearance" class="admin-tab-content space-y-6 hidden">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-3">Theme & Brand Settings</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Visual Theme Preset</label>
+                <select id="setting-theme" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500">
+                  <option value="twilight-light">Twilight Light (Default Purple/Pink)</option>
+                  <option value="soft-light">Soft Light (Sky Blue/Rose)</option>
+                  <option value="premium-purple">Premium Purple (Orchid/Violet)</option>
+                  <option value="clean-blue">Clean Blue (Royal Blue/Emerald)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Button Border Radius</label>
+                <select id="setting-btn-radius" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500">
+                  <option value="9999px">Pill / Fully Rounded</option>
+                  <option value="0.75rem">Rounded Corners (12px)</option>
+                  <option value="0.375rem">Slight Rounding (6px)</option>
+                  <option value="0px">Sharp Edges</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Site Title / Brand Name</label>
+                <input type="text" id="setting-brand-name" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Logo Image URL</label>
+                <input type="text" id="setting-logo-url" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+            </div>
+
+            <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-3 pt-4">Hero Content Copy</h3>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Top Badge Pill Text</label>
+                <input type="text" id="setting-hero-badge" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Main Headline</label>
+                <input type="text" id="setting-hero-headline" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Supporting Subtext</label>
+                <textarea id="setting-hero-subtext" rows="3" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Primary CTA Button Label</label>
+                <input type="text" id="setting-hero-cta" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: TRACKING & GEO -->
+        <div id="tab-tracking" class="admin-tab-content space-y-6 hidden">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-3">Geo-Location & Token Configuration</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Default Fallback City</label>
+                <input type="text" id="setting-default-city" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+                <span class="text-[10px] text-slate-400">Replaces {{city}} token when IP detection is absent.</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Default Fallback Country</label>
+                <input type="text" id="setting-default-country" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+            </div>
+
+            <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-3 pt-4">CPA Parameter Preserver</h3>
+            <p class="text-xs text-slate-500">The parameters defined below will automatically be grabbed from the inbound landing page URL and preserved when redirecting to your CPA network links.</p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="font-mono text-xs font-bold text-brand-600">subid / sub_id</span>
+                <p class="text-[10px] text-slate-500">Forwarded automatically</p>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="font-mono text-xs font-bold text-brand-600">clickid / cid</span>
+                <p class="text-[10px] text-slate-500">Forwarded automatically</p>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="font-mono text-xs font-bold text-brand-600">utm_source / source</span>
+                <p class="text-[10px] text-slate-500">Forwarded automatically</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: SYSTEM & FIREBASE STATUS -->
+        <div id="tab-system" class="admin-tab-content space-y-6 hidden">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-3">Firebase Runtime Diagnostics</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl border border-slate-200 flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-bold text-slate-700">Realtime Database Status</p>
+                  <p id="diag-db-status" class="text-xs text-slate-500">Checking connection...</p>
+                </div>
+                <span id="diag-db-pill" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">Unknown</span>
+              </div>
+
+              <div class="p-4 rounded-xl border border-slate-200 flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-bold text-slate-700">Authentication Service</p>
+                  <p id="diag-auth-status" class="text-xs text-slate-500">Checking auth state...</p>
+                </div>
+                <span id="diag-auth-pill" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">Unknown</span>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-200">
+              <h4 class="font-bold text-xs text-slate-800 mb-2">Export / Backup System JSON Config</h4>
+              <textarea id="json-export-area" readonly rows="6" class="w-full font-mono text-[11px] p-3 bg-slate-900 text-emerald-400 rounded-xl"></textarea>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- EDIT / ADD OFFER MODAL (ADMIN) -->
+  <div id="offer-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white card-custom max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <h3 id="offer-modal-title" class="font-heading font-bold text-lg text-slate-900">Add New Offer</h3>
+        <button id="close-offer-modal" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+      </div>
+
+      <form id="offer-form" class="space-y-3">
+        <input type="hidden" id="offer-form-id">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Offer Title</label>
+          <input type="text" id="offer-input-title" required class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="e.g. Local Casual Match Hub">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Offer Description</label>
+          <textarea id="offer-input-desc" required rows="2" class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="Short conversion copy..."></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">CPA Target Destination URL</label>
+          <input type="url" id="offer-input-url" required class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="https://cpanetwork.com/smartlink?aff=123">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">CTA Button Text</label>
+            <input type="text" id="offer-input-cta" required class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="CLAIM FREE ACCESS">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Badge Tag</label>
+            <input type="text" id="offer-input-badge" class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="HOT OFFER">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Rating (1.0 - 5.0)</label>
+            <input type="number" step="0.1" min="1" max="5" id="offer-input-rating" class="w-full p-2 text-sm border border-slate-300 rounded-xl" value="4.9">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Card Image URL</label>
+            <input type="text" id="offer-input-image" class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="https://...">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-2">
+          <input type="checkbox" id="offer-input-active" checked class="w-4 h-4 text-brand-600 rounded">
+          <label for="offer-input-active" class="text-xs font-bold text-slate-700">Set Offer as Active on Landing Page</label>
+        </div>
+
+        <div class="pt-4 flex gap-2">
+          <button type="submit" class="flex-1 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl transition">
+            Save Offer Configuration
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- APPLICATION JAVASCRIPT MODULE Engine -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, get, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    /* ==========================================================================
+       1. DEFAULT LOCAL CONFIGURATION & STATE MODEL
+       ========================================================================== */
+    const APP_CONFIG = {
+      firebase: {
+        apiKey: "",
+        authDomain: "",
+        databaseURL: "",
+        projectId: "",
+        storageBucket: "",
+        messagingSenderId: "",
+        appId: ""
+      },
+      settings: {
+        brandName: "TwilightDating",
+        logoUrl: "https://cdn-icons-png.flaticon.com/512/2589/2589175.png",
+        theme: "twilight-light",
+        btnRadius: "9999px",
+        defaultCity: "Miami",
+        defaultCountry: "United States",
+        heroBadge: "#1 Matchmaking Platform for Adults",
+        heroHeadline: "Meet New People & Local Singles",
+        heroSubtext: "Discover genuine local connections. Instant profile access, verified adult members, and private interactions tailored to your location.",
+        heroCta: "JOIN FREE NOW"
+      },
+      offers: [
+        {
+          id: "offer_default_1",
+          title: "Local Verified Matches",
+          description: "Instant access to private adult profiles in your vicinity.",
+          url: "https://example.com/cpa-smartlink-1",
+          ctaText: "VIEW LOCAL MATCHES",
+          badge: "VERIFIED NEAR YOU",
+          rating: "4.9",
+          imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
+          active: true
+        },
+        {
+          id: "offer_default_2",
+          title: "Casual Chat Connections",
+          description: "Private messaging room for adult singles looking for quick dates.",
+          url: "https://example.com/cpa-smartlink-2",
+          ctaText: "ENTER CHAT ROOM",
+          badge: "HIGH ACTIVITY",
+          rating: "4.8",
+          imageUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+          active: true
+        }
+      ]
+    };
+
+    let localState = JSON.parse(JSON.stringify(APP_CONFIG));
+    let firebaseApp = null;
+    let firebaseAuth = null;
+    let firebaseDb = null;
+    let isFirebaseConnected = false;
+    let currentInboundParams = {};
+
+    /* ==========================================================================
+       2. UTILITIES & TOAST ENGINE
+       ========================================================================== */
+    function showToast(message, type = "info") {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bg = type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-red-600' : 'bg-slate-800';
+      toast.className = `${bg} text-white px-4 py-3 rounded-xl shadow-xl text-xs font-semibold flex items-center gap-2 pointer-events-auto transform transition-all duration-300 translate-y-2 opacity-0`;
+      toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-info'}"></i> <span>${escapeHTML(message)}</span>`;
+      container.appendChild(toast);
+      
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function hideGlobalLoader() {
+      const loader = document.getElementById('global-loader');
+      if(loader) {
+        loader.classList.add('opacity-0');
+        setTimeout(() => loader.classList.add('hidden'), 300);
+      }
+    }
+
+    function escapeHTML(str) {
+      if(!str) return '';
+      return String(str).replace(/[&<>"']/g, match => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[match]));
+    }
+
+    /* Parse query string parameters for CPA tracking forwarding */
+    function parseURLParams() {
+      const params = new URLSearchParams(window.location.search);
+      const obj = {};
+      for (const [key, value] of params.entries()) {
+        obj[key.toLowerCase()] = value;
+      }
+      currentInboundParams = obj;
+    }
+
+    /* Safe URL builder that appends subids and clickids */
+    function buildFinalTargetURL(baseUrl) {
+      if (!baseUrl) return "#";
+      try {
+        const url = new URL(baseUrl);
+        Object.keys(currentInboundParams).forEach(paramKey => {
+          url.searchParams.set(paramKey, currentInboundParams[paramKey]);
+        });
+        return url.toString();
+      } catch(e) {
+        return baseUrl;
+      }
+    }
+
+    /* ==========================================================================
+       3. FIREBASE INITIALIZATION ENGINE
+       ========================================================================== */
+    function initFirebase() {
+      const cfg = localState.firebase;
+      if (cfg && cfg.apiKey && cfg.apiKey !== "") {
+        try {
+          firebaseApp = initializeApp(cfg);
+          firebaseAuth = getAuth(firebaseApp);
+          firebaseDb = getDatabase(firebaseApp);
+          isFirebaseConnected = true;
+          document.getElementById('firebase-config-warning')?.classList.add('hidden');
+          setupFirebaseListeners();
+        } catch (err) {
+          console.warn("Firebase Init Error, running on local fallback mode:", err);
+          isFirebaseConnected = false;
+        }
+      } else {
+        document.getElementById('firebase-config-warning')?.classList.remove('hidden');
+      }
+      updateDiagnosticUI();
+    }
+
+    function setupFirebaseListeners() {
+      if (!isFirebaseConnected) return;
+
+      // Sync Realtime DB config node
+      const configRef = ref(firebaseDb, 'app/settings');
+      onValue(configRef, (snapshot) => {
+        if (snapshot.exists()) {
+          localState.settings = { ...localState.settings, ...snapshot.val() };
+          applyThemeAndAppearance();
+        }
+      });
+
+      // Sync Offers node
+      const offersRef = ref(firebaseDb, 'app/offers');
+      onValue(offersRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const val = snapshot.val();
+          localState.offers = Array.isArray(val) ? val : Object.values(val);
+        } else {
+          localState.offers = [];
+        }
+        renderPublicOffers();
+        renderAdminOffers();
+      });
+
+      // Listen for Admin auth state
+      onAuthStateChanged(firebaseAuth, (user) => {
+        const userEmailSpan = document.getElementById('admin-user-email');
+        if (user) {
+          if (userEmailSpan) userEmailSpan.textContent = user.email;
+          showAdminDashboard();
+        } else {
+          showAdminLogin();
+        }
+      });
+    }
+
+    function updateDiagnosticUI() {
+      const dbStatus = document.getElementById('diag-db-status');
+      const dbPill = document.getElementById('diag-db-pill');
+      const authStatus = document.getElementById('diag-auth-status');
+      const authPill = document.getElementById('diag-auth-pill');
+
+      if (isFirebaseConnected) {
+        if(dbStatus) dbStatus.textContent = "Connected to Firebase Realtime DB";
+        if(dbPill) { dbPill.textContent = "CONNECTED"; dbPill.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700"; }
+        if(authStatus) authStatus.textContent = "Auth SDK Ready";
+        if(authPill) { authPill.textContent = "READY"; authPill.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700"; }
+      } else {
+        if(dbStatus) dbStatus.textContent = "Running on embedded local fallback configuration";
+        if(dbPill) { dbPill.textContent = "LOCAL MODE"; dbPill.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700"; }
+        if(authStatus) authStatus.textContent = "Firebase credentials unconfigured";
+        if(authPill) { authPill.textContent = "UNCONFIGURED"; authPill.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700"; }
+      }
+
+      const jsonArea = document.getElementById('json-export-area');
+      if (jsonArea) jsonArea.value = JSON.stringify(localState, null, 2);
+    }
+
+    /* ==========================================================================
+       4. PUBLIC LANDING PAGE RENDERING
+       ========================================================================== */
+    function applyThemeAndAppearance() {
+      const s = localState.settings;
+      document.documentElement.setAttribute('data-theme', s.theme || 'twilight-light');
+      document.documentElement.style.setProperty('--radius-btn', s.btnRadius || '9999px');
+
+      // Update text branding
+      document.getElementById('site-brand-name').innerHTML = `${escapeHTML(s.brandName)}<span class="text-brand-600">.</span>`;
+      document.getElementById('site-logo').src = s.logoUrl || localState.settings.logoUrl;
+      
+      // Update Hero Text
+      document.getElementById('hero-badge-text').textContent = s.heroBadge;
+      document.getElementById('hero-headline').childNodes[0].textContent = s.heroHeadline + " ";
+      document.getElementById('hero-subtext').textContent = s.heroSubtext;
+      document.getElementById('hero-cta-btn-text').textContent = s.heroCta;
+
+      // Update Geo display
+      const city = currentInboundParams.city || s.defaultCity;
+      document.getElementById('geo-location-display').textContent = city;
+      document.getElementById('hero-location-text').textContent = `Near ${city}`;
+    }
+
+    function renderPublicOffers() {
+      const container = document.getElementById('offers-grid');
+      const activeOffers = (localState.offers || []).filter(o => o.active);
+      
+      document.getElementById('offers-count-badge').textContent = `${activeOffers.length} offers active near you`;
+
+      if (activeOffers.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center p-8 glass-panel rounded-2xl">
+            <p class="text-slate-500 text-sm">No special offers available at this moment. Please check back shortly.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const city = currentInboundParams.city || localState.settings.defaultCity;
+
+      container.innerHTML = activeOffers.map(offer => `
+        <div class="glass-panel card-custom p-5 shadow-card hover:shadow-xl transition flex flex-col justify-between border border-white/80">
+          <div class="space-y-3">
+            <div class="relative h-48 w-full rounded-xl overflow-hidden bg-slate-200">
+              <img src="${escapeHTML(offer.imageUrl)}" alt="${escapeHTML(offer.title)}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80'">
+              <span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                ${escapeHTML(offer.badge || 'SPECIAL')}
+              </span>
+              <span class="absolute bottom-3 right-3 bg-amber-400 text-slate-900 text-xs font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shadow">
+                <i class="fa-solid fa-star text-[10px]"></i> ${escapeHTML(offer.rating || '4.9')}
+              </span>
+            </div>
+
+            <div>
+              <h3 class="font-heading font-extrabold text-slate-900 text-lg leading-snug">${escapeHTML(offer.title)}</h3>
+              <p class="text-xs text-slate-600 mt-1 leading-relaxed">${escapeHTML(offer.description)}</p>
+            </div>
+
+            <div class="flex items-center gap-1.5 text-xs text-emerald-600 font-semibold">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>Active in ${escapeHTML(city)}</span>
+            </div>
+          </div>
+
+          <div class="pt-4 mt-2">
+            <button data-url="${escapeHTML(offer.url)}" data-title="${escapeHTML(offer.title)}" class="cta-trigger w-full py-3 px-4 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm btn-custom shadow hover:shadow-glow transition flex items-center justify-center gap-2">
+              <span>${escapeHTML(offer.ctaText || 'CONTINUE NOW')}</span>
+              <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      // Re-attach CTA click listeners
+      document.querySelectorAll('.cta-trigger').forEach(btn => {
+        btn.addEventListener('click', handleCTARedirect);
+      });
+    }
+
+    /* Centralized CTA Redirect Engine */
+    function handleCTARedirect(e) {
+      e.preventDefault();
+      const btn = e.currentTarget;
+      let targetUrl = btn.getAttribute('data-url');
+      const title = btn.getAttribute('data-title') || 'Hero Main CTA';
+
+      // Fallback to first active offer if clicked on hero without explicit URL
+      if (!targetUrl) {
+        const active = (localState.offers || []).filter(o => o.active);
+        targetUrl = active.length > 0 ? active[0].url : "https://example.com";
+      }
+
+      const finalUrl = buildFinalTargetURL(targetUrl);
+
+      // Log Click Event
+      logAnalyticsClick(title);
+
+      // UI Loading Feedback
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Securely Redirecting...`;
+
+      setTimeout(() => {
+        window.location.href = finalUrl;
+      }, 400);
+    }
+
+    function logAnalyticsClick(offerTitle) {
+      const clickEvent = {
+        timestamp: new Date().toISOString(),
+        title: offerTitle,
+        subid: currentInboundParams.subid || currentInboundParams.clickid || 'direct',
+        location: currentInboundParams.city || localState.settings.defaultCity,
+        userAgent: navigator.userAgent.substring(0, 40)
+      };
+
+      // Save locally for stats view
+      let localLogs = JSON.parse(localStorage.getItem('cpa_clicks_log') || '[]');
+      localLogs.unshift(clickEvent);
+      if (localLogs.length > 50) localLogs = localLogs.slice(0, 50);
+      localStorage.setItem('cpa_clicks_log', JSON.stringify(localLogs));
+
+      // Push to Firebase if online
+      if (isFirebaseConnected && firebaseDb) {
+        push(ref(firebaseDb, 'analytics/clicks'), clickEvent).catch(e => console.warn(e));
+      }
+
+      updateAdminDashboardStats();
+    }
+
+    /* ==========================================================================
+       5. AGE GATE & PRIVACY CONTROLLER
+       ========================================================================== */
+    function checkAgeVerification() {
+      const verified = localStorage.getItem('age_verified_18');
+      const modal = document.getElementById('age-modal');
+      if (!verified) {
+        modal.classList.remove('hidden');
+      }
+
+      document.getElementById('age-btn-enter').addEventListener('click', () => {
+        localStorage.setItem('age_verified_18', 'true');
+        modal.classList.add('hidden');
+        showToast('Age verified successfully. Welcome!', 'success');
+      });
+
+      document.getElementById('age-btn-exit').addEventListener('click', () => {
+        window.location.href = 'https://www.google.com';
+      });
+    }
+
+    function checkCookieBanner() {
+      if(!localStorage.getItem('cookie_accepted')) {
+        document.getElementById('privacy-banner').classList.remove('hidden');
+      }
+      document.getElementById('accept-cookies-btn').addEventListener('click', () => {
+        localStorage.setItem('cookie_accepted', 'true');
+        document.getElementById('privacy-banner').classList.add('hidden');
+      });
+    }
+
+    /* ==========================================================================
+       6. ROUTING & VIEW CONTROLLER
+       ========================================================================== */
+    function handleRouting() {
+      const isAdminRoute = window.location.hash === '#admin' || window.location.search.includes('admin=1');
+      const publicApp = document.getElementById('app-public');
+      const adminApp = document.getElementById('app-admin');
+
+      if (isAdminRoute) {
+        publicApp.classList.add('hidden');
+        adminApp.classList.remove('hidden');
+        if (isFirebaseConnected && firebaseAuth.currentUser) {
+          showAdminDashboard();
+        } else if (!isFirebaseConnected) {
+          // If no Firebase, show Dashboard in offline mode
+          showAdminDashboard();
+        } else {
+          showAdminLogin();
+        }
+      } else {
+        adminApp.classList.add('hidden');
+        publicApp.classList.remove('hidden');
+        // Record Impression
+        let views = parseInt(localStorage.getItem('cpa_page_views') || '0') + 1;
+        localStorage.setItem('cpa_page_views', views.toString());
+      }
+      hideGlobalLoader();
+    }
+
+    function showAdminLogin() {
+      document.getElementById('admin-login-view').classList.remove('hidden');
+      document.getElementById('admin-dashboard-view').classList.add('hidden');
+    }
+
+    function showAdminDashboard() {
+      document.getElementById('admin-login-view').classList.add('hidden');
+      document.getElementById('admin-dashboard-view').classList.remove('hidden');
+      document.getElementById('admin-sidebar').classList.remove('hidden');
+      populateCustomizerInputs();
+      renderAdminOffers();
+      updateAdminDashboardStats();
+      updateDiagnosticUI();
+    }
+
+    /* ==========================================================================
+       7. ADMIN PANEL LOGIC & FORM HANDLERS
+       ========================================================================== */
+    function populateCustomizerInputs() {
+      const s = localState.settings;
+      document.getElementById('setting-theme').value = s.theme || 'twilight-light';
+      document.getElementById('setting-btn-radius').value = s.btnRadius || '9999px';
+      document.getElementById('setting-brand-name').value = s.brandName || '';
+      document.getElementById('setting-logo-url').value = s.logoUrl || '';
+      document.getElementById('setting-hero-badge').value = s.heroBadge || '';
+      document.getElementById('setting-hero-headline').value = s.heroHeadline || '';
+      document.getElementById('setting-hero-subtext').value = s.heroSubtext || '';
+      document.getElementById('setting-hero-cta').value = s.heroCta || '';
+      document.getElementById('setting-default-city').value = s.defaultCity || 'Miami';
+      document.getElementById('setting-default-country').value = s.defaultCountry || 'United States';
+    }
+
+    function renderAdminOffers() {
+      const container = document.getElementById('admin-offers-list');
+      if(!container) return;
+
+      container.innerHTML = localState.offers.map((offer, idx) => `
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <img src="${escapeHTML(offer.imageUrl)}" class="w-12 h-12 rounded-xl object-cover bg-slate-100" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80'">
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-bold text-slate-900 text-sm">${escapeHTML(offer.title)}</h4>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${offer.active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}">
+                  ${offer.active ? 'ACTIVE' : 'INACTIVE'}
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 font-mono truncate max-w-xs sm:max-w-md">${escapeHTML(offer.url)}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto justify-end border-t sm:border-0 pt-2 sm:pt-0 border-slate-100">
+            <button onclick="window.editOffer(${idx})" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">Edit</button>
+            <button onclick="window.deleteOffer(${idx})" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold rounded-lg transition">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateAdminDashboardStats() {
+      const views = parseInt(localStorage.getItem('cpa_page_views') || '12');
+      const logs = JSON.parse(localStorage.getItem('cpa_clicks_log') || '[]');
+      const activeCount = (localState.offers || []).filter(o => o.active).length;
+      
+      const ctr = views > 0 ? ((logs.length / views) * 100).toFixed(1) : '0.0';
+
+      document.getElementById('stat-total-views').textContent = views;
+      document.getElementById('stat-total-clicks').textContent = logs.length;
+      document.getElementById('stat-ctr').textContent = `${ctr}%`;
+      document.getElementById('stat-active-offers').textContent = activeCount;
+
+      // Render Table
+      const tableBody = document.getElementById('analytics-table-body');
+      if (tableBody) {
+        if (logs.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">No click logs recorded yet.</td></tr>`;
+        } else {
+          tableBody.innerHTML = logs.slice(0, 10).map(log => `
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 text-slate-500 font-mono">${log.timestamp.substring(11, 19)}</td>
+              <td class="p-3 font-semibold text-slate-800">${escapeHTML(log.title)}</td>
+              <td class="p-3 text-slate-600">${escapeHTML(log.location)}</td>
+              <td class="p-3 font-mono text-brand-600">${escapeHTML(log.subid)}</td>
+              <td class="p-3 text-slate-400 truncate max-w-xs">${escapeHTML(log.userAgent)}</td>
+            </tr>
+          `).join('');
+        }
+      }
+    }
+
+    /* Save Settings Handler */
+    async function saveAllSettings() {
+      localState.settings.theme = document.getElementById('setting-theme').value;
+      localState.settings.btnRadius = document.getElementById('setting-btn-radius').value;
+      localState.settings.brandName = document.getElementById('setting-brand-name').value;
+      localState.settings.logoUrl = document.getElementById('setting-logo-url').value;
+      localState.settings.heroBadge = document.getElementById('setting-hero-badge').value;
+      localState.settings.heroHeadline = document.getElementById('setting-hero-headline').value;
+      localState.settings.heroSubtext = document.getElementById('setting-hero-subtext').value;
+      localState.settings.heroCta = document.getElementById('setting-hero-cta').value;
+      localState.settings.defaultCity = document.getElementById('setting-default-city').value;
+      localState.settings.defaultCountry = document.getElementById('setting-default-country').value;
+
+      applyThemeAndAppearance();
+
+      if (isFirebaseConnected && firebaseDb) {
+        try {
+          await set(ref(firebaseDb, 'app/settings'), localState.settings);
+          await set(ref(firebaseDb, 'app/offers'), localState.offers);
+          showToast('Settings & Offers synchronized to Firebase Database!', 'success');
+        } catch(e) {
+          showToast('Firebase update failed. Saved locally.', 'error');
+        }
+      } else {
+        showToast('Settings updated locally!', 'success');
+      }
+      updateDiagnosticUI();
+    }
+
+    /* Global Window Functions for Inline Button Events */
+    window.editOffer = function(index) {
+      const offer = localState.offers[index];
+      document.getElementById('offer-form-id').value = index;
+      document.getElementById('offer-input-title').value = offer.title;
+      document.getElementById('offer-input-desc').value = offer.description;
+      document.getElementById('offer-input-url').value = offer.url;
+      document.getElementById('offer-input-cta').value = offer.ctaText;
+      document.getElementById('offer-input-badge').value = offer.badge;
+      document.getElementById('offer-input-rating').value = offer.rating;
+      document.getElementById('offer-input-image').value = offer.imageUrl;
+      document.getElementById('offer-input-active').checked = offer.active;
+      
+      document.getElementById('offer-modal-title').textContent = "Edit CPA Offer";
+      document.getElementById('offer-modal').classList.remove('hidden');
+    };
+
+    window.deleteOffer = function(index) {
+      if (confirm("Are you sure you want to delete this offer?")) {
+        localState.offers.splice(index, 1);
+        renderAdminOffers();
+        renderPublicOffers();
+        saveAllSettings();
+      }
+    };
+
+    /* Tab Switcher */
+    function initTabNavigation() {
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.nav-tab-btn').forEach(b => {
+            b.classList.remove('bg-slate-800', 'text-white');
+            b.classList.add('hover:bg-slate-800', 'hover:text-white');
+          });
+          e.currentTarget.classList.add('bg-slate-800', 'text-white');
+
+          const targetTab = e.currentTarget.getAttribute('data-tab');
+          document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+          document.getElementById(targetTab).classList.remove('hidden');
+          document.getElementById('admin-tab-title').textContent = e.currentTarget.textContent.trim();
+        });
+      });
+    }
+
+    /* ==========================================================================
+       8. INITIALIZATION ATTACHMENTS
+       ========================================================================== */
+    window.addEventListener('DOMContentLoaded', () => {
+      parseURLParams();
+      initFirebase();
+      applyThemeAndAppearance();
+      renderPublicOffers();
+      checkAgeVerification();
+      checkCookieBanner();
+      initTabNavigation();
+      handleRouting();
+
+      window.addEventListener('hashchange', handleRouting);
+
+      // Admin Login Event
+      document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const pass = document.getElementById('login-password').value;
+        const submitBtn = document.getElementById('login-submit-btn');
+
+        if (!isFirebaseConnected) {
+          showToast('Bypassing Auth: Firebase credentials unconfigured.', 'info');
+          showAdminDashboard();
+          return;
+        }
+
+        try {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Authenticating...';
+          await signInWithEmailAndPassword(firebaseAuth, email, pass);
+          showToast('Authenticated successfully!', 'success');
+        } catch(err) {
+          showToast(`Auth Failed: ${err.message}`, 'error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Authenticate Session';
+        }
+      });
+
+      // Admin Logout Event
+      document.getElementById('admin-logout-btn').addEventListener('click', async () => {
+        if (isFirebaseConnected && firebaseAuth) {
+          await signOut(firebaseAuth);
+        }
+        showToast('Signed out of admin session.', 'info');
+        showAdminLogin();
+      });
+
+      // Save Button Event
+      document.getElementById('force-save-btn').addEventListener('click', saveAllSettings);
+
+      // Offer Modal Form Submit
+      document.getElementById('offer-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const idVal = document.getElementById('offer-form-id').value;
+        const offerData = {
+          id: idVal !== "" ? localState.offers[idVal].id : `offer_${Date.now()}`,
+          title: document.getElementById('offer-input-title').value,
+          description: document.getElementById('offer-input-desc').value,
+          url: document.getElementById('offer-input-url').value,
+          ctaText: document.getElementById('offer-input-cta').value,
+          badge: document.getElementById('offer-input-badge').value,
+          rating: document.getElementById('offer-input-rating').value,
+          imageUrl: document.getElementById('offer-input-image').value,
+          active: document.getElementById('offer-input-active').checked
+        };
+
+        if (idVal !== "") {
+          localState.offers[idVal] = offerData;
+        } else {
+          localState.offers.push(offerData);
+        }
+
+        document.getElementById('offer-modal').classList.add('hidden');
+        renderAdminOffers();
+        renderPublicOffers();
+        saveAllSettings();
+      });
+
+      document.getElementById('add-offer-btn').addEventListener('click', () => {
+        document.getElementById('offer-form').reset();
+        document.getElementById('offer-form-id').value = "";
+        document.getElementById('offer-modal-title').textContent = "Add New CPA Offer";
+        document.getElementById('offer-modal').classList.remove('hidden');
+      });
+
+      document.getElementById('close-offer-modal').addEventListener('click', () => {
+        document.getElementById('offer-modal').classList.add('hidden');
+      });
+
+      document.getElementById('clear-analytics-btn')?.addEventListener('click', () => {
+        if (confirm("Clear all click analytics logs?")) {
+          localStorage.removeItem('cpa_clicks_log');
+          updateAdminDashboardStats();
+          showToast('Analytics logs cleared.', 'info');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
