@@ -1,31 +1,17 @@
-/**
- * Firebase Production Central Configuration & Helper Module
- * Uses Firebase Web Modular SDK v10 via CDN (GitHub Pages Compatible)
- */
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+// Firebase v10/v11 (Latest Modular SDK)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { 
   getAuth, 
   signInWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
-  getDatabase, 
-  ref, 
-  get, 
-  set, 
-  update, 
-  push, 
-  remove, 
-  onValue, 
-  onDisconnect, 
-  serverTimestamp, 
-  query, 
-  orderByChild, 
-  limitToLast 
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  getFirestore, 
+  doc, 
+  getDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// REPLACE THESE VALUES WITH YOUR FIREBASE CONSOLE PROJECT KEYS
+// ১. আপনার Firebase প্রজেক্টের কনফিগারেশন অবজেক্ট
 const firebaseConfig = {
   apiKey: "AIzaSyDVhHK08A9XYg-RaWozGSorHv0e2pgDzG4",
   authDomain: "arina-468c4.firebaseapp.com",
@@ -35,32 +21,43 @@ const firebaseConfig = {
   messagingSenderId: "881029049599",
   appId: "1:881029049599:web:a641051e14586202d130ca"
 };
-
-// Initialize Firebase App
+// ২. Firebase ইনিশিয়ালাইজেশন
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 
-// Export Helpers
-export {
-  app,
-  auth,
-  db,
-  // Auth Functions
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  // Database Functions
-  ref,
-  get,
-  set,
-  update,
-  push,
-  remove,
-  onValue,
-  onDisconnect,
-  serverTimestamp,
-  query,
-  orderByChild,
-  limitToLast
-};
+/**
+ * ৩. Async অ্যাডমিন লগইন হেল্পার ফাংশন
+ * এটি Authentication সম্পন্ন করার পর Firestore-এ UID যাচাই করে।
+ */
+export async function loginAdminAsync(email, password) {
+  try {
+    // ধাপ ১: ইমেইল ও পাসওয়ার্ড দিয়ে সাইন ইন
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // ধাপ ২: Firestore-এর 'admins' কালেকশনে UID ডাটাবেজে আছে কিনা চেক করা
+    const adminDocRef = doc(db, "admins", user.uid);
+    const adminDocSnap = await getDoc(adminDocRef);
+
+    if (adminDocSnap.exists()) {
+      const adminData = adminDocSnap.data();
+
+      // যদি অ্যাকাউন্টের স্ট্যাটাস সক্রিয় থাকে
+      if (adminData.isActive !== false) {
+        return { success: true, user: user, adminData: adminData };
+      } else {
+        await signOut(auth);
+        throw new Error("আপনার অ্যাডমিন অ্যাকাউন্টটি নিষ্ক্রিয় (Inactive) অবস্থায় রয়েছে।");
+      }
+    } else {
+      // যদি admins কালেকশনে UID না থাকে তবে সাইন আউট করে দেবে
+      await signOut(auth);
+      throw new Error("Access Denied: Account not listed as an active administrator.");
+    }
+
+  } catch (error) {
+    console.error("Admin Authentication Error:", error);
+    throw error;
+  }
+}
