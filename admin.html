@@ -1,341 +1,400 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-900 text-slate-100">
+<html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Twilight System</title>
-  <meta name="robots" content="noindex, nofollow, noarchive">
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2589/2589175.png">
-
-  <!-- Tailwind CSS & FontAwesome -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
-          colors: { brand: { 500: '#7c3aed', 600: '#6d28d9', 700: '#5b21b6' } }
-        }
-      }
-    }
-  </script>
+  <title>Admin Dashboard | Enterprise System</title>
+  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+  <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
+  <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css)">
 </head>
-<body class="font-sans antialiased bg-slate-950 text-slate-100 flex flex-col min-h-screen">
+<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
 
-  <!-- Toast Notification System -->
-  <div id="admin-toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- Global Loader -->
-  <div id="admin-loader" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center">
-    <div class="w-12 h-12 border-4 border-brand-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-    <p id="admin-loader-text" class="text-sm font-semibold text-slate-300">Verifying secure credentials...</p>
-  </div>
-
-  <!-- AUTHENTICATION VIEW (LOGIN SCREEN) -->
-  <div id="auth-view" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 hidden">
-    <div class="w-full max-w-md p-8 bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl space-y-6">
-      <div class="text-center space-y-2">
-        <div class="w-12 h-12 bg-brand-600/20 text-brand-500 rounded-xl flex items-center justify-center mx-auto text-2xl border border-brand-500/30">
-          <i class="fa-solid fa-user-shield"></i>
+  <!-- AUTHENTICATION SCREEN -->
+  <div id="auth-screen" class="fixed inset-0 z-50 bg-slate-950 flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 max-w-md w-full shadow-2xl relative">
+      <div class="text-center mb-8">
+        <div class="w-14 h-14 bg-indigo-600/10 text-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-3 border border-indigo-500/20 text-2xl">
+          <i class="fa-solid fa-shield-halved"></i>
         </div>
-        <h1 class="text-2xl font-bold text-white tracking-tight">System Administration</h1>
-        <p class="text-xs text-slate-400">Sign in to access control panel and real-time analytics.</p>
+        <h1 class="text-2xl font-bold text-white">System Administration</h1>
+        <p class="text-xs text-slate-400 mt-1">Authenticate session using Firebase credentials</p>
       </div>
 
-      <form id="admin-login-form" class="space-y-4">
+      <div id="auth-error-box" class="hidden mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs"></div>
+
+      <form id="login-form" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Email Address</label>
+          <input type="email" id="auth-email" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Password</label>
           <div class="relative">
-            <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-slate-500 text-sm"></i>
-            <input type="email" id="login-email" required placeholder="admin@twilight.com" class="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700/80 rounded-xl text-sm text-white focus:outline-none focus:border-brand-500 transition">
+            <input type="password" id="auth-password" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-indigo-500 transition">
+            <button type="button" id="toggle-password" class="absolute right-3 top-3 text-slate-500 hover:text-slate-300 text-xs">
+              <i class="fa-solid fa-eye"></i>
+            </button>
           </div>
         </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
-          <div class="relative">
-            <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-500 text-sm"></i>
-            <input type="password" id="login-password" required placeholder="••••••••••••" class="w-full pl-10 pr-10 py-2.5 bg-slate-800/80 border border-slate-700/80 rounded-xl text-sm text-white focus:outline-none focus:border-brand-500 transition">
-            <button type="button" id="toggle-pwd-btn" class="absolute right-3.5 top-3 text-slate-500 hover:text-white"><i class="fa-solid fa-eye"></i></button>
-          </div>
-        </div>
-
-        <button type="submit" id="login-submit-btn" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-brand-600/20 flex items-center justify-center gap-2">
-          <span>Authenticate Session</span>
-          <i class="fa-solid fa-arrow-right"></i>
+        <button type="submit" id="auth-submit-btn" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm transition flex items-center justify-center gap-2">
+          <span>Authenticate</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
         </button>
       </form>
-      <div class="text-center pt-2">
-        <a href="index.html" class="text-xs text-slate-500 hover:text-slate-300 transition"><i class="fa-solid fa-globe mr-1"></i> Return to Main Website</a>
-      </div>
     </div>
   </div>
 
-  <!-- MAIN ADMIN DASHBOARD WRAPPER -->
-  <div id="dashboard-view" class="flex-grow flex flex-col md:flex-row hidden">
+  <!-- MAIN DASHBOARD SHELL -->
+  <div id="dashboard-shell" class="flex-grow flex flex-col md:flex-row hidden">
     <!-- Sidebar -->
-    <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col justify-between shrink-0">
-      <div class="space-y-6">
-        <div class="flex items-center gap-3 px-2">
-          <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center font-black text-white text-sm">T</div>
+    <aside class="w-full md:w-64 bg-slate-950 border-r border-slate-800 flex flex-col shrink-0">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-black text-sm">A</div>
           <div>
-            <h2 class="font-bold text-sm text-white tracking-tight">Twilight Console</h2>
-            <span id="admin-role-badge" class="text-[10px] px-2 py-0.5 rounded bg-brand-500/20 text-brand-400 font-bold uppercase">Super Admin</span>
+            <h2 class="font-bold text-sm text-white leading-none">Admin Center</h2>
+            <span id="user-role-badge" class="text-[10px] text-indigo-400 font-semibold uppercase tracking-wider">Verifying...</span>
           </div>
         </div>
-
-        <nav class="space-y-1">
-          <button data-tab="analytics" class="nav-tab-btn active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition">
-            <i class="fa-solid fa-chart-line w-4 text-brand-500"></i> Analytics & Metrics
-          </button>
-          <button data-tab="live" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition">
-            <i class="fa-solid fa-tower-broadcast w-4 text-emerald-400"></i> Live Traffic
-          </button>
-          <button data-tab="offers" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition">
-            <i class="fa-solid fa-layer-group w-4 text-amber-400"></i> Offer Manager
-          </button>
-          <button data-tab="settings" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition">
-            <i class="fa-solid fa-sliders w-4 text-blue-400"></i> Site Configuration
-          </button>
-          <button data-tab="admins" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition">
-            <i class="fa-solid fa-users-gear w-4 text-purple-400"></i> Admin Management
-          </button>
-          <button data-tab="audit" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition">
-            <i class="fa-solid fa-list-check w-4 text-rose-400"></i> Activity Logs
-          </button>
-          <button data-tab="export" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-800 transition">
-            <i class="fa-solid fa-file-export w-4 text-teal-400"></i> Export Center
-          </button>
-        </nav>
       </div>
 
-      <div class="border-t border-slate-800 pt-4 space-y-3">
-        <div class="px-2">
-          <p id="admin-user-email" class="text-xs font-bold text-white truncate">admin@twilight.com</p>
-          <p class="text-[10px] text-slate-500">Authenticated Session</p>
-        </div>
-        <button id="admin-logout-btn" class="w-full py-2 bg-slate-800 hover:bg-red-600/20 text-slate-300 hover:text-red-400 font-bold text-xs rounded-xl transition flex items-center justify-center gap-2">
-          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+      <nav class="p-4 space-y-1 flex-grow overflow-y-auto">
+        <button data-tab="live" class="nav-btn active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition">
+          <i class="fa-solid fa-tower-broadcast text-slate-500 w-4"></i> Live Traffic
+        </button>
+        <button data-tab="analytics" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition">
+          <i class="fa-solid fa-chart-line text-slate-500 w-4"></i> Analytics Hub
+        </button>
+        <button data-tab="offers" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition">
+          <i class="fa-solid fa-tags text-slate-500 w-4"></i> Offer Manager
+        </button>
+        <button data-tab="settings" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition">
+          <i class="fa-solid fa-sliders text-slate-500 w-4"></i> Site Content
+        </button>
+        <button data-tab="seo" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition">
+          <i class="fa-solid fa-magnifying-glass text-slate-500 w-4"></i> SEO Settings
+        </button>
+        <button data-tab="admins" id="nav-admins-btn" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition">
+          <i class="fa-solid fa-user-shield text-slate-500 w-4"></i> Administrators
+        </button>
+        <button data-tab="activity" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition">
+          <i class="fa-solid fa-list-check text-slate-500 w-4"></i> Audit Logs
+        </button>
+        <button data-tab="status" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition">
+          <i class="fa-solid fa-server text-slate-500 w-4"></i> System Status
+        </button>
+        <button data-tab="export" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition">
+          <i class="fa-solid fa-file-export text-slate-500 w-4"></i> Data Export
+        </button>
+      </nav>
+
+      <div class="p-4 border-t border-slate-800">
+        <button id="logout-btn" class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-slate-800 text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition">
+          <i class="fa-solid fa-right-from-bracket"></i> End Session
         </button>
       </div>
     </aside>
 
     <!-- Content Workspace -->
-    <main class="flex-grow p-6 space-y-6 overflow-y-auto">
-
-      <!-- TOP HEADER -->
-      <header class="flex items-center justify-between pb-4 border-b border-slate-800">
-        <div>
-          <h1 id="tab-heading" class="text-xl font-extrabold text-white">System Analytics</h1>
-          <p class="text-xs text-slate-400 mt-0.5">Real-time performance and event breakdown.</p>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> DB Connected
+    <main class="flex-grow p-6 md:p-8 overflow-y-auto space-y-8">
+      
+      <!-- TAB 1: LIVE TRAFFIC -->
+      <section id="tab-live" class="tab-content space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-white">Live Realtime Traffic</h2>
+            <p class="text-xs text-slate-400">Monitored active presence via Realtime Database</p>
+          </div>
+          <span class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-full text-xs font-semibold border border-emerald-500/20">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Live Engine Active
           </span>
-          <a href="index.html" target="_blank" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg transition flex items-center gap-1.5">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> Preview Site
-          </a>
         </div>
-      </header>
 
-      <!-- TAB 1: ANALYTICS DASHBOARD -->
-      <section id="pane-analytics" class="tab-pane space-y-6">
-        <!-- Metric Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
-            <span class="text-xs font-semibold text-slate-400">Visitors Online Now</span>
-            <div class="text-3xl font-extrabold text-emerald-400 flex items-center justify-between">
-              <span id="stat-live-users">0</span>
-              <i class="fa-solid fa-bolt text-lg text-emerald-500/40"></i>
-            </div>
-            <p class="text-[10px] text-slate-500">Active Firebase sessions</p>
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+            <span class="text-xs text-slate-400 font-medium">Online Visitors Now</span>
+            <p id="live-online-count" class="text-3xl font-black text-white mt-2">0</p>
           </div>
-
-          <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
-            <span class="text-xs font-semibold text-slate-400">Total Page Views</span>
-            <div class="text-3xl font-extrabold text-white flex items-center justify-between">
-              <span id="stat-total-pv">0</span>
-              <i class="fa-solid fa-eye text-lg text-brand-500/40"></i>
-            </div>
-            <p class="text-[10px] text-slate-500">All recorded visits</p>
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+            <span class="text-xs text-slate-400 font-medium">Active Sessions Today</span>
+            <p id="live-today-sessions" class="text-3xl font-black text-indigo-400 mt-2">0</p>
           </div>
-
-          <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
-            <span class="text-xs font-semibold text-slate-400">Total CTA Clicks</span>
-            <div class="text-3xl font-extrabold text-brand-400 flex items-center justify-between">
-              <span id="stat-total-clicks">0</span>
-              <i class="fa-solid fa-hand-pointer text-lg text-brand-500/40"></i>
-            </div>
-            <p class="text-[10px] text-slate-500">Outbound redirection triggers</p>
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+            <span class="text-xs text-slate-400 font-medium">CTA Interactions</span>
+            <p id="live-cta-count" class="text-3xl font-black text-amber-400 mt-2">0</p>
           </div>
-
-          <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
-            <span class="text-xs font-semibold text-slate-400">Conversion Rate (CTR)</span>
-            <div class="text-3xl font-extrabold text-amber-400 flex items-center justify-between">
-              <span id="stat-ctr">0%</span>
-              <i class="fa-solid fa-percent text-lg text-amber-500/40"></i>
-            </div>
-            <p class="text-[10px] text-slate-500">Clicks per page view</p>
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+            <span class="text-xs text-slate-400 font-medium">Offer Clicks</span>
+            <p id="live-offer-count" class="text-3xl font-black text-pink-400 mt-2">0</p>
           </div>
         </div>
 
-        <!-- Charts Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
-            <h3 class="text-sm font-bold text-white">Event Frequency Over Time</h3>
-            <div class="h-64"><canvas id="chart-events-timeline"></canvas></div>
-          </div>
-          <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
-            <h3 class="text-sm font-bold text-white">Event Breakdown by Type</h3>
-            <div class="h-64"><canvas id="chart-events-pie"></canvas></div>
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+          <h3 class="text-sm font-bold text-white mb-4">Active Concurrent Connections</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="border-b border-slate-800 text-slate-400">
+                <tr>
+                  <th class="pb-3">Session ID</th>
+                  <th class="pb-3">Visitor ID</th>
+                  <th class="pb-3">Device</th>
+                  <th class="pb-3">Page</th>
+                  <th class="pb-3">Referrer</th>
+                  <th class="pb-3">Last Active</th>
+                </tr>
+              </thead>
+              <tbody id="live-sessions-tbody" class="divide-y divide-slate-800/50 text-slate-300">
+                <tr><td colspan="6" class="py-4 text-center text-slate-500">Connecting live stream...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
-      <!-- TAB 2: LIVE TRAFFIC -->
-      <section id="pane-live" class="tab-pane hidden space-y-4">
-        <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-300">
-            <thead class="bg-slate-800/60 text-slate-400 uppercase text-[10px]">
+      <!-- TAB 2: ANALYTICS HUB -->
+      <section id="tab-analytics" class="tab-content space-y-6 hidden">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h2 class="text-xl font-bold text-white">Analytics Hub</h2>
+            <p class="text-xs text-slate-400">Aggregated tracking analytics engine</p>
+          </div>
+          <div class="flex gap-2 bg-slate-950 p-1 border border-slate-800 rounded-xl text-xs">
+            <button data-range="24h" class="analytics-range-btn active px-3 py-1.5 rounded-lg text-slate-400 font-semibold transition">24 Hours</button>
+            <button data-range="7d" class="analytics-range-btn px-3 py-1.5 rounded-lg text-slate-400 font-semibold transition">7 Days</button>
+            <button data-range="30d" class="analytics-range-btn px-3 py-1.5 rounded-lg text-slate-400 font-semibold transition">30 Days</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+            <span class="text-xs text-slate-400 font-medium">Page Views</span>
+            <p id="ana-views" class="text-2xl font-bold text-white mt-1">0</p>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+            <span class="text-xs text-slate-400 font-medium">Unique Visitors</span>
+            <p id="ana-visitors" class="text-2xl font-bold text-indigo-400 mt-1">0</p>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+            <span class="text-xs text-slate-400 font-medium">Total Clicks</span>
+            <p id="ana-clicks" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+            <span class="text-xs text-slate-400 font-medium">CTR</span>
+            <p id="ana-ctr" class="text-2xl font-bold text-emerald-400 mt-1">0.0%</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5">
+          <h3 class="text-sm font-bold text-white mb-4">Traffic Volume Trend</h3>
+          <div class="h-64">
+            <canvas id="analyticsChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: OFFER MANAGER -->
+      <section id="tab-offers" class="tab-content space-y-6 hidden">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-bold text-white">Offer Management</h2>
+            <p class="text-xs text-slate-400">Configure promotional CPA offers dynamically</p>
+          </div>
+          <button id="add-offer-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> New Offer
+          </button>
+        </div>
+
+        <div id="offers-admin-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="col-span-full py-8 text-center text-slate-500 text-xs">Loading offer inventory...</div>
+        </div>
+      </section>
+
+      <!-- TAB 4: SITE CONTENT -->
+      <section id="tab-settings" class="tab-content space-y-6 hidden">
+        <div>
+          <h2 class="text-xl font-bold text-white">Site Content & Branding</h2>
+          <p class="text-xs text-slate-400">Modify live public layout parameters</p>
+        </div>
+
+        <form id="settings-form" class="bg-slate-950 border border-slate-800 rounded-2xl p-6 space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Brand Name</label>
+              <input type="text" id="cfg-brandName" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Logo URL</label>
+              <input type="text" id="cfg-logoUrl" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Primary Color CSS</label>
+              <input type="text" id="cfg-primaryColor" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Accent Color CSS</label>
+              <input type="text" id="cfg-accentColor" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
+            </div>
+          </div>
+
+          <hr class="border-slate-800">
+
+          <div class="space-y-4">
+            <h3 class="text-sm font-bold text-white">Hero Section Config</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Badge Text</label>
+                <input type="text" id="cfg-heroBadge" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Headline Text</label>
+                <input type="text" id="cfg-heroHeadline" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Subtext Description</label>
+              <textarea id="cfg-heroSubtext" rows="2" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition">
+            Save Site Content
+          </button>
+        </form>
+      </section>
+
+      <!-- TAB 5: SEO SETTINGS -->
+      <section id="tab-seo" class="tab-content space-y-6 hidden">
+        <div>
+          <h2 class="text-xl font-bold text-white">SEO & Meta Management</h2>
+          <p class="text-xs text-slate-400">Configure search indexing and OpenGraph data</p>
+        </div>
+
+        <form id="seo-form" class="bg-slate-950 border border-slate-800 rounded-2xl p-6 space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Page Title</label>
+            <input type="text" id="seo-pageTitle" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Meta Description</label>
+            <textarea id="seo-metaDesc" rows="2" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white"></textarea>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">OG Title</label>
+              <input type="text" id="seo-ogTitle" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Robots Directives</label>
+              <input type="text" id="seo-robots" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white">
+            </div>
+          </div>
+          <button type="submit" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition">
+            Save SEO Metadata
+          </button>
+        </form>
+      </section>
+
+      <!-- TAB 6: ADMINISTRATORS -->
+      <section id="tab-admins" class="tab-content space-y-6 hidden">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-bold text-white">Administrator Accounts</h2>
+            <p class="text-xs text-slate-400">Manage privileges and active Firebase UIDs</p>
+          </div>
+          <button id="add-admin-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition flex items-center gap-2">
+            <i class="fa-solid fa-user-plus"></i> Grant UID Access
+          </button>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-900 border-b border-slate-800 text-slate-400">
               <tr>
-                <th class="p-3">Session ID</th>
-                <th class="p-3">Visitor ID</th>
-                <th class="p-3">Device</th>
-                <th class="p-3">Status</th>
-                <th class="p-3">Last Active</th>
+                <th class="p-4">UID</th>
+                <th class="p-4">Email</th>
+                <th class="p-4">Role</th>
+                <th class="p-4">Status</th>
+                <th class="p-4">Actions</th>
               </tr>
             </thead>
-            <tbody id="live-sessions-table-body" class="divide-y divide-slate-800">
-              <tr><td colspan="5" class="p-4 text-center text-slate-500">Listening for active sessions...</td></tr>
+            <tbody id="admins-tbody" class="divide-y divide-slate-800 text-slate-300">
+              <tr><td colspan="5" class="p-4 text-center text-slate-500">Loading authorized administrators...</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- TAB 3: OFFER MANAGER (CRUD) -->
-      <section id="pane-offers" class="tab-pane hidden space-y-4">
-        <div class="flex justify-between items-center">
-          <p class="text-xs text-slate-400">Manage promotional CPA landing offers.</p>
-          <button id="btn-open-create-offer" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl transition flex items-center gap-2">
-            <i class="fa-solid fa-plus"></i> Create New Offer
-          </button>
+      <!-- TAB 7: AUDIT LOGS -->
+      <section id="tab-activity" class="tab-content space-y-6 hidden">
+        <div>
+          <h2 class="text-xl font-bold text-white">System Audit Logs</h2>
+          <p class="text-xs text-slate-400">Immutable trail of administrator operations</p>
         </div>
 
-        <div id="offers-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-      </section>
-
-      <!-- TAB 4: SITE CONFIGURATION -->
-      <section id="pane-settings" class="tab-pane hidden space-y-6">
-        <form id="site-settings-form" class="space-y-6">
-          <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
-            <h3 class="text-sm font-bold text-white border-b border-slate-800 pb-2">Branding & Theme</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div>
-                <label class="block font-semibold text-slate-400 mb-1">Brand Name</label>
-                <input type="text" name="brandName" id="cfg-brandName" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-400 mb-1">Logo URL</label>
-                <input type="text" name="logoUrl" id="cfg-logoUrl" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-400 mb-1">Theme Palette</label>
-                <select name="theme" id="cfg-theme" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
-                  <option value="twilight-light">Twilight Light (Default)</option>
-                  <option value="soft-light">Soft Light Blue</option>
-                  <option value="premium-purple">Premium Purple</option>
-                  <option value="clean-blue">Clean Blue</option>
-                </select>
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-400 mb-1">Default City</label>
-                <input type="text" name="defaultCity" id="cfg-defaultCity" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
-              </div>
-            </div>
-          </div>
-
-          <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
-            <h3 class="text-sm font-bold text-white border-b border-slate-800 pb-2">Hero Section Content</h3>
-            <div class="space-y-4 text-xs">
-              <div>
-                <label class="block font-semibold text-slate-400 mb-1">Badge Text</label>
-                <input type="text" name="heroBadge" id="cfg-heroBadge" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-400 mb-1">Headline Text</label>
-                <input type="text" name="heroHeadline" id="cfg-heroHeadline" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-400 mb-1">Subtext Narrative</label>
-                <textarea name="heroSubtext" id="cfg-heroSubtext" rows="2" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white"></textarea>
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-400 mb-1">Primary CTA Button Text</label>
-                <input type="text" name="heroCta" id="cfg-heroCta" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
-              </div>
-            </div>
-          </div>
-
-          <button type="submit" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs transition shadow-lg">
-            Save All Configuration Changes
-          </button>
-        </form>
-      </section>
-
-      <!-- TAB 5: ADMIN MANAGEMENT -->
-      <section id="pane-admins" class="tab-pane hidden space-y-4">
-        <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-300">
-            <thead class="bg-slate-800/60 text-slate-400 uppercase text-[10px]">
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-900 border-b border-slate-800 text-slate-400">
               <tr>
-                <th class="p-3">UID</th>
-                <th class="p-3">Email</th>
-                <th class="p-3">Role</th>
-                <th class="p-3">Status</th>
+                <th class="p-4">Timestamp</th>
+                <th class="p-4">Admin UID</th>
+                <th class="p-4">Action</th>
+                <th class="p-4">Target / Metadata</th>
               </tr>
             </thead>
-            <tbody id="admins-table-body" class="divide-y divide-slate-800"></tbody>
+            <tbody id="activity-tbody" class="divide-y divide-slate-800 text-slate-300">
+              <tr><td colspan="4" class="p-4 text-center text-slate-500">Fetching operational logs...</td></tr>
+            </tbody>
           </table>
         </div>
       </section>
 
-      <!-- TAB 6: AUDIT LOGS -->
-      <section id="pane-audit" class="tab-pane hidden space-y-4">
-        <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl overflow-x-auto">
-          <table class="w-full text-left text-xs text-slate-300">
-            <thead class="bg-slate-800/60 text-slate-400 uppercase text-[10px]">
-              <tr>
-                <th class="p-3">Timestamp</th>
-                <th class="p-3">Admin</th>
-                <th class="p-3">Action</th>
-                <th class="p-3">Target Details</th>
-              </tr>
-            </thead>
-            <tbody id="audit-logs-body" class="divide-y divide-slate-800"></tbody>
-          </table>
+      <!-- TAB 8: SYSTEM STATUS -->
+      <section id="tab-status" class="tab-content space-y-6 hidden">
+        <div>
+          <h2 class="text-xl font-bold text-white">System Diagnostics</h2>
+          <p class="text-xs text-slate-400">Realtime connection and SDK state verifier</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
+            <span class="text-xs font-semibold text-slate-400 uppercase">Database Link</span>
+            <div id="status-db-connection" class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Connected
+            </div>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
+            <span class="text-xs font-semibold text-slate-400 uppercase">Current Session UID</span>
+            <div id="status-session-uid" class="text-xs font-mono text-slate-200">Unauthenticated</div>
+          </div>
         </div>
       </section>
 
-      <!-- TAB 7: EXPORT -->
-      <section id="pane-export" class="tab-pane hidden space-y-4">
-        <div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
-          <h3 class="text-sm font-bold text-white">System Data Export</h3>
-          <p class="text-xs text-slate-400">Download raw operational analytics and logs in JSON/CSV format.</p>
-          <div class="flex gap-4">
-            <button id="btn-export-events-json" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl transition">
-              <i class="fa-solid fa-download mr-1"></i> Export Events (JSON)
-            </button>
-            <button id="btn-export-offers-json" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl transition">
-              <i class="fa-solid fa-download mr-1"></i> Export Offers (JSON)
-            </button>
+      <!-- TAB 9: DATA EXPORT -->
+      <section id="tab-export" class="tab-content space-y-6 hidden">
+        <div>
+          <h2 class="text-xl font-bold text-white">Data Export Engine</h2>
+          <p class="text-xs text-slate-400">Export structured records in CSV/JSON format</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
+            <h3 class="text-sm font-bold text-white">Analytics Events</h3>
+            <p class="text-xs text-slate-400">Download raw interaction events log.</p>
+            <button id="export-events-btn" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition">Export CSV</button>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
+            <h3 class="text-sm font-bold text-white">Offer Catalogue</h3>
+            <p class="text-xs text-slate-400">Download offer configuration definitions.</p>
+            <button id="export-offers-btn" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition">Export JSON</button>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
+            <h3 class="text-sm font-bold text-white">Audit Trail</h3>
+            <p class="text-xs text-slate-400">Download full administrator activity log.</p>
+            <button id="export-audit-btn" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition">Export CSV</button>
           </div>
         </div>
       </section>
@@ -343,387 +402,623 @@
     </main>
   </div>
 
-  <!-- OFFER MODAL -->
+  <!-- OFFER EDIT/CREATE MODAL -->
   <div id="offer-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-slate-800 card-custom max-w-lg w-full p-6 shadow-2xl space-y-4">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h3 id="offer-modal-title" class="text-sm font-bold text-white">Create New Offer</h3>
-        <button id="close-offer-modal" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <form id="offer-form" class="space-y-3 text-xs">
-        <input type="hidden" id="offer-edit-id">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+      <button id="close-offer-modal" class="absolute top-4 right-4 text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      <h3 id="offer-modal-title" class="text-lg font-bold text-white mb-4">Manage Offer</h3>
+      <form id="offer-form" class="space-y-4">
+        <input type="hidden" id="off-id">
         <div>
-          <label class="block font-semibold text-slate-400 mb-1">Offer Title</label>
-          <input type="text" id="off-title" required class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Title</label>
+          <input type="text" id="off-title" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white">
         </div>
         <div>
-          <label class="block font-semibold text-slate-400 mb-1">Description</label>
-          <textarea id="off-desc" rows="2" required class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white"></textarea>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Description</label>
+          <textarea id="off-desc" rows="2" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"></textarea>
         </div>
-        <div>
-          <label class="block font-semibold text-slate-400 mb-1">Destination Target URL</label>
-          <input type="url" id="off-url" required class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block font-semibold text-slate-400 mb-1">CTA Button Text</label>
-            <input type="text" id="off-cta" required class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Destination URL</label>
+            <input type="url" id="off-url" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white">
           </div>
           <div>
-            <label class="block font-semibold text-slate-400 mb-1">Badge Tag</label>
-            <input type="text" id="off-badge" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Image URL</label>
+            <input type="url" id="off-image" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white">
           </div>
         </div>
-        <div>
-          <label class="block font-semibold text-slate-400 mb-1">Image Thumbnail URL</label>
-          <input type="url" id="off-image" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white">
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">CTA Text</label>
+            <input type="text" id="off-cta" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Badge</label>
+            <input type="text" id="off-badge" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Display Order</label>
+            <input type="number" id="off-order" value="0" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white">
+          </div>
         </div>
-        <div class="flex items-center gap-2 pt-2">
-          <input type="checkbox" id="off-active" class="w-4 h-4 text-brand-600 bg-slate-800 border-slate-700 rounded">
-          <label for="off-active" class="font-semibold text-white">Activate Offer Immediately</label>
-        </div>
-        <div class="pt-3 flex justify-end gap-2">
-          <button type="submit" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition">Save Offer</button>
-        </div>
+        <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition">Save Offer Record</button>
       </form>
     </div>
   </div>
 
-  <!-- APPLICATION CONTROLLER MODULE -->
+  <!-- ADMIN GRANT MODAL -->
+  <div id="admin-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button id="close-admin-modal" class="absolute top-4 right-4 text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      <h3 class="text-lg font-bold text-white mb-4">Authorize Admin UID</h3>
+      <form id="grant-admin-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Target Firebase User UID</label>
+          <input type="text" id="grant-uid" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white font-mono">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Associated Email</label>
+          <input type="email" id="grant-email" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Assign Security Role</label>
+          <select id="grant-role" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white">
+            <option value="admin">admin</option>
+            <option value="editor">editor</option>
+            <option value="analyst">analyst</option>
+            <option value="super_admin">super_admin</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition">Grant Authorization</button>
+      </form>
+    </div>
+  </div>
+
   <script type="module">
     import { 
-      auth, db, signInWithEmailAndPassword, signOut, onAuthStateChanged,
-      ref, get, set, update, push, remove, onValue, serverTimestamp 
-    } from './firebase-config.js';
+      auth, db, ref, get, set, update, push, remove, onValue, serverTimestamp,
+      signInWithEmailAndPassword, signOut, onAuthStateChanged 
+    } from "./firebase-config.js";
 
-    let currentAdminUser = null;
-    let chartInstanceEvents = null;
-    let chartInstancePie = null;
+    let currentAdminRecord = null;
+    let analyticsChartInstance = null;
 
+    // Toast Notification System
     function showToast(msg, type = 'info') {
-      const container = document.getElementById('admin-toast-container');
-      const el = document.createElement('div');
-      el.className = `p-3 rounded-xl text-xs font-bold text-white shadow-xl pointer-events-auto transition duration-300 transform translate-y-2 ${type === 'error' ? 'bg-red-600' : 'bg-brand-600'}`;
-      el.textContent = msg;
-      container.appendChild(el);
-      setTimeout(() => el.remove(), 3500);
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bg = type === 'error' ? 'bg-red-600' : type === 'success' ? 'bg-emerald-600' : 'bg-slate-800';
+      toast.className = `${bg} text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-lg transition pointer-events-auto flex items-center gap-2`;
+      toast.innerHTML = `<i class="fa-solid fa-circle-info"></i><span>${msg}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
     }
 
-    function hideLoader() {
-      document.getElementById('admin-loader').classList.add('hidden');
-    }
-
-    /* Verify if authenticated user exists in /admins/{uid} */
-    async function verifyAdminRole(uid) {
+    // Write System Audit Trail
+    async function logActivity(action, targetId = "") {
+      if (!currentAdminRecord) return;
       try {
-        const snap = await get(ref(db, `admins/${uid}`));
-        if (snap.exists() && snap.val().active) {
-          return snap.val();
-        }
-        return null;
-      } catch(e) {
-        return null;
-      }
-    }
-
-    async function logAudit(action, targetDetails = '') {
-      if(!currentAdminUser) return;
-      try {
-        const logRef = push(ref(db, 'activityLogs'));
+        const logRef = push(ref(db, "activityLogs"));
         await set(logRef, {
-          adminUid: currentAdminUser.uid,
-          adminEmail: currentAdminUser.email,
-          action: action,
-          targetDetails: targetDetails,
+          adminUid: currentAdminRecord.uid,
+          adminEmail: currentAdminRecord.email,
+          action,
+          targetId,
           timestamp: serverTimestamp()
         });
-      } catch(e) { console.warn("Audit log error:", e); }
+      } catch (e) {
+        console.warn("Audit logging prevented:", e);
+      }
     }
 
-    // AUTH CONTROLLER
+    // AUTHENTICATION & UID AUTHORIZATION ENGINE
     onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const adminProfile = await verifyAdminRole(user.uid);
-        if (adminProfile) {
-          currentAdminUser = { uid: user.uid, email: user.email, ...adminProfile };
-          document.getElementById('admin-user-email').textContent = user.email;
-          document.getElementById('admin-role-badge').textContent = adminProfile.role || 'Admin';
-          
-          document.getElementById('auth-view').classList.add('hidden');
-          document.getElementById('dashboard-view').classList.remove('hidden');
-          
-          initializeDashboard();
-        } else {
-          await signOut(auth);
-          showToast("Access Denied: Account not listed as an active administrator.", "error");
-          document.getElementById('auth-view').classList.remove('hidden');
-          document.getElementById('dashboard-view').classList.add('hidden');
-        }
-      } else {
-        document.getElementById('auth-view').classList.remove('hidden');
-        document.getElementById('dashboard-view').classList.add('hidden');
-      }
-      hideLoader();
-    });
+      const authScreen = document.getElementById("auth-screen");
+      const shell = document.getElementById("dashboard-shell");
 
-    // Login Form
-    document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('login-email').value;
-      const pwd = document.getElementById('login-password').value;
-      
-      document.getElementById('admin-loader').classList.remove('hidden');
+      if (!user) {
+        currentAdminRecord = null;
+        authScreen.classList.remove("hidden");
+        shell.classList.add("hidden");
+        return;
+      }
+
       try {
-        await signInWithEmailAndPassword(auth, email, pwd);
-      } catch(err) {
-        hideLoader();
-        showToast("Authentication Failed: " + err.message, "error");
+        // UID Authorization Guard
+        const adminSnap = await get(ref(db, `admins/${user.uid}`));
+        
+        if (!adminSnap.exists()) {
+          throw new Error("UID not registered in administration roster.");
+        }
+
+        const adminData = adminSnap.val();
+        if (adminData.active !== true) {
+          throw new Error("Admin access status is disabled.");
+        }
+
+        // Authorization Passed
+        currentAdminRecord = { uid: user.uid, email: user.email, ...adminData };
+        document.getElementById("user-role-badge").textContent = currentAdminRecord.role;
+        document.getElementById("status-session-uid").textContent = user.uid;
+
+        // Apply RBAC UI Limitations
+        applyRBAC(currentAdminRecord.role);
+
+        // Update Last Login
+        update(ref(db, `admins/${user.uid}`), { lastLoginAt: serverTimestamp() });
+
+        authScreen.classList.add("hidden");
+        shell.classList.remove("hidden");
+
+        // Initialize Realtime Listeners
+        initLiveDashboard();
+        initAnalyticsEngine('24h');
+        initOfferManager();
+
+        showToast("Authenticated session established.", "success");
+      } catch (err) {
+        console.error("Authorization Error:", err);
+        document.getElementById("auth-error-box").textContent = err.message || "Unauthorized";
+        document.getElementById("auth-error-box").classList.remove("hidden");
+        signOut(auth);
       }
     });
 
-    document.getElementById('admin-logout-btn').addEventListener('click', async () => {
-      await signOut(auth);
-      window.location.reload();
+    // Apply Role-Based Access Control Restrictions
+    function applyRBAC(role) {
+      const superAdminOnlyBtns = [document.getElementById("nav-admins-btn")];
+      if (role !== "super_admin") {
+        superAdminOnlyBtns.forEach(btn => btn?.classList.add("hidden"));
+      }
+
+      if (role === "analyst") {
+        document.querySelectorAll("button[type='submit']").forEach(btn => btn.disabled = true);
+        document.getElementById("add-offer-btn").classList.add("hidden");
+      }
+    }
+
+    // Login Form Listener
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("auth-email").value;
+      const pass = document.getElementById("auth-password").value;
+      const btn = document.getElementById("auth-submit-btn");
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Authenticating...`;
+      document.getElementById("auth-error-box").classList.add("hidden");
+
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+      } catch (err) {
+        document.getElementById("auth-error-box").textContent = err.message;
+        document.getElementById("auth-error-box").classList.remove("hidden");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Authenticate</span> <i class="fa-solid fa-arrow-right text-xs"></i>`;
+      }
     });
 
-    // Navigation Tabs
-    document.querySelectorAll('.nav-tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('bg-slate-800', 'text-white'));
-        btn.classList.add('bg-slate-800', 'text-white');
-        
-        const tab = btn.getAttribute('data-tab');
-        document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
-        document.getElementById(`pane-${tab}`).classList.remove('hidden');
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      if (currentAdminRecord) logActivity("LOGOUT");
+      signOut(auth);
+    });
+
+    // Password Visibility Toggle
+    document.getElementById("toggle-password").addEventListener("click", () => {
+      const input = document.getElementById("auth-password");
+      input.type = input.type === "password" ? "text" : "password";
+    });
+
+    // Navigation Tab Router
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const target = btn.getAttribute("data-tab");
+        document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active", "bg-slate-900", "text-white"));
+        btn.classList.add("active", "bg-slate-900", "text-white");
+
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.add("hidden"));
+        document.getElementById(`tab-${target}`).classList.remove("hidden");
+
+        if (target === "settings") loadSettingsForm();
+        if (target === "seo") loadSEOForm();
+        if (target === "admins") loadAdminsRoster();
+        if (target === "activity") loadAuditLogs();
       });
     });
 
-    // DASHBOARD DATA SUBSCRIBERS
-    function initializeDashboard() {
-      // Live sessions
-      onValue(ref(db, 'sessions'), snapshot => {
-        if(!snapshot.exists()) return;
-        const sessions = snapshot.val();
-        const activeList = Object.keys(sessions).filter(k => sessions[k].connected);
-        document.getElementById('stat-live-users').textContent = activeList.length;
+    // TAB 1: LIVE TRAFFIC REALTIME ENGINE
+    function initLiveDashboard() {
+      onValue(ref(db, "sessions"), (snapshot) => {
+        const tbody = document.getElementById("live-sessions-tbody");
+        tbody.innerHTML = "";
 
-        const table = document.getElementById('live-sessions-table-body');
-        table.innerHTML = Object.keys(sessions).map(k => {
-          const s = sessions[k];
-          return `
-            <tr>
-              <td class="p-3 font-mono">${k}</td>
-              <td class="p-3 font-mono">${s.visitorId || 'N/A'}</td>
-              <td class="p-3">${s.device || 'Desktop'}</td>
-              <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.connected ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-700 text-slate-400'}">${s.connected ? 'Online' : 'Offline'}</span></td>
-              <td class="p-3">${s.lastSeen ? new Date(s.lastSeen).toLocaleTimeString() : 'N/A'}</td>
-            </tr>
-          `;
-        }).join('');
-      });
-
-      // Events Analytics
-      onValue(ref(db, 'events'), snapshot => {
-        if(!snapshot.exists()) return;
-        const events = Object.values(snapshot.val());
-        const pvCount = events.filter(e => e.type === 'page_view').length;
-        const clickCount = events.filter(e => e.type === 'cta_click').length;
-        const ctr = pvCount > 0 ? ((clickCount / pvCount) * 100).toFixed(1) : 0;
-
-        document.getElementById('stat-total-pv').textContent = pvCount;
-        document.getElementById('stat-total-clicks').textContent = clickCount;
-        document.getElementById('stat-ctr').textContent = `${ctr}%`;
-
-        renderCharts(events);
-      });
-
-      // Offers CRUD Sync
-      onValue(ref(db, 'offers'), snapshot => {
-        const container = document.getElementById('offers-list-container');
-        if(!snapshot.exists()) {
-          container.innerHTML = `<div class="col-span-full p-4 text-slate-500 text-xs">No offers configured in database.</div>`;
+        if (!snapshot.exists()) {
+          tbody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-slate-500">No active session traffic logged.</td></tr>`;
+          document.getElementById("live-online-count").textContent = "0";
           return;
         }
-        const data = snapshot.val();
-        container.innerHTML = Object.keys(data).map(key => {
-          const o = data[key];
-          return `
-            <div class="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col justify-between space-y-3">
-              <div class="space-y-1">
-                <div class="flex justify-between items-start">
-                  <h4 class="font-bold text-white text-sm">${o.title}</h4>
-                  <span class="px-2 py-0.5 rounded text-[10px] font-bold ${o.active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-500'}">${o.active ? 'ACTIVE' : 'DISABLED'}</span>
-                </div>
-                <p class="text-xs text-slate-400">${o.description}</p>
-              </div>
-              <div class="flex gap-2 pt-2 border-t border-slate-800">
-                <button onclick="window.editOffer('${key}')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg flex-1">Edit</button>
-                <button onclick="window.deleteOffer('${key}')" class="px-3 py-1.5 bg-red-600/20 hover:bg-red-600/40 text-red-400 text-xs font-bold rounded-lg">Delete</button>
-              </div>
-            </div>
+
+        const sessions = snapshot.val();
+        let onlineCount = 0;
+        let todaySessionsCount = 0;
+        const now = Date.now();
+
+        Object.keys(sessions).forEach(key => {
+          const s = sessions[key];
+          const isOnline = s.connected && (now - (s.lastSeen || 0) < 60000);
+          if (isOnline) onlineCount++;
+          todaySessionsCount++;
+
+          const tr = document.createElement("tr");
+          tr.className = isOnline ? "bg-emerald-500/5" : "";
+          tr.innerHTML = `
+            <td class="py-2.5 font-mono text-[10px] text-slate-400">${key.substring(0, 10)}...</td>
+            <td class="py-2.5 font-mono text-[10px] text-slate-400">${(s.visitorId || "").substring(0, 8)}...</td>
+            <td class="py-2.5 capitalize">${s.device || 'desktop'}</td>
+            <td class="py-2.5">${s.page || '/'}</td>
+            <td class="py-2.5 text-slate-400 truncate max-w-[120px]">${s.referrer || 'direct'}</td>
+            <td class="py-2.5">${isOnline ? '<span class="text-emerald-400 font-bold">● Active</span>' : 'Offline'}</td>
           `;
-        }).join('');
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById("live-online-count").textContent = onlineCount.toString();
+        document.getElementById("live-today-sessions").textContent = todaySessionsCount.toString();
       });
 
-      // Settings Sync
-      onValue(ref(db, 'settings'), snapshot => {
-        if(!snapshot.exists()) return;
-        const s = snapshot.val();
-        for (const k in s) {
-          const field = document.getElementById(`cfg-${k}`);
-          if(field) field.value = s[k];
-        }
-      });
+      onValue(ref(db, "events"), (snapshot) => {
+        if (!snapshot.exists()) return;
+        const events = snapshot.val();
+        let ctaClicks = 0;
+        let offerClicks = 0;
 
-      // Admin Management Sync
-      onValue(ref(db, 'admins'), snapshot => {
-        if(!snapshot.exists()) return;
-        const admins = snapshot.val();
-        document.getElementById('admins-table-body').innerHTML = Object.keys(admins).map(k => {
-          const a = admins[k];
-          return `
-            <tr>
-              <td class="p-3 font-mono">${k}</td>
-              <td class="p-3">${a.email}</td>
-              <td class="p-3 uppercase font-bold text-brand-400">${a.role}</td>
-              <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${a.active ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}">${a.active ? 'Active' : 'Disabled'}</span></td>
-            </tr>
-          `;
-        }).join('');
-      });
+        Object.keys(events).forEach(k => {
+          const e = events[k];
+          if (e.type === "cta_click") ctaClicks++;
+          if (e.type === "offer_click") offerClicks++;
+        });
 
-      // Activity Logs Sync
-      onValue(ref(db, 'activityLogs'), snapshot => {
-        if(!snapshot.exists()) return;
-        const logs = Object.values(snapshot.val()).reverse();
-        document.getElementById('audit-logs-body').innerHTML = logs.map(l => `
-          <tr>
-            <td class="p-3">${l.timestamp ? new Date(l.timestamp).toLocaleString() : 'N/A'}</td>
-            <td class="p-3">${l.adminEmail}</td>
-            <td class="p-3 font-bold text-brand-400">${l.action}</td>
-            <td class="p-3 text-slate-400">${l.targetDetails}</td>
-          </tr>
-        `).join('');
+        document.getElementById("live-cta-count").textContent = ctaClicks.toString();
+        document.getElementById("live-offer-count").textContent = offerClicks.toString();
       });
     }
 
-    // Render Chart Analytics
-    function renderCharts(events) {
-      const typeCounts = {};
-      events.forEach(e => typeCounts[e.type] = (typeCounts[e.type] || 0) + 1);
+    // TAB 2: ANALYTICS HUB ENGINE
+    function initAnalyticsEngine(range = '24h') {
+      onValue(ref(db, "events"), (snapshot) => {
+        if (!snapshot.exists()) return;
+        const events = snapshot.val();
+        
+        let views = 0;
+        let clicks = 0;
+        const uniqueVisitors = new Set();
 
-      if (chartInstancePie) chartInstancePie.destroy();
-      chartInstancePie = new Chart(document.getElementById('chart-events-pie'), {
-        type: 'doughnut',
+        const now = Date.now();
+        const timeframeWindow = range === '24h' ? 86400000 : range === '7d' ? 604800000 : 2592000000;
+
+        Object.keys(events).forEach(k => {
+          const e = events[k];
+          if (e.timestamp && (now - e.timestamp <= timeframeWindow)) {
+            if (e.visitorId) uniqueVisitors.add(e.visitorId);
+            if (e.type === "page_view") views++;
+            if (e.type === "cta_click" || e.type === "offer_click") clicks++;
+          }
+        });
+
+        document.getElementById("ana-views").textContent = views.toLocaleString();
+        document.getElementById("ana-visitors").textContent = uniqueVisitors.size.toLocaleString();
+        document.getElementById("ana-clicks").textContent = clicks.toLocaleString();
+        
+        const ctr = views > 0 ? ((clicks / views) * 100).toFixed(1) : "0.0";
+        document.getElementById("ana-ctr").textContent = `${ctr}%`;
+
+        renderAnalyticsChart(views, clicks);
+      });
+    }
+
+    document.querySelectorAll(".analytics-range-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".analytics-range-btn").forEach(b => b.classList.remove("active", "bg-indigo-600", "text-white"));
+        btn.classList.add("active", "bg-indigo-600", "text-white");
+        initAnalyticsEngine(btn.getAttribute("data-range"));
+      });
+    });
+
+    function renderAnalyticsChart(views, clicks) {
+      const ctx = document.getElementById("analyticsChart").getContext("2d");
+      if (analyticsChartInstance) analyticsChartInstance.destroy();
+
+      analyticsChartInstance = new Chart(ctx, {
+        type: 'line',
         data: {
-          labels: Object.keys(typeCounts),
-          datasets: [{
-            data: Object.values(typeCounts),
-            backgroundColor: ['#7c3aed', '#10b981', '#f59e0b', '#ef4444', '#3b82f6']
-          }]
+          labels: ['Point 1', 'Point 2', 'Point 3', 'Point 4', 'Point 5', 'Current'],
+          datasets: [
+            { label: 'Page Views', data: [views*0.2, views*0.4, views*0.3, views*0.7, views*0.9, views], borderColor: '#6366f1', tension: 0.3 },
+            { label: 'Interactions', data: [clicks*0.1, clicks*0.3, clicks*0.2, clicks*0.6, clicks*0.8, clicks], borderColor: '#f59e0b', tension: 0.3 }
+          ]
         },
         options: { responsive: true, maintainAspectRatio: false }
       });
     }
 
-    // OFFER MODAL & FORM HANDLERS
-    document.getElementById('btn-open-create-offer').addEventListener('click', () => {
-      document.getElementById('offer-form').reset();
-      document.getElementById('offer-edit-id').value = '';
-      document.getElementById('offer-modal-title').textContent = "Create New Offer";
-      document.getElementById('offer-modal').classList.remove('hidden');
-    });
+    // TAB 3: OFFER CRUD MANAGER
+    function initOfferManager() {
+      onValue(ref(db, "offers"), (snapshot) => {
+        const grid = document.getElementById("offers-admin-grid");
+        grid.innerHTML = "";
 
-    document.getElementById('close-offer-modal').addEventListener('click', () => {
-      document.getElementById('offer-modal').classList.add('hidden');
-    });
-
-    document.getElementById('offer-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const editId = document.getElementById('offer-edit-id').value;
-      const payload = {
-        title: document.getElementById('off-title').value,
-        description: document.getElementById('off-desc').value,
-        url: document.getElementById('off-url').value,
-        ctaText: document.getElementById('off-cta').value,
-        badge: document.getElementById('off-badge').value,
-        imageUrl: document.getElementById('off-image').value,
-        active: document.getElementById('off-active').checked,
-        updatedAt: serverTimestamp()
-      };
-
-      try {
-        if(editId) {
-          await update(ref(db, `offers/${editId}`), payload);
-          await logAudit("update_offer", editId);
-          showToast("Offer updated successfully.");
-        } else {
-          payload.createdAt = serverTimestamp();
-          const newRef = push(ref(db, 'offers'));
-          await set(newRef, payload);
-          await logAudit("create_offer", newRef.key);
-          showToast("Offer created successfully.");
+        if (!snapshot.exists()) {
+          grid.innerHTML = `<div class="col-span-full py-8 text-center text-slate-500 text-xs">No active offers registered.</div>`;
+          return;
         }
-        document.getElementById('offer-modal').classList.add('hidden');
-      } catch(err) {
-        showToast("Error saving offer: " + err.message, "error");
-      }
-    });
+
+        const data = snapshot.val();
+        Object.keys(data).forEach(id => {
+          const off = data[id];
+          const card = document.createElement("div");
+          card.className = "bg-slate-950 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between space-y-4";
+          
+          const safeTitle = document.createTextNode(off.title || "").textContent;
+
+          card.innerHTML = `
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="font-bold text-white text-sm">${safeTitle}</h4>
+                <p class="text-[10px] text-slate-400 truncate max-w-[200px]">${off.destinationUrl || ''}</p>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${off.active !== false ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}">
+                ${off.active !== false ? 'ACTIVE' : 'INACTIVE'}
+              </span>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="editOffer('${id}')" class="flex-1 py-1.5 bg-slate-900 border border-slate-800 text-slate-300 rounded-lg text-xs font-semibold hover:bg-slate-800">Edit</button>
+              <button onclick="toggleOfferActive('${id}', ${off.active === false})" class="py-1.5 px-3 bg-slate-900 border border-slate-800 text-slate-300 rounded-lg text-xs font-semibold hover:bg-slate-800">Toggle</button>
+              <button onclick="deleteOfferRecord('${id}')" class="py-1.5 px-3 bg-red-500/10 text-red-400 rounded-lg text-xs font-semibold hover:bg-red-500/20">Delete</button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      });
+    }
 
     window.editOffer = async (id) => {
       const snap = await get(ref(db, `offers/${id}`));
-      if(!snap.exists()) return;
+      if (!snap.exists()) return;
       const o = snap.val();
-      document.getElementById('offer-edit-id').value = id;
-      document.getElementById('off-title').value = o.title || '';
-      document.getElementById('off-desc').value = o.description || '';
-      document.getElementById('off-url').value = o.url || '';
-      document.getElementById('off-cta').value = o.ctaText || '';
-      document.getElementById('off-badge').value = o.badge || '';
-      document.getElementById('off-image').value = o.imageUrl || '';
-      document.getElementById('off-active').checked = !!o.active;
-
-      document.getElementById('offer-modal-title').textContent = "Edit Offer";
-      document.getElementById('offer-modal').classList.remove('hidden');
+      document.getElementById("off-id").value = id;
+      document.getElementById("off-title").value = o.title || "";
+      document.getElementById("off-desc").value = o.description || "";
+      document.getElementById("off-url").value = o.destinationUrl || "";
+      document.getElementById("off-image").value = o.imageUrl || "";
+      document.getElementById("off-cta").value = o.ctaText || "";
+      document.getElementById("off-badge").value = o.badge || "";
+      document.getElementById("off-order").value = o.displayOrder || 0;
+      document.getElementById("offer-modal").classList.remove("hidden");
     };
 
-    window.deleteOffer = async (id) => {
-      if(!confirm("Are you sure you want to delete this offer?")) return;
-      try {
-        await remove(ref(db, `offers/${id}`));
-        await logAudit("delete_offer", id);
-        showToast("Offer deleted.");
-      } catch(e) {
-        showToast("Delete failed: " + e.message, "error");
-      }
+    window.toggleOfferActive = async (id, setStatus) => {
+      await update(ref(db, `offers/${id}`), { active: setStatus });
+      logActivity("TOGGLE_OFFER", id);
+      showToast("Offer status updated.", "success");
     };
 
-    // SETTINGS FORM SUBMIT
-    document.getElementById('site-settings-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const updates = {};
-      for (const [key, value] of formData.entries()) {
-        updates[key] = value;
-      }
+    window.deleteOfferRecord = async (id) => {
+      if (!confirm("Confirm offer deletion?")) return;
+      await remove(ref(db, `offers/${id}`));
+      logActivity("DELETE_OFFER", id);
+      showToast("Offer deleted.", "success");
+    };
 
-      try {
-        await update(ref(db, 'settings'), updates);
-        await logAudit("update_site_settings");
-        showToast("Site settings updated successfully.");
-      } catch(err) {
-        showToast("Settings save failed: " + err.message, "error");
-      }
+    document.getElementById("add-offer-btn").addEventListener("click", () => {
+      document.getElementById("offer-form").reset();
+      document.getElementById("off-id").value = "";
+      document.getElementById("offer-modal").classList.remove("hidden");
     });
 
-    // EXPORT HANDLERS
-    document.getElementById('btn-export-events-json').addEventListener('click', async () => {
-      const snap = await get(ref(db, 'events'));
-      const blob = new Blob([JSON.stringify(snap.val() || {}, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `analytics_events_${Date.now()}.json`;
+    document.getElementById("close-offer-modal").addEventListener("click", () => {
+      document.getElementById("offer-modal").classList.add("hidden");
+    });
+
+    document.getElementById("offer-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("off-id").value;
+      const offerPayload = {
+        title: document.getElementById("off-title").value,
+        description: document.getElementById("off-desc").value,
+        destinationUrl: document.getElementById("off-url").value,
+        imageUrl: document.getElementById("off-image").value,
+        ctaText: document.getElementById("off-cta").value,
+        badge: document.getElementById("off-badge").value,
+        displayOrder: parseInt(document.getElementById("off-order").value) || 0,
+        updatedAt: serverTimestamp()
+      };
+
+      if (id) {
+        await update(ref(db, `offers/${id}`), offerPayload);
+        logActivity("UPDATE_OFFER", id);
+      } else {
+        offerPayload.createdAt = serverTimestamp();
+        offerPayload.active = true;
+        const newRef = push(ref(db, "offers"));
+        await set(newRef, offerPayload);
+        logActivity("CREATE_OFFER", newRef.key);
+      }
+
+      document.getElementById("offer-modal").classList.add("hidden");
+      showToast("Offer saved successfully.", "success");
+    });
+
+    // TAB 4 & 5: SITE SETTINGS & SEO FORMS
+    async function loadSettingsForm() {
+      const snap = await get(ref(db, "settings/public"));
+      if (!snap.exists()) return;
+      const s = snap.val();
+      Object.keys(s).forEach(k => {
+        const el = document.getElementById(`cfg-${k}`);
+        if (el) el.value = s[k];
+      });
+    }
+
+    document.getElementById("settings-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        brandName: document.getElementById("cfg-brandName").value,
+        logoUrl: document.getElementById("cfg-logoUrl").value,
+        primaryColor: document.getElementById("cfg-primaryColor").value,
+        accentColor: document.getElementById("cfg-accentColor").value,
+        heroBadge: document.getElementById("cfg-heroBadge").value,
+        heroHeadline: document.getElementById("cfg-heroHeadline").value,
+        heroSubtext: document.getElementById("cfg-heroSubtext").value,
+      };
+      await update(ref(db, "settings/public"), payload);
+      logActivity("UPDATE_SETTINGS");
+      showToast("Site content updated.", "success");
+    });
+
+    async function loadSEOForm() {
+      const snap = await get(ref(db, "settings/seo"));
+      if (!snap.exists()) return;
+      const s = snap.val();
+      Object.keys(s).forEach(k => {
+        const el = document.getElementById(`seo-${k}`);
+        if (el) el.value = s[k];
+      });
+    }
+
+    document.getElementById("seo-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        pageTitle: document.getElementById("seo-pageTitle").value,
+        metaDesc: document.getElementById("seo-metaDesc").value,
+        ogTitle: document.getElementById("seo-ogTitle").value,
+        robots: document.getElementById("seo-robots").value,
+      };
+      await update(ref(db, "settings/seo"), payload);
+      logActivity("UPDATE_SEO");
+      showToast("SEO metadata updated.", "success");
+    });
+
+    // TAB 6: ADMINISTRATORS MANAGEMENT
+    async function loadAdminsRoster() {
+      const tbody = document.getElementById("admins-tbody");
+      tbody.innerHTML = "";
+      const snap = await get(ref(db, "admins"));
+      if (!snap.exists()) return;
+      
+      const admins = snap.val();
+      Object.keys(admins).forEach(uid => {
+        const a = admins[uid];
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="p-4 font-mono text-[10px] text-slate-400">${uid}</td>
+          <td class="p-4">${a.email || ''}</td>
+          <td class="p-4 font-semibold text-indigo-400">${a.role || 'admin'}</td>
+          <td class="p-4">${a.active !== false ? 'Active' : 'Disabled'}</td>
+          <td class="p-4">
+            <button onclick="toggleAdminStatus('${uid}', ${a.active === false})" class="text-xs text-indigo-400 hover:underline">Toggle Active</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    window.toggleAdminStatus = async (uid, setStatus) => {
+      await update(ref(db, `admins/${uid}`), { active: setStatus });
+      logActivity("TOGGLE_ADMIN_STATUS", uid);
+      loadAdminsRoster();
+    };
+
+    document.getElementById("add-admin-btn").addEventListener("click", () => {
+      document.getElementById("grant-admin-form").reset();
+      document.getElementById("admin-modal").classList.remove("hidden");
+    });
+
+    document.getElementById("close-admin-modal").addEventListener("click", () => {
+      document.getElementById("admin-modal").classList.add("hidden");
+    });
+
+    document.getElementById("grant-admin-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const uid = document.getElementById("grant-uid").value;
+      const email = document.getElementById("grant-email").value;
+      const role = document.getElementById("grant-role").value;
+
+      await set(ref(db, `admins/${uid}`), {
+        email,
+        role,
+        active: true,
+        createdAt: serverTimestamp()
+      });
+
+      logActivity("GRANT_ADMIN", uid);
+      document.getElementById("admin-modal").classList.add("hidden");
+      loadAdminsRoster();
+      showToast("UID Authorized successfully.", "success");
+    });
+
+    // TAB 7: AUDIT LOGS
+    async function loadAuditLogs() {
+      const tbody = document.getElementById("activity-tbody");
+      tbody.innerHTML = "";
+      const snap = await get(ref(db, "activityLogs"));
+      if (!snap.exists()) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">No activity recorded.</td></tr>`;
+        return;
+      }
+      const logs = snap.val();
+      Object.keys(logs).reverse().forEach(id => {
+        const l = logs[id];
+        const dateStr = l.timestamp ? new Date(l.timestamp).toLocaleString() : 'N/A';
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="p-4 text-slate-400">${dateStr}</td>
+          <td class="p-4 font-mono text-[10px] text-slate-400">${l.adminUid || ''}</td>
+          <td class="p-4 font-bold text-white">${l.action || ''}</td>
+          <td class="p-4 text-slate-400 font-mono text-[10px]">${l.targetId || ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // TAB 9: EXPORT ENGINE
+    function downloadBlob(content, filename, contentType) {
+      const blob = new Blob([content], { type: contentType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
       a.click();
+    }
+
+    document.getElementById("export-events-btn").addEventListener("click", async () => {
+      const snap = await get(ref(db, "events"));
+      if (!snap.exists()) return showToast("No events data to export.", "error");
+      const events = snap.val();
+      let csv = "EventID,Type,VisitorID,SessionID,Device,Timestamp\n";
+      Object.keys(events).forEach(id => {
+        const e = events[id];
+        csv += `"${id}","${e.type || ''}","${e.visitorId || ''}","${e.sessionId || ''}","${e.device || ''}","${e.timestamp || ''}"\n`;
+      });
+      downloadBlob(csv, "events_export.csv", "text/csv");
+    });
+
+    document.getElementById("export-offers-btn").addEventListener("click", async () => {
+      const snap = await get(ref(db, "offers"));
+      if (!snap.exists()) return showToast("No offers data to export.", "error");
+      downloadBlob(JSON.stringify(snap.val(), null, 2), "offers_export.json", "application/json");
+    });
+
+    document.getElementById("export-audit-btn").addEventListener("click", async () => {
+      const snap = await get(ref(db, "activityLogs"));
+      if (!snap.exists()) return showToast("No logs to export.", "error");
+      const logs = snap.val();
+      let csv = "LogID,AdminUID,Action,TargetID,Timestamp\n";
+      Object.keys(logs).forEach(id => {
+        const l = logs[id];
+        csv += `"${id}","${l.adminUid || ''}","${l.action || ''}","${l.targetId || ''}","${l.timestamp || ''}"\n`;
+      });
+      downloadBlob(csv, "activity_logs_export.csv", "text/csv");
     });
   </script>
 </body>
