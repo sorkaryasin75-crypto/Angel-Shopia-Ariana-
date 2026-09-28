@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title id="meta-title">Meet Singles Near You | Adult Dating</title>
-  <meta id="meta-desc" name="description" content="Connect with verified adult singles in your local area today.">
+  <title id="meta-title">Meet Singles Near You | Adult Dating Platform</title>
+  <meta id="meta-desc" name="description" content="Connect with verified adult singles in your local area today. Fast, private, and secure.">
   <meta id="og-title" property="og:title" content="Meet Singles Near You">
   <meta id="og-desc" property="og:description" content="Connect with verified adult singles in your local area today.">
   <meta name="robots" content="noindex, nofollow, noarchive">
@@ -93,19 +93,6 @@
       --bg-gradient-to: #f3e8ff;
     }
 
-    [data-theme="clean-blue"] {
-      --color-brand-50: #eff6ff;
-      --color-brand-100: #dbeafe;
-      --color-brand-500: #2563eb;
-      --color-brand-600: #1d4ed8;
-      --color-brand-700: #1e40af;
-      --color-accent-500: #10b981;
-      --color-accent-600: #059669;
-      --bg-gradient-from: #ffffff;
-      --bg-gradient-via: #f8fafc;
-      --bg-gradient-to: #dbeafe;
-    }
-
     body {
       background: linear-gradient(135deg, var(--bg-gradient-from), var(--bg-gradient-via), var(--bg-gradient-to));
       min-height: 100vh;
@@ -126,23 +113,27 @@
       0%, 100% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
       50% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.8); }
     }
+
     .animate-pulse-glow { animation: pulseGlow 2s infinite; }
 
+    /* Hide Google Translate Toolbar UI Elements cleanly */
     .goog-te-banner-frame.skiptranslate,
     .goog-te-gadget-icon,
     #goog-gt-tt,
     .goog-te-balloon-frame { display: none !important; }
-    body { top: 0px !important; }
     .goog-tooltip, .goog-tooltip:hover { display: none !important; box-shadow: none !important; }
     .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
   </style>
 </head>
 <body class="font-sans text-slate-800 antialiased flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
 
+  <!-- Target element for Google Translate script Injection -->
   <div id="google_translate_element" class="hidden"></div>
+
+  <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- Global Fullscreen Spinner -->
+  <!-- Global Fullscreen Spinner Loader -->
   <div id="global-loader" class="fixed inset-0 z-50 bg-white/90 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-300">
     <div class="relative flex items-center justify-center">
       <div class="w-16 h-16 border-4 border-brand-100 border-t-brand-600 rounded-full animate-spin"></div>
@@ -157,24 +148,59 @@
       <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-black">18+</div>
       <h2 id="age-modal-title" class="font-heading text-2xl font-bold text-slate-900 mb-2">Age Verification Required</h2>
       <p id="age-modal-desc" class="text-slate-600 text-sm mb-6 leading-relaxed">
-        This website contains adult dating content. By clicking enter, you confirm that you are at least 18 years of age.
+        This website contains adult dating content. By clicking enter, you confirm that you are at least 18 years of age or the legal age of majority in your jurisdiction.
       </p>
       <div class="flex flex-col sm:flex-row gap-3">
         <button id="age-btn-enter" class="flex-1 py-3 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition shadow-lg hover:shadow-glow">
           I am 18 or Older
         </button>
-        <button id="age-btn-exit" class="py-3 px-6 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition">Exit</button>
+        <button id="age-btn-exit" class="py-3 px-6 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition">
+          Exit
+        </button>
       </div>
       <p class="text-xs text-slate-400 mt-4"><i class="fa-solid fa-shield-halved mr-1"></i> Safe & Anonymous Verification</p>
     </div>
   </div>
 
-  <!-- PUBLIC LANDING PAGE -->
+  <!-- Admin Login Modal -->
+  <div id="admin-modal" class="fixed inset-0 z-40 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel card-custom max-w-md w-full p-6 shadow-2xl border border-white/40 relative">
+      <button id="close-admin-modal" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-2 text-xl">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h3 class="font-heading text-xl font-bold text-slate-900">System Administration</h3>
+        <p class="text-xs text-slate-500">Sign in to access control panel and real-time analytics.</p>
+      </div>
+
+      <div id="admin-error-box" class="hidden mb-4 p-3 rounded-lg bg-red-100 border border-red-200 text-red-700 text-xs font-medium"></div>
+
+      <form id="admin-login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Email Address</label>
+          <input type="email" id="admin-email" required class="w-full px-3 py-2 bg-white/70 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+          <input type="password" id="admin-password" required class="w-full px-3 py-2 bg-white/70 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+        </div>
+        <button type="submit" id="admin-submit-btn" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg text-sm transition flex items-center justify-center gap-2">
+          <span>Authenticate Session</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- PUBLIC LANDING PAGE WRAPPER -->
   <div id="app-public" class="flex-grow flex flex-col">
     <!-- Header -->
     <header class="w-full py-4 px-4 sm:px-8 border-b border-white/30 glass-panel sticky top-0 z-30">
       <div class="max-w-6xl mx-auto flex items-center justify-between">
-        <a href="#" class="flex items-center gap-2 text-decoration-none">
+        <a href="#" class="flex items-center gap-2">
           <img id="site-logo" src="https://cdn-icons-png.flaticon.com/512/2589/2589175.png" alt="Logo" class="h-9 w-auto object-contain">
           <span id="site-brand-name" class="font-heading font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900">
             Twilight<span class="text-brand-600">Dating</span>
@@ -189,12 +215,16 @@
             <i class="fa-solid fa-location-dot text-brand-500"></i>
             <span id="geo-location-display">Near You</span>
           </span>
+          <button id="open-admin-btn" class="p-2 text-slate-400 hover:text-brand-600 transition text-sm" title="Admin Portal">
+            <i class="fa-solid fa-lock"></i>
+          </button>
         </div>
       </div>
     </header>
 
-    <!-- Main Body -->
+    <!-- Main Content Container -->
     <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8 sm:py-12 flex flex-col gap-12">
+      
       <!-- HERO SECTION -->
       <section class="text-center max-w-3xl mx-auto space-y-6 pt-4">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs sm:text-sm font-semibold">
@@ -210,6 +240,7 @@
           Discover genuine local connections. Instant profile access, verified adult members, and private interactions tailored to your location.
         </p>
 
+        <!-- Dynamic Primary CTA -->
         <div class="pt-2">
           <button id="hero-primary-cta" class="cta-trigger w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-extrabold text-lg sm:text-xl btn-custom shadow-xl hover:shadow-glow transition-all transform hover:-translate-y-0.5 animate-pulse-glow flex items-center justify-center gap-3 mx-auto">
             <span id="hero-cta-btn-text">JOIN FREE NOW</span>
@@ -217,15 +248,28 @@
           </button>
         </div>
 
+        <!-- Trust Features Bar -->
         <div class="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center border-t border-slate-200/60 mt-8">
-          <div class="p-2"><p class="font-heading font-bold text-lg text-slate-900">100%</p><p class="text-xs text-slate-500">Verified Profiles</p></div>
-          <div class="p-2"><p class="font-heading font-bold text-lg text-slate-900">Free</p><p class="text-xs text-slate-500">Quick Registration</p></div>
-          <div class="p-2"><p class="font-heading font-bold text-lg text-slate-900">24/7</p><p class="text-xs text-slate-500">Active Matches</p></div>
-          <div class="p-2"><p class="font-heading font-bold text-lg text-slate-900">Private</p><p class="text-xs text-slate-500">Safe Environment</p></div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">100%</p>
+            <p class="text-xs text-slate-500">Verified Profiles</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">Free</p>
+            <p class="text-xs text-slate-500">Quick Registration</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">24/7</p>
+            <p class="text-xs text-slate-500">Active Matches</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">Private</p>
+            <p class="text-xs text-slate-500">Safe Environment</p>
+          </div>
         </div>
       </section>
 
-      <!-- OFFERS CONTAINER -->
+      <!-- Dynamic OFFERS CONTAINER -->
       <section class="space-y-6">
         <div class="flex items-center justify-between border-b border-slate-200/80 pb-3">
           <h2 class="font-heading text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
@@ -234,7 +278,9 @@
           <span class="text-xs font-medium text-slate-500" id="offers-count-badge">Loading offers...</span>
         </div>
 
-        <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Dynamic Offer Cards Render Here -->
+        </div>
       </section>
 
       <!-- SOCIAL PROOF SECTION -->
@@ -258,13 +304,50 @@
           </div>
         </div>
       </section>
+
+      <!-- FAQ SECTION -->
+      <section class="glass-panel card-custom p-6 sm:p-8 shadow-card border border-white/60 space-y-4">
+        <h3 class="font-heading text-xl font-bold text-slate-900 mb-4 text-center">Frequently Asked Questions</h3>
+        <div class="space-y-3 max-w-3xl mx-auto">
+          <div class="border border-slate-200 rounded-xl overflow-hidden bg-white/50">
+            <button class="faq-toggle w-full px-4 py-3 text-left font-semibold text-sm text-slate-800 flex justify-between items-center">
+              <span>Is membership completely free?</span>
+              <i class="fa-solid fa-chevron-down text-xs transition-transform"></i>
+            </button>
+            <div class="faq-content hidden px-4 py-3 text-xs text-slate-600 border-t border-slate-100">
+              Yes, basic registration and browsing profiles are 100% free for all adult members in supported regions.
+            </div>
+          </div>
+
+          <div class="border border-slate-200 rounded-xl overflow-hidden bg-white/50">
+            <button class="faq-toggle w-full px-4 py-3 text-left font-semibold text-sm text-slate-800 flex justify-between items-center">
+              <span>How is my personal privacy protected?</span>
+              <i class="fa-solid fa-chevron-down text-xs transition-transform"></i>
+            </button>
+            <div class="faq-content hidden px-4 py-3 text-xs text-slate-600 border-t border-slate-100">
+              We enforce strict encryption protocols. Your personal contact details are never publicly exposed without your explicit authorization.
+            </div>
+          </div>
+
+          <div class="border border-slate-200 rounded-xl overflow-hidden bg-white/50">
+            <button class="faq-toggle w-full px-4 py-3 text-left font-semibold text-sm text-slate-800 flex justify-between items-center">
+              <span>Are all profiles verified?</span>
+              <i class="fa-solid fa-chevron-down text-xs transition-transform"></i>
+            </button>
+            <div class="faq-content hidden px-4 py-3 text-xs text-slate-600 border-t border-slate-100">
+              Profiles undergo automated verification processes to prevent spam accounts and ensure authentic local interactions.
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
 
-    <!-- Cookie Banner -->
-    <div id="privacy-banner" class="fixed bottom-0 inset-x-0 z-30 bg-slate-900/95 text-white p-4 shadow-2xl backdrop-blur-md hidden">
+    <!-- Cookie / Privacy Banner -->
+    <div id="privacy-banner" class="fixed bottom-0 inset-x-0 z-30 bg-slate-900/95 text-white p-4 shadow-2xl backdrop-blur-md hidden transition-all">
       <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p id="privacy-banner-msg" class="text-xs sm:text-sm text-slate-300 text-center sm:text-left leading-relaxed">
-          We use cookies and analytical tracking to ensure optimal redirection performance. By browsing, you agree to our policies.
+        <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left leading-relaxed">
+          We use cookies and analytical tracking to ensure optimal redirection performance and offer customization. By browsing, you agree to our policies.
         </p>
         <button id="accept-cookies-btn" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-lg whitespace-nowrap transition">
           Accept & Continue
@@ -272,7 +355,7 @@
       </div>
     </div>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="w-full border-t border-slate-200/80 bg-white/50 backdrop-blur-md py-8 px-4 mt-auto">
       <div class="max-w-6xl mx-auto text-center space-y-4">
         <div class="flex flex-wrap justify-center gap-6 text-xs font-medium text-slate-600">
@@ -282,7 +365,7 @@
           <a href="#" class="hover:text-brand-600 transition" id="footer-link-contact">Contact & Support</a>
         </div>
         <p class="text-xs text-slate-400 max-w-2xl mx-auto leading-relaxed" id="footer-disclaimer">
-          18+ ADULT CONTENT NOTICE: All members and models appearing on this service are 18 years of age or older.
+          18+ ADULT CONTENT NOTICE: All members and models appearing on this service are 18 years of age or older. This site serves as a promotional landing hub for verified third-party CPA adult dating networks.
         </p>
         <p class="text-xs text-slate-400 font-semibold" id="footer-copyright">
           &copy; <span id="year-span">2026</span> TwilightDating System. All rights reserved.
@@ -291,18 +374,32 @@
     </footer>
   </div>
 
-  <!-- APPLICATION JAVASCRIPT & FIREBASE SYNC ENGINE -->
+  <!-- APPLICATION MODULE SCRIPT -->
   <script type="module">
-    import { 
-      db, ref, get, onValue, push, set, onDisconnect, serverTimestamp 
-    } from './firebase-config.js';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Route check: Redirect #admin access to admin.html
-    if (window.location.hash === '#admin') {
-      window.location.href = 'admin.html';
-    }
+    /* ==========================================================================
+       1. FIREBASE CONFIGURATION & INITIALIZATION
+       ========================================================================== */
+    const firebaseConfig = {
+  apiKey: "AIzaSyDVhHK08A9XYg-RaWozGSorHv0e2pgDzG4",
+  authDomain: "arina-468c4.firebaseapp.com",
+  databaseURL: "https://arina-468c4-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "arina-468c4",
+  storageBucket: "arina-468c4.firebasestorage.app",
+  messagingSenderId: "881029049599",
+  appId: "1:881029049599:web:a641051e14586202d130ca"
+};
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    const APP_CONFIG_FALLBACK = {
+    /* ==========================================================================
+       2. LOCAL STATE & DEFAULT DATA MODEL
+       ========================================================================== */
+    const APP_CONFIG = {
       settings: {
         brandName: "TwilightDating",
         logoUrl: "https://cdn-icons-png.flaticon.com/512/2589/2589175.png",
@@ -313,13 +410,7 @@
         heroBadge: "#1 Matchmaking Platform for Adults",
         heroHeadline: "Meet New People & Local Singles",
         heroSubtext: "Discover genuine local connections. Instant profile access, verified adult members, and private interactions tailored to your location.",
-        heroCta: "JOIN FREE NOW",
-        headerStatus: "Active Singles Online",
-        spHeadline: "Real Connections Every Day",
-        spSubtext: "Thousands of local members are active right now looking for casual meetups.",
-        spStat1: "14,290+", spStat2: "98.4%", spStat3: "< 2 Mins",
-        footerDisclaimer: "18+ ADULT CONTENT NOTICE: All members are 18+.",
-        footerCopyright: "© 2026 TwilightDating System."
+        heroCta: "JOIN FREE NOW"
       },
       offers: [
         {
@@ -332,27 +423,70 @@
           rating: "4.9",
           imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
           active: true
+        },
+        {
+          id: "offer_default_2",
+          title: "Casual Chat Connections",
+          description: "Private messaging room for adult singles looking for quick dates.",
+          url: "https://example.com/cpa-smartlink-2",
+          ctaText: "ENTER CHAT ROOM",
+          badge: "HIGH ACTIVITY",
+          rating: "4.8",
+          imageUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+          active: true
         }
       ]
     };
 
-    let localState = JSON.parse(JSON.stringify(APP_CONFIG_FALLBACK));
+    let localState = JSON.parse(JSON.stringify(APP_CONFIG));
     let currentInboundParams = {};
-    let sessionId = sessionStorage.getItem('app_session_id') || ('sess_' + Math.random().toString(36).substr(2, 9));
-    let visitorId = localStorage.getItem('app_visitor_id') || ('vis_' + Math.random().toString(36).substr(2, 9));
-    sessionStorage.setItem('app_session_id', sessionId);
-    localStorage.setItem('app_visitor_id', visitorId);
+
+    const COUNTRY_LANG_MAP = {
+      BD: 'bn', IN: 'hi', US: 'en', GB: 'en', CA: 'en', AU: 'en', NZ: 'en', IE: 'en',
+      FR: 'fr', BE: 'fr', CH: 'fr', DE: 'de', AT: 'de', ES: 'es', MX: 'es', AR: 'es',
+      CO: 'es', CL: 'es', PE: 'es', IT: 'it', PT: 'pt', BR: 'pt', RU: 'ru', BY: 'ru',
+      KZ: 'ru', JA: 'ja', JP: 'ja', CN: 'zh-CN', TW: 'zh-TW', HK: 'zh-TW', SA: 'ar',
+      AE: 'ar', EG: 'ar', QA: 'ar', KW: 'ar', BH: 'ar', OM: 'ar', TR: 'tr', NL: 'nl',
+      PL: 'pl', SE: 'sv', NO: 'no', FI: 'fi', DK: 'da', UA: 'uk', RO: 'ro', GR: 'el',
+      TH: 'th', VN: 'vi', ID: 'id', MY: 'ms', PK: 'ur', PH: 'tl'
+    };
+
+    /* ==========================================================================
+       3. UTILITIES & TOAST CONTROLLER
+       ========================================================================== */
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bgColors = {
+        success: 'bg-emerald-600',
+        error: 'bg-red-600',
+        info: 'bg-slate-800'
+      };
+      
+      toast.className = `${bgColors[type] || bgColors.info} text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-lg transition-all duration-300 transform translate-y-2 opacity-0 flex items-center gap-2 pointer-events-auto`;
+      toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>${escapeHTML(message)}</span>`;
+      
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
 
     function hideGlobalLoader() {
       const loader = document.getElementById('global-loader');
-      if(loader) {
+      if (loader) {
         loader.classList.add('opacity-0');
         setTimeout(() => loader.classList.add('hidden'), 300);
       }
     }
 
     function escapeHTML(str) {
-      if(!str) return '';
+      if (!str) return '';
       return String(str).replace(/[&<>"']/g, match => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
       }[match]));
@@ -369,87 +503,221 @@
       if (!baseUrl) return "#";
       try {
         const url = new URL(baseUrl);
-        Object.keys(currentInboundParams).forEach(p => url.searchParams.set(p, currentInboundParams[p]));
+        Object.keys(currentInboundParams).forEach(paramKey => {
+          url.searchParams.set(paramKey, currentInboundParams[paramKey]);
+        });
         return url.toString();
-      } catch(e) { return baseUrl; }
+      } catch (e) {
+        return baseUrl;
+      }
     }
 
-    /* Track Analytics Events safely to Firebase Realtime DB */
-    async function trackEvent(eventType, meta = {}) {
+    /* ==========================================================================
+       4. AUTHENTICATION & ADMIN ENGINE
+       ========================================================================== */
+    async function loginAdminAsync(email, password) {
       try {
-        const eventRef = push(ref(db, 'events'));
-        await set(eventRef, {
-          type: eventType,
-          timestamp: serverTimestamp(),
-          sessionId: sessionId,
-          visitorId: visitorId,
-          page: window.location.pathname,
-          referrer: document.referrer || 'direct',
-          city: currentInboundParams.city || localState.settings.defaultCity || 'Unknown',
-          country: currentInboundParams.country || localState.settings.defaultCountry || 'Unknown',
-          utmSource: currentInboundParams.utm_source || 'direct',
-          utmCampaign: currentInboundParams.utm_campaign || 'none',
-          meta: meta
-        });
-      } catch(e) { console.warn("Analytics event tracking bypass:", e); }
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Check UID in Firestore 'admins' collection
+        const adminDocRef = doc(db, "admins", user.uid);
+        const adminDocSnap = await getDoc(adminDocRef);
+
+        if (adminDocSnap.exists()) {
+          const adminData = adminDocSnap.data();
+          if (adminData.isActive !== false) {
+            return { success: true, user: user, adminData: adminData };
+          } else {
+            await signOut(auth);
+            throw new Error("Your admin account is currently inactive.");
+          }
+        } else {
+          await signOut(auth);
+          throw new Error("Access Denied: Account not listed as an active administrator.");
+        }
+      } catch (error) {
+        console.error("Admin Authentication Error:", error);
+        throw error;
+      }
     }
 
-    /* Presence System */
-    function initializePresence() {
-      try {
-        const sessionRef = ref(db, `sessions/${sessionId}`);
-        set(sessionRef, {
-          visitorId: visitorId,
-          connected: true,
-          startedAt: serverTimestamp(),
-          lastSeen: serverTimestamp(),
-          city: currentInboundParams.city || 'Unknown',
-          country: currentInboundParams.country || 'Unknown',
-          device: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
-        });
-        onDisconnect(sessionRef).update({ connected: false, lastSeen: serverTimestamp() });
-      } catch(e) { console.warn("Presence offline:", e); }
+    function setupAdminModal() {
+      const modal = document.getElementById('admin-modal');
+      const openBtn = document.getElementById('open-admin-btn');
+      const closeBtn = document.getElementById('close-admin-modal');
+      const form = document.getElementById('admin-login-form');
+      const errBox = document.getElementById('admin-error-box');
+
+      openBtn.addEventListener('click', () => modal.classList.remove('hidden'));
+      closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errBox.classList.add('hidden');
+        const email = document.getElementById('admin-email').value;
+        const pass = document.getElementById('admin-password').value;
+        const submitBtn = document.getElementById('admin-submit-btn');
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Authenticating...`;
+
+        try {
+          const res = await loginAdminAsync(email, pass);
+          if (res.success) {
+            showToast("Admin access granted!", "success");
+            modal.classList.add('hidden');
+            // Redirect or open admin workspace
+          }
+        } catch (err) {
+          errBox.textContent = err.message || "Authentication failed.";
+          errBox.classList.remove('hidden');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<span>Authenticate Session</span> <i class="fa-solid fa-arrow-right text-xs"></i>`;
+        }
+      });
     }
 
-    function applyThemeAndSettings() {
+    /* ==========================================================================
+       5. GEOLOCATION & TRANSLATION ENGINE
+       ========================================================================== */
+    function setGoogleTranslateCookie(targetLang) {
+      if (!targetLang || targetLang === 'en') return;
+      const domain = window.location.hostname;
+      document.cookie = `googtrans=/auto/${targetLang}; path=/; domain=${domain}`;
+      document.cookie = `googtrans=/auto/${targetLang}; path=/;`;
+    }
+
+    window.googleTranslateElementInit = function() {
+      new google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'google_translate_element');
+    };
+
+    function loadGoogleTranslateScript() {
+      if (document.getElementById('google-translate-script')) return;
+      const script = document.createElement('script');
+      script.id = 'google-translate-script';
+      script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    async function initGeoAndTranslationEngine() {
+      let detectedCity = currentInboundParams.city || null;
+      let detectedCountry = currentInboundParams.country || null;
+      let countryCode = null;
+
+      if (!detectedCity || !detectedCountry) {
+        try {
+          const res = await fetch('https://ipwho.is/', { cache: 'no-cache' });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.success) {
+              detectedCity = data.city;
+              detectedCountry = data.country;
+              countryCode = data.country_code;
+            }
+          }
+        } catch (err) {
+          console.warn("Primary Geo API failed, switching to backup...", err);
+        }
+
+        if (!detectedCity) {
+          try {
+            const res2 = await fetch('https://get.geojs.io/v1/ip/geo.json');
+            if (res2.ok) {
+              const data2 = await res2.json();
+              detectedCity = data2.city;
+              detectedCountry = data2.country;
+              countryCode = data2.country_code;
+            }
+          } catch (e) {
+            console.warn("Secondary Geo API fallback failed.");
+          }
+        }
+      }
+
+      detectedCity = detectedCity || localState.settings.defaultCity;
+      detectedCountry = detectedCountry || localState.settings.defaultCountry;
+
+      currentInboundParams.city = detectedCity;
+      currentInboundParams.country = detectedCountry;
+
+      applyThemeAndAppearance();
+
+      let targetLang = 'en';
+      if (countryCode && COUNTRY_LANG_MAP[countryCode.toUpperCase()]) {
+        targetLang = COUNTRY_LANG_MAP[countryCode.toUpperCase()];
+      } else if (navigator.language) {
+        targetLang = navigator.language.split('-')[0];
+      }
+
+      if (targetLang && targetLang !== 'en') {
+        setGoogleTranslateCookie(targetLang);
+        loadGoogleTranslateScript();
+      }
+    }
+
+    /* ==========================================================================
+       6. UI RENDERING & DYNAMIC DATA FETCHING
+       ========================================================================== */
+    function applyThemeAndAppearance() {
       const s = localState.settings;
       document.documentElement.setAttribute('data-theme', s.theme || 'twilight-light');
       document.documentElement.style.setProperty('--radius-btn', s.btnRadius || '9999px');
 
       document.getElementById('site-brand-name').innerHTML = `${escapeHTML(s.brandName)}<span class="text-brand-600">.</span>`;
-      if(s.logoUrl) document.getElementById('site-logo').src = s.logoUrl;
+      document.getElementById('site-logo').src = s.logoUrl || localState.settings.logoUrl;
       
-      document.getElementById('hero-badge-text').textContent = s.heroBadge || '';
-      document.getElementById('hero-headline').childNodes[0].textContent = (s.heroHeadline || '') + " ";
-      document.getElementById('hero-subtext').textContent = s.heroSubtext || '';
-      document.getElementById('hero-cta-btn-text').textContent = s.heroCta || '';
-      document.getElementById('header-status-text').textContent = s.headerStatus || 'Active Singles';
+      document.getElementById('hero-badge-text').textContent = s.heroBadge;
+      document.getElementById('hero-headline').childNodes[0].textContent = s.heroHeadline + " ";
+      document.getElementById('hero-subtext').textContent = s.heroSubtext;
+      document.getElementById('hero-cta-btn-text').textContent = s.heroCta;
 
-      const city = currentInboundParams.city || s.defaultCity || 'Near You';
+      const city = currentInboundParams.city || s.defaultCity;
       document.getElementById('geo-location-display').textContent = city;
       document.getElementById('hero-location-text').textContent = `Near ${city}`;
-
-      if(s.spHeadline) document.getElementById('sp-headline').textContent = s.spHeadline;
-      if(s.spSubtext) document.getElementById('sp-subtext').textContent = s.spSubtext;
-      if(s.spStat1) document.getElementById('sp-stat-1').textContent = s.spStat1;
-      if(s.spStat2) document.getElementById('sp-stat-2').textContent = s.spStat2;
-      if(s.spStat3) document.getElementById('sp-stat-3').textContent = s.spStat3;
-
-      if(s.footerDisclaimer) document.getElementById('footer-disclaimer').textContent = s.footerDisclaimer;
-      if(s.footerCopyright) document.getElementById('footer-copyright').textContent = s.footerCopyright;
     }
 
-    function renderOffers() {
+    async function loadOffersFromFirestore() {
+      const container = document.getElementById('offers-grid');
+      let loadedOffers = [];
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "offers"));
+        querySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          if (data.active !== false) {
+            loadedOffers.push({ id: docSnap.id, ...data });
+          }
+        });
+      } catch (e) {
+        console.warn("Firestore fetch failed, relying on default state.", e);
+      }
+
+      if (loadedOffers.length > 0) {
+        localState.offers = loadedOffers;
+      }
+
+      renderOffersGrid();
+    }
+
+    function renderOffersGrid() {
       const container = document.getElementById('offers-grid');
       const activeOffers = (localState.offers || []).filter(o => o.active);
+      
       document.getElementById('offers-count-badge').textContent = `${activeOffers.length} offers active near you`;
 
       if (activeOffers.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center p-8 glass-panel rounded-2xl"><p class="text-slate-500 text-sm">No special offers available right now.</p></div>`;
+        container.innerHTML = `
+          <div class="col-span-full text-center p-8 glass-panel rounded-2xl">
+            <p class="text-slate-500 text-sm">No special offers available at this moment. Please check back shortly.</p>
+          </div>
+        `;
         return;
       }
 
-      const city = currentInboundParams.city || localState.settings.defaultCity || 'your area';
+      const city = currentInboundParams.city || localState.settings.defaultCity;
 
       container.innerHTML = activeOffers.map(offer => `
         <div class="glass-panel card-custom p-5 shadow-card hover:shadow-xl transition flex flex-col justify-between border border-white/80">
@@ -463,17 +731,20 @@
                 <i class="fa-solid fa-star text-[10px]"></i> ${escapeHTML(offer.rating || '4.9')}
               </span>
             </div>
+
             <div>
               <h3 class="font-heading font-extrabold text-slate-900 text-lg leading-snug">${escapeHTML(offer.title)}</h3>
               <p class="text-xs text-slate-600 mt-1 leading-relaxed">${escapeHTML(offer.description)}</p>
             </div>
+
             <div class="flex items-center gap-1.5 text-xs text-emerald-600 font-semibold">
               <i class="fa-solid fa-circle-check"></i>
               <span>Active in ${escapeHTML(city)}</span>
             </div>
           </div>
+
           <div class="pt-4 mt-2">
-            <button data-id="${escapeHTML(offer.id)}" data-url="${escapeHTML(offer.url)}" data-title="${escapeHTML(offer.title)}" class="cta-trigger w-full py-3 px-4 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm btn-custom shadow hover:shadow-glow transition flex items-center justify-center gap-2">
+            <button data-url="${escapeHTML(offer.url)}" class="cta-trigger w-full py-3 px-4 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm btn-custom shadow hover:shadow-glow transition flex items-center justify-center gap-2">
               <span>${escapeHTML(offer.ctaText || 'CONTINUE NOW')}</span>
               <i class="fa-solid fa-chevron-right text-xs"></i>
             </button>
@@ -481,82 +752,93 @@
         </div>
       `).join('');
 
-      document.querySelectorAll('.cta-trigger').forEach(btn => btn.addEventListener('click', handleCTAClick));
+      document.querySelectorAll('.cta-trigger').forEach(btn => {
+        btn.addEventListener('click', handleCTARedirect);
+      });
     }
 
-    async function handleCTAClick(e) {
+    function handleCTARedirect(e) {
       e.preventDefault();
       const btn = e.currentTarget;
       let targetUrl = btn.getAttribute('data-url');
-      let offerId = btn.getAttribute('data-id') || 'hero_cta';
-      let offerTitle = btn.getAttribute('data-title') || 'Hero Main CTA';
 
       if (!targetUrl) {
         const active = (localState.offers || []).filter(o => o.active);
         targetUrl = active.length > 0 ? active[0].url : "https://example.com";
       }
 
-      await trackEvent('cta_click', { offerId, offerTitle, targetUrl });
       const finalUrl = buildFinalTargetURL(targetUrl);
-
       btn.disabled = true;
       btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Securely Redirecting...`;
-      setTimeout(() => { window.location.href = finalUrl; }, 300);
+
+      setTimeout(() => {
+        window.location.href = finalUrl;
+      }, 300);
     }
 
-    // Bind Firebase Realtime Observers
-    function syncFirebaseData() {
-      try {
-        onValue(ref(db, 'settings'), snapshot => {
-          if (snapshot.exists()) {
-            localState.settings = { ...localState.settings, ...snapshot.val() };
-            applyThemeAndSettings();
-          }
-        });
+    /* ==========================================================================
+       7. INTERACTIVE ACCORDION & MODALS CONTROLLER
+       ========================================================================== */
+    function setupAccordions() {
+      document.querySelectorAll('.faq-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const content = btn.nextElementSibling;
+          const icon = btn.querySelector('i');
+          const isHidden = content.classList.contains('hidden');
 
-        onValue(ref(db, 'offers'), snapshot => {
-          if (snapshot.exists()) {
-            const raw = snapshot.val();
-            localState.offers = Object.keys(raw).map(key => ({ id: key, ...raw[key] }));
-            renderOffers();
+          document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+          document.querySelectorAll('.faq-toggle i').forEach(i => i.classList.remove('rotate-180'));
+
+          if (isHidden) {
+            content.classList.remove('hidden');
+            icon.classList.add('rotate-180');
           }
         });
-      } catch(e) { console.warn("Operating in offline fallback mode.", e); }
+      });
     }
 
-    // Modal & Privacy Handlers
-    function setupInteractions() {
-      if (!localStorage.getItem('age_verified_18')) {
-        document.getElementById('age-modal').classList.remove('hidden');
+    function checkAgeVerification() {
+      const verified = localStorage.getItem('age_verified_18');
+      const modal = document.getElementById('age-modal');
+      if (!verified) {
+        modal.classList.remove('hidden');
       }
+
       document.getElementById('age-btn-enter').addEventListener('click', () => {
         localStorage.setItem('age_verified_18', 'true');
-        document.getElementById('age-modal').classList.add('hidden');
-        trackEvent('age_verified');
+        modal.classList.add('hidden');
+        showToast("Age verified successfully.", "success");
       });
+
       document.getElementById('age-btn-exit').addEventListener('click', () => {
         window.location.href = 'https://www.google.com';
       });
+    }
 
+    function checkCookieBanner() {
       if (!localStorage.getItem('cookie_accepted')) {
         document.getElementById('privacy-banner').classList.remove('hidden');
       }
       document.getElementById('accept-cookies-btn').addEventListener('click', () => {
         localStorage.setItem('cookie_accepted', 'true');
         document.getElementById('privacy-banner').classList.add('hidden');
-        trackEvent('cookie_accept');
       });
     }
 
-    // Init Engine
+    /* ==========================================================================
+       8. SYSTEM INITIALIZATION
+       ========================================================================== */
     window.addEventListener('DOMContentLoaded', async () => {
       parseURLParams();
-      applyThemeAndSettings();
-      renderOffers();
-      setupInteractions();
-      syncFirebaseData();
-      initializePresence();
-      await trackEvent('page_view');
+      applyThemeAndAppearance();
+      setupAdminModal();
+      setupAccordions();
+      checkAgeVerification();
+      checkCookieBanner();
+
+      await initGeoAndTranslationEngine();
+      await loadOffersFromFirestore();
+
       hideGlobalLoader();
     });
   </script>
