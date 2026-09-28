@@ -1,17 +1,31 @@
-// Firebase v10/v11 (Latest Modular SDK)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { 
   getAuth, 
+  onAuthStateChanged, 
   signInWithEmailAndPassword, 
-  signOut 
+  signOut, 
+  setPersistence, 
+  browserLocalPersistence 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
-  getFirestore, 
-  doc, 
-  getDoc 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  getDatabase, 
+  ref, 
+  get, 
+  set, 
+  update, 
+  push, 
+  onValue, 
+  onChildAdded, 
+  onDisconnect, 
+  serverTimestamp,
+  query,
+  orderByChild,
+  equalTo,
+  limitToLast,
+  remove
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-// ১. আপনার Firebase প্রজেক্টের কনফিগারেশন অবজেক্ট
+// Your Firebase Web Project Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDVhHK08A9XYg-RaWozGSorHv0e2pgDzG4",
   authDomain: "arina-468c4.firebaseapp.com",
@@ -21,43 +35,78 @@ const firebaseConfig = {
   messagingSenderId: "881029049599",
   appId: "1:881029049599:web:a641051e14586202d130ca"
 };
-// ২. Firebase ইনিশিয়ালাইজেশন
+---
+
+### `firebase-config.js`
+
+```javascript
+import { initializeApp } from "[https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js)";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  setPersistence,
+  browserLocalPersistence
+} from "[https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js)";
+import { 
+  getDatabase, 
+  ref, 
+  get, 
+  set, 
+  update, 
+  push, 
+  remove,
+  onValue, 
+  onChildAdded, 
+  onDisconnect, 
+  serverTimestamp,
+  query,
+  orderByChild,
+  equalTo,
+  startAt,
+  endAt
+} from "[https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js)";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDVhHK08A9XYg-RaWozGSorHv0e2pgDzG4",
+  authDomain: "arina-468c4.firebaseapp.com",
+  databaseURL: "https://arina-468c4-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "arina-468c4",
+  storageBucket: "arina-468c4.firebasestorage.app",
+  messagingSenderId: "881029049599",
+  appId: "1:881029049599:web:a641051e14586202d130ca"
+};
+
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
-/**
- * ৩. Async অ্যাডমিন লগইন হেল্পার ফাংশন
- * এটি Authentication সম্পন্ন করার পর Firestore-এ UID যাচাই করে।
- */
-export async function loginAdminAsync(email, password) {
-  try {
-    // ধাপ ১: ইমেইল ও পাসওয়ার্ড দিয়ে সাইন ইন
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+// Configure local session persistence
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+  console.warn("Auth persistence error:", error);
+});
 
-    // ধাপ ২: Firestore-এর 'admins' কালেকশনে UID ডাটাবেজে আছে কিনা চেক করা
-    const adminDocRef = doc(db, "admins", user.uid);
-    const adminDocSnap = await getDoc(adminDocRef);
-
-    if (adminDocSnap.exists()) {
-      const adminData = adminDocSnap.data();
-
-      // যদি অ্যাকাউন্টের স্ট্যাটাস সক্রিয় থাকে
-      if (adminData.isActive !== false) {
-        return { success: true, user: user, adminData: adminData };
-      } else {
-        await signOut(auth);
-        throw new Error("আপনার অ্যাডমিন অ্যাকাউন্টটি নিষ্ক্রিয় (Inactive) অবস্থায় রয়েছে।");
-      }
-    } else {
-      // যদি admins কালেকশনে UID না থাকে তবে সাইন আউট করে দেবে
-      await signOut(auth);
-      throw new Error("Access Denied: Account not listed as an active administrator.");
-    }
-
-  } catch (error) {
-    console.error("Admin Authentication Error:", error);
-    throw error;
-  }
-}
+export { 
+  app, 
+  auth, 
+  db,
+  ref, 
+  get, 
+  set, 
+  update, 
+  push, 
+  remove,
+  onValue, 
+  onChildAdded, 
+  onDisconnect, 
+  serverTimestamp,
+  query,
+  orderByChild,
+  equalTo,
+  startAt,
+  endAt,
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+};
