@@ -1,253 +1,729 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Dynamic SEO & Metadata -->
-  <title id="dyn-seo-title">Verified Local Matches & Connections</title>
-  <meta id="dyn-seo-desc" name="description" content="Connect with verified local matches and social opportunities near you. Fast, secure, and personalized.">
-  <meta id="dyn-seo-keywords" name="keywords" content="local matches, dating, social connections, verified profiles">
-  <link id="dyn-favicon" rel="icon" type="image/x-icon" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/svgs/solid/heart.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title id="meta-title">Meet Singles Near You | Adult Dating</title>
+  <meta id="meta-desc" name="description" content="Connect with verified adult singles in your local area today.">
+  <meta id="og-title" property="og:title" content="Meet Singles Near You">
+  <meta id="og-desc" property="og:description" content="Connect with verified adult singles in your local area today.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <link rel="icon" id="site-favicon" href="https://cdn-icons-png.flaticon.com/512/2589/2589175.png">
 
-  <!-- Open Graph / Social Media Metadata -->
-  <meta id="dyn-og-title" property="og:title" content="Verified Local Matches">
-  <meta id="dyn-og-desc" property="og:description" content="Connect with verified local matches near your region.">
-  <meta property="og:type" content="website">
-  <meta id="dyn-og-url" property="og:url" content="">
-  <meta id="dyn-og-image" property="og:image" content="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=600">
-
-  <!-- Twitter Card Metadata -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta id="dyn-tw-title" name="twitter:title" content="Verified Local Matches">
-  <meta id="dyn-tw-desc" name="twitter:description" content="Connect with verified local matches near your region.">
-
-  <!-- Tailwind CSS & FontAwesome CDNs -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <!-- Tailwind Custom Twilight & Glassmorphism Configuration -->
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            heading: ['"Outfit"', 'sans-serif'],
+          },
           colors: {
-            twilight: {
-              950: '#090714',
-              900: '#0F0C20',
-              800: '#171330',
-              700: '#231D47',
-              600: '#342B68',
-              accent: '#8B5CF6',
-              highlight: '#EC4899',
-              glow: '#A855F7'
+            brand: {
+              50: 'var(--color-brand-50)',
+              100: 'var(--color-brand-100)',
+              500: 'var(--color-brand-500)',
+              600: 'var(--color-brand-600)',
+              700: 'var(--color-brand-700)',
+            },
+            accent: {
+              500: 'var(--color-accent-500)',
+              600: 'var(--color-accent-600)',
             }
           },
-          animation: {
-            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'float': 'float 4s ease-in-out infinite',
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-8px)' },
-            }
+          boxShadow: {
+            'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+            'card': '0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 10px -7px rgba(0, 0, 0, 0.05)',
+            'glow': '0 0 25px -5px var(--color-brand-500)',
           }
         }
       }
     }
   </script>
+
+  <!-- Theme CSS Variables -->
+  <style>
+    :root {
+      /* Twilight Light Theme Default */
+      --color-brand-50: #f5f3ff;
+      --color-brand-100: #ede9fe;
+      --color-brand-500: #7c3aed;
+      --color-brand-600: #6d28d9;
+      --color-brand-700: #5b21b6;
+      --color-accent-500: #ec4899;
+      --color-accent-600: #db2777;
+      --bg-gradient-from: #f8fafc;
+      --bg-gradient-via: #f1f5f9;
+      --bg-gradient-to: #ede9fe;
+      --radius-btn: 9999px;
+      --radius-card: 1.25rem;
+    }
+
+    [data-theme="soft-light"] {
+      --color-brand-50: #f0f9ff;
+      --color-brand-100: #e0f2fe;
+      --color-brand-500: #0284c7;
+      --color-brand-600: #0369a1;
+      --color-brand-700: #075985;
+      --color-accent-500: #f43f5e;
+      --color-accent-600: #e11d48;
+      --bg-gradient-from: #ffffff;
+      --bg-gradient-via: #f0f9ff;
+      --bg-gradient-to: #e0f2fe;
+    }
+
+    [data-theme="premium-purple"] {
+      --color-brand-50: #faf5ff;
+      --color-brand-100: #f3e8ff;
+      --color-brand-500: #9333ea;
+      --color-brand-600: #7e22ce;
+      --color-brand-700: #6b21a8;
+      --color-accent-500: #f43f5e;
+      --color-accent-600: #e11d48;
+      --bg-gradient-from: #fcfaef;
+      --bg-gradient-via: #f5f3ff;
+      --bg-gradient-to: #f3e8ff;
+    }
+
+    [data-theme="clean-blue"] {
+      --color-brand-50: #eff6ff;
+      --color-brand-100: #dbeafe;
+      --color-brand-500: #2563eb;
+      --color-brand-600: #1d4ed8;
+      --color-brand-700: #1e40af;
+      --color-accent-500: #10b981;
+      --color-accent-600: #059669;
+      --bg-gradient-from: #ffffff;
+      --bg-gradient-via: #f8fafc;
+      --bg-gradient-to: #dbeafe;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--bg-gradient-from), var(--bg-gradient-via), var(--bg-gradient-to));
+      min-height: 100vh;
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-custom {
+      border-radius: var(--radius-btn);
+    }
+
+    .card-custom {
+      border-radius: var(--radius-card);
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
+      50% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.8); }
+    }
+
+    .animate-pulse-glow {
+      animation: pulseGlow 2s infinite;
+    }
+
+    /* Skeleton loader */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s infinite;
+    }
+    @keyframes skeleton-loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
 </head>
-<body class="bg-twilight-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-twilight-highlight selection:text-white relative overflow-x-hidden antialiased">
+<body class="font-sans text-slate-800 antialiased flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
 
-  <!-- 1. AGE VERIFICATION MODAL SYSTEM -->
-  <div id="age-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 transition-opacity duration-300">
-    <div class="bg-twilight-900 border border-twilight-700/80 rounded-3xl max-w-md w-full p-6 md:p-8 text-center shadow-2xl space-y-6 animate-float relative overflow-hidden">
-      <!-- Glow Decorator -->
-      <div class="absolute -top-12 -left-12 w-32 h-32 bg-twilight-accent/20 rounded-full blur-2xl pointer-events-none"></div>
-      
-      <div class="w-16 h-16 bg-gradient-to-tr from-twilight-accent to-twilight-highlight rounded-2xl flex items-center justify-center mx-auto text-white text-2xl shadow-lg shadow-twilight-accent/30">
-        <i class="fa-solid fa-user-shield"></i>
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Global Fullscreen Spinner -->
+  <div id="global-loader" class="fixed inset-0 z-50 bg-white/90 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-300">
+    <div class="relative flex items-center justify-center">
+      <div class="w-16 h-16 border-4 border-brand-100 border-t-brand-600 rounded-full animate-spin"></div>
+      <i class="fa-solid fa-heart text-brand-600 absolute text-xl animate-pulse"></i>
+    </div>
+    <p id="loader-text" class="mt-4 text-sm font-semibold text-slate-600 tracking-wide">Loading secure system...</p>
+  </div>
+
+  <!-- Age Verification Modal (Public) -->
+  <div id="age-modal" class="fixed inset-0 z-40 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel card-custom max-w-md w-full p-6 text-center shadow-2xl border border-white/40 transform transition-all animate-bounce-short">
+      <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-black">
+        18+
       </div>
-
-      <div class="space-y-2">
-        <h2 id="lang-age-title" class="text-2xl md:text-3xl font-extrabold tracking-tight">Age Verification</h2>
-        <p id="lang-age-desc" class="text-slate-400 text-sm leading-relaxed">You must be 18 years or older to enter this platform. Please confirm your age to proceed.</p>
-      </div>
-
-      <div class="space-y-3 pt-2">
-        <button id="btn-age-confirm" class="w-full py-3.5 px-6 bg-gradient-to-r from-twilight-accent via-twilight-glow to-twilight-highlight font-bold text-white text-base rounded-2xl hover:opacity-95 transition shadow-lg shadow-twilight-accent/30 transform active:scale-95">
-          I am 18 or older - Enter
+      <h2 id="age-modal-title" class="font-heading text-2xl font-bold text-slate-900 mb-2">Age Verification Required</h2>
+      <p id="age-modal-desc" class="text-slate-600 text-sm mb-6 leading-relaxed">
+        This website contains adult dating content. By clicking enter, you confirm that you are at least 18 years of age or the legal age of majority in your jurisdiction.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button id="age-btn-enter" class="flex-1 py-3 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition shadow-lg hover:shadow-glow">
+          I am 18 or Older
         </button>
-        <button id="btn-age-deny" class="w-full py-3 px-6 bg-twilight-800/80 hover:bg-twilight-800 font-medium text-slate-400 hover:text-slate-200 text-sm rounded-2xl transition border border-twilight-700/50">
-          Exit (Under 18)
+        <button id="age-btn-exit" class="py-3 px-6 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition">
+          Exit
         </button>
       </div>
-      <p class="text-[11px] text-slate-500">By entering, you accept our local compliance rules and privacy terms.</p>
+      <p class="text-xs text-slate-400 mt-4"><i class="fa-solid fa-shield-halved mr-1"></i> Safe & Anonymous Verification</p>
     </div>
   </div>
 
-  <!-- 2. HEADER SYSTEM -->
-  <header class="border-b border-twilight-700/50 bg-twilight-900/80 backdrop-blur-md sticky top-0 z-40 transition-all">
-    <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
-      
-      <!-- Logo & Brand Name -->
-      <div class="flex items-center space-x-3">
-        <div id="brand-logo-container" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-twilight-accent to-twilight-highlight flex items-center justify-center text-white font-black text-lg shadow-md shadow-twilight-accent/20">
-          <i id="brand-logo-icon" class="fa-solid fa-fire"></i>
-        </div>
-        <span id="brand-name" class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">MatchPoint</span>
-      </div>
-
-      <!-- Online Status & GEO Indicator -->
-      <div class="flex items-center space-x-3">
-        <!-- Live Online Badge -->
-        <div class="hidden sm:flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full text-xs font-medium text-emerald-400">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-          <span id="lang-online-status">Active Singles Online</span>
-        </div>
-
-        <!-- GEO Location Indicator -->
-        <div class="flex items-center space-x-2 bg-twilight-800/90 border border-twilight-700/80 px-3 py-1.5 rounded-full text-xs font-semibold text-slate-200 shadow-inner">
-          <i class="fa-solid fa-location-dot text-twilight-highlight animate-pulse"></i>
-          <span id="detected-location-badge">Detecting...</span>
-        </div>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- 3. MAIN CONTENT CONTAINER -->
-  <main class="max-w-6xl mx-auto px-4 py-8 md:py-16 flex-grow space-y-16 relative z-10">
-
-    <!-- HERO SECTION -->
-    <section class="text-center space-y-6 max-w-3xl mx-auto pt-4 relative">
-      <!-- Background Ambient Glow -->
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-twilight-accent/15 rounded-full blur-3xl pointer-events-none -z-10"></div>
-
-      <!-- Hero Badge -->
-      <div class="inline-flex items-center space-x-2 bg-twilight-accent/15 border border-twilight-accent/30 text-twilight-accent px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest shadow-sm">
-        <i class="fa-solid fa-bolt text-twilight-highlight"></i>
-        <span id="hero-badge">VERIFIED LOCAL MATCHES</span>
-      </div>
-
-      <!-- Main Headline -->
-      <h1 id="hero-headline" class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight sm:leading-tight">
-        Connect with Matches Near <span id="hero-location-text" class="bg-gradient-to-r from-twilight-accent via-twilight-glow to-twilight-highlight bg-clip-text text-transparent">Your Area</span>
-      </h1>
-
-      <!-- Subheadline -->
-      <p id="hero-subtext" class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-        Discover authentic social opportunities and active profiles verified in your region today.
-      </p>
-
-      <!-- Primary Dynamic CTA -->
-      <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a id="hero-cta-btn" href="#" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-twilight-accent via-twilight-glow to-twilight-highlight text-white font-black text-lg rounded-2xl hover:opacity-95 transition shadow-xl shadow-twilight-accent/30 transform hover:-translate-y-0.5 active:translate-y-0">
-          <span id="hero-cta-text">Browse Local Profiles Now</span>
-          <i id="hero-cta-icon" class="fa-solid fa-arrow-right ml-3"></i>
+  <!-- PUBLIC LANDING PAGE WRAPPER -->
+  <div id="app-public" class="flex-grow flex flex-col hidden">
+    <!-- Header -->
+    <header class="w-full py-4 px-4 sm:px-8 border-b border-white/30 glass-panel sticky top-0 z-30">
+      <div class="max-w-6xl mx-auto flex items-center justify-between">
+        <a href="#" class="flex items-center gap-2 text-decoration-none">
+          <img id="site-logo" src="https://cdn-icons-png.flaticon.com/512/2589/2589175.png" alt="Logo" class="h-9 w-auto object-contain">
+          <span id="site-brand-name" class="font-heading font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900">
+            Twilight<span class="text-brand-600">Dating</span>
+          </span>
         </a>
-      </div>
-
-      <!-- Trust Indicator Badges -->
-      <div class="pt-6 flex flex-wrap justify-center items-center gap-6 text-slate-400 text-xs font-medium">
-        <span class="flex items-center"><i class="fa-solid fa-shield-check text-twilight-accent mr-1.5"></i> Anonymous & Secure</span>
-        <span class="flex items-center"><i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i> Instant Verification</span>
-        <span class="flex items-center"><i class="fa-solid fa-lock text-twilight-highlight mr-1.5"></i> SSL Encrypted</span>
-      </div>
-    </section>
-
-    <!-- DYNAMIC CPA OFFERS SECTION -->
-    <section id="offers-section" class="space-y-8">
-      <div class="text-center space-y-3">
-        <h2 id="offers-title" class="text-2xl sm:text-3xl font-extrabold tracking-tight">Featured Opportunities Near You</h2>
-        <p id="offers-subtitle" class="text-xs sm:text-sm text-slate-400">Select an active offer matched specifically for your region and device.</p>
-        <div class="w-16 h-1 bg-gradient-to-r from-twilight-accent to-twilight-highlight mx-auto rounded-full"></div>
-      </div>
-
-      <!-- Offers Grid -->
-      <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Dynamic Cards Loaded Async via JS -->
-        <div class="col-span-full py-12 text-center text-slate-500 flex flex-col items-center space-y-3">
-          <i class="fa-solid fa-circle-notch fa-spin text-2xl text-twilight-accent"></i>
-          <span class="text-xs uppercase tracking-wider">Matching regional offers...</span>
+        <div class="flex items-center gap-3">
+          <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            <span id="header-status-text">Active Singles Online</span>
+          </span>
+          <span id="geo-pill" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+            <i class="fa-solid fa-location-dot text-brand-500"></i>
+            <span id="geo-location-display">Near You</span>
+          </span>
         </div>
       </div>
-    </section>
+    </header>
 
-    <!-- REAL-TIME AGGREGATED SOCIAL PROOF -->
-    <section class="bg-twilight-900/60 border border-twilight-700/60 rounded-3xl p-6 sm:p-8 space-y-6 backdrop-blur-sm relative overflow-hidden">
-      <div class="text-center space-y-1">
-        <h3 id="social-proof-title" class="text-lg sm:text-xl font-bold">Real Regional Activity</h3>
-        <p class="text-xs text-slate-400">Aggregated live session metrics for your detected region.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-        <!-- Metric 1: Real Live Active Sessions -->
-        <div class="p-4 bg-twilight-950/70 rounded-2xl border border-twilight-700/40 space-y-1">
-          <div class="text-2xl sm:text-3xl font-black text-twilight-accent" id="stat-active-visitors">--</div>
-          <div class="text-[11px] text-slate-400 uppercase tracking-widest font-semibold">Active Sessions Now</div>
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8 sm:py-12 flex flex-col gap-12">
+      
+      <!-- HERO SECTION -->
+      <section class="text-center max-w-3xl mx-auto space-y-6 pt-4">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs sm:text-sm font-semibold">
+          <i class="fa-solid fa-fire text-accent-500"></i>
+          <span id="hero-badge-text">#1 Matchmaking Platform for Adults</span>
         </div>
-        <!-- Metric 2: Real 24h Views -->
-        <div class="p-4 bg-twilight-950/70 rounded-2xl border border-twilight-700/40 space-y-1">
-          <div class="text-2xl sm:text-3xl font-black text-twilight-highlight" id="stat-daily-views">--</div>
-          <div class="text-[11px] text-slate-400 uppercase tracking-widest font-semibold">24h Local Visits</div>
+        
+        <h1 id="hero-headline" class="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight">
+          Meet New People & Local Singles <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-accent-500" id="hero-location-text">Near You</span>
+        </h1>
+        
+        <p id="hero-subtext" class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          Discover genuine local connections. Instant profile access, verified adult members, and private interactions tailored to your location.
+        </p>
+
+        <!-- Dynamic Primary CTA -->
+        <div class="pt-2">
+          <button id="hero-primary-cta" class="cta-trigger w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-extrabold text-lg sm:text-xl btn-custom shadow-xl hover:shadow-glow transition-all transform hover:-translate-y-0.5 animate-pulse-glow flex items-center justify-center gap-3 mx-auto">
+            <span id="hero-cta-btn-text">JOIN FREE NOW</span>
+            <i class="fa-solid fa-arrow-right text-base"></i>
+          </button>
         </div>
-        <!-- Metric 3: GEO Match Index -->
-        <div class="p-4 bg-twilight-950/70 rounded-2xl border border-twilight-700/40 space-y-1">
-          <div class="text-2xl sm:text-3xl font-black text-emerald-400" id="stat-geo-index">100%</div>
-          <div class="text-[11px] text-slate-400 uppercase tracking-widest font-semibold">Location Verified</div>
+
+        <!-- Trust Features Bar -->
+        <div class="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center border-t border-slate-200/60 mt-8">
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">100%</p>
+            <p class="text-xs text-slate-500">Verified Profiles</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">Free</p>
+            <p class="text-xs text-slate-500">Quick Registration</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">24/7</p>
+            <p class="text-xs text-slate-500">Active Matches</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">Private</p>
+            <p class="text-xs text-slate-500">Safe Environment</p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-  </main>
+      <!-- Dynamic OFFERS CONTAINER -->
+      <section class="space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-200/80 pb-3">
+          <h2 class="font-heading text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-star text-amber-400"></i> Featured Opportunities
+          </h2>
+          <span class="text-xs font-medium text-slate-500" id="offers-count-badge">Loading offers...</span>
+        </div>
 
-  <!-- 4. FOOTER SYSTEM -->
-  <footer class="border-t border-twilight-700/50 bg-twilight-900/90 py-8 text-slate-400 text-xs relative z-10">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex items-center space-x-2">
-        <span class="font-bold text-white" id="footer-brand">MatchPoint</span>
-        <span>&copy; <span id="footer-year">2026</span>.</span>
-        <span id="lang-footer-rights">All rights reserved.</span>
-      </div>
+        <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Dynamic Offer Cards Render Here -->
+        </div>
+      </section>
 
-      <div class="flex flex-wrap items-center justify-center gap-6 text-slate-400">
-        <a href="#" id="link-privacy" class="hover:text-white transition">Privacy Policy</a>
-        <a href="#" id="link-terms" class="hover:text-white transition">Terms of Service</a>
-        <a href="#" id="link-cookies" class="hover:text-white transition">Cookie Policy</a>
+      <!-- SOCIAL PROOF SECTION -->
+      <section id="social-proof-section" class="glass-panel card-custom p-6 sm:p-8 shadow-card border border-white/60">
+        <div class="text-center max-w-xl mx-auto space-y-3 mb-6">
+          <h3 id="sp-headline" class="font-heading text-xl font-bold text-slate-900">Real Connections Every Day</h3>
+          <p id="sp-subtext" class="text-sm text-slate-600">Thousands of local members are active right now looking for private conversations and casual meetups.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div class="p-4 rounded-xl bg-white/60 border border-slate-100">
+            <div class="text-2xl font-extrabold text-brand-600 mb-1" id="sp-stat-1">14,290+</div>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Members</div>
+          </div>
+          <div class="p-4 rounded-xl bg-white/60 border border-slate-100">
+            <div class="text-2xl font-extrabold text-accent-500 mb-1" id="sp-stat-2">98.4%</div>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Satisfaction Rate</div>
+          </div>
+          <div class="p-4 rounded-xl bg-white/60 border border-slate-100">
+            <div class="text-2xl font-extrabold text-emerald-600 mb-1" id="sp-stat-3">&lt; 2 Mins</div>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Average Match Time</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Cookie / Privacy Banner -->
+    <div id="privacy-banner" class="fixed bottom-0 inset-x-0 z-30 bg-slate-900/95 text-white p-4 shadow-2xl backdrop-blur-md hidden transition-all">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left leading-relaxed">
+          We use cookies and analytical tracking to ensure optimal redirection performance and offer customization. By browsing, you agree to our policies.
+        </p>
+        <button id="accept-cookies-btn" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-lg whitespace-nowrap transition">
+          Accept & Continue
+        </button>
       </div>
     </div>
-  </footer>
 
-  <!-- 5. PRIVACY & COOKIE BANNER -->
-  <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md bg-twilight-900 border border-twilight-700/90 p-5 rounded-2xl shadow-2xl z-40 hidden flex-col space-y-4 backdrop-blur-lg">
-    <div class="flex items-start space-x-3">
-      <i class="fa-solid fa-cookie-bite text-twilight-accent text-xl mt-0.5"></i>
-      <p id="cookie-text" class="text-xs text-slate-300 leading-relaxed">
-        We use anonymous cookies and geographic identifiers to optimize local offer presentation and analytics.
-      </p>
+    <!-- FOOTER -->
+    <footer class="w-full border-t border-slate-200/80 bg-white/50 backdrop-blur-md py-8 px-4 mt-auto">
+      <div class="max-w-6xl mx-auto text-center space-y-4">
+        <div class="flex flex-wrap justify-center gap-6 text-xs font-medium text-slate-600">
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-privacy">Privacy Policy</a>
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-terms">Terms of Service</a>
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-cookie">Cookie Policy</a>
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-contact">Contact & Support</a>
+        </div>
+        <p class="text-xs text-slate-400 max-w-2xl mx-auto leading-relaxed" id="footer-disclaimer">
+          18+ ADULT CONTENT NOTICE: All members and models appearing on this service are 18 years of age or older. This site serves as a promotional landing hub for verified third-party CPA adult dating networks.
+        </p>
+        <p class="text-xs text-slate-400 font-semibold" id="footer-copyright">
+          &copy; <span id="year-span">2026</span> TwilightDating System. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ADMIN PANEL WRAPPER (#admin) -->
+  <div id="app-admin" class="flex-grow flex flex-col hidden bg-slate-100 min-h-screen">
+    
+    <!-- ADMIN AUTH LOGIN MODAL -->
+    <div id="admin-login-view" class="flex-grow flex items-center justify-center p-4">
+      <div class="bg-white card-custom p-8 max-w-md w-full shadow-2xl border border-slate-200 space-y-6">
+        <div class="text-center space-y-2">
+          <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-2xl flex items-center justify-center mx-auto text-xl font-bold">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <h2 class="font-heading text-2xl font-extrabold text-slate-900">Admin Authentication</h2>
+          <p class="text-xs text-slate-500">Sign in with Firebase credentials to manage campaigns.</p>
+        </div>
+
+        <form id="admin-login-form" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Address</label>
+            <input type="email" id="login-email" required class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="admin@example.com">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Password</label>
+            <input type="password" id="login-password" required class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="••••••••">
+          </div>
+          <button type="submit" id="login-submit-btn" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition text-sm shadow-md">
+            Authenticate Session
+          </button>
+        </form>
+
+        <div id="firebase-config-warning" class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 space-y-1 hidden">
+          <p class="font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Firebase Unconfigured</p>
+          <p>Please update the <code class="bg-amber-100 px-1 rounded">APP_CONFIG.firebase</code> object inside <code class="bg-amber-100 px-1 rounded">index.html</code> to enable authentication.</p>
+        </div>
+      </div>
     </div>
-    <div class="flex justify-end">
-      <button id="btn-cookie-accept" class="py-2 px-5 bg-gradient-to-r from-twilight-accent to-twilight-glow hover:opacity-90 text-white font-bold text-xs rounded-xl transition shadow-md">
-        Accept & Continue
-      </button>
+
+    <!-- AUTHENTICATED ADMIN DASHBOARD -->
+    <div id="admin-dashboard-view" class="flex-grow flex flex-col md:flex-row hidden">
+      
+      <!-- Responsive Mobile Admin Header -->
+      <div class="md:hidden bg-slate-900 text-white p-4 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-brand-500"></i>
+          <span class="font-bold text-sm">CPA Engine Admin</span>
+        </div>
+        <button id="mobile-menu-btn" class="p-2 text-slate-300 hover:text-white">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+      </div>
+
+      <!-- Admin Sidebar Navigation -->
+      <aside id="admin-sidebar" class="w-full md:w-64 bg-slate-900 text-slate-300 flex-shrink-0 p-4 flex flex-col justify-between hidden md:flex border-r border-slate-800 z-30">
+        <div class="space-y-6">
+          <div class="px-3 py-2 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-sm text-white leading-none">CPA Control</h3>
+                <span class="text-[10px] text-slate-400">v2.4 Production</span>
+              </div>
+            </div>
+          </div>
+
+          <nav class="space-y-1">
+            <button data-tab="tab-dashboard" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-white bg-slate-800 transition">
+              <i class="fa-solid fa-chart-pie w-4 text-brand-400"></i> Analytics Dashboard
+            </button>
+            <button data-tab="tab-offers" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition">
+              <i class="fa-solid fa-list-check w-4 text-emerald-400"></i> CPA Offers Management
+            </button>
+            <button data-tab="tab-appearance" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition">
+              <i class="fa-solid fa-palette w-4 text-purple-400"></i> Landing Page Customizer
+            </button>
+            <button data-tab="tab-tracking" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition">
+              <i class="fa-solid fa-link w-4 text-amber-400"></i> Tracking & Geo Parameters
+            </button>
+            <button data-tab="tab-system" class="nav-tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-800 hover:text-white transition">
+              <i class="fa-solid fa-server w-4 text-sky-400"></i> Firebase & System Status
+            </button>
+          </nav>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 space-y-3">
+          <div class="px-3 py-2 rounded-xl bg-slate-800/60 text-xs space-y-1">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Admin</p>
+            <p id="admin-user-email" class="text-slate-200 font-mono truncate">admin@firebase.local</p>
+          </div>
+          <button id="admin-logout-btn" class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white transition">
+            <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Admin Content Area -->
+      <main class="flex-grow p-4 sm:p-8 overflow-y-auto max-w-7xl">
+        
+        <!-- TOP STATUS HEADER -->
+        <div class="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+          <div>
+            <h1 id="admin-tab-title" class="font-heading text-2xl font-extrabold text-slate-900">Analytics Dashboard</h1>
+            <p class="text-xs text-slate-500">Real-time performance metrics and offer campaign status.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <a href="#" target="_blank" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center gap-1.5">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Preview Live Page
+            </a>
+            <button id="force-save-btn" class="px-4 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-lg shadow transition flex items-center gap-1.5">
+              <i class="fa-solid fa-floppy-disk"></i> Save Settings
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 1: DASHBOARD -->
+        <div id="tab-dashboard" class="admin-tab-content space-y-6">
+          <!-- Metrics Cards Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider">Total Views</span>
+                <i class="fa-solid fa-eye text-brand-500"></i>
+              </div>
+              <div class="text-2xl font-extrabold text-slate-900" id="stat-total-views">0</div>
+              <p class="text-[11px] text-emerald-600 mt-1"><i class="fa-solid fa-arrow-trend-up"></i> Live page impressions</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider">Total Clicks</span>
+                <i class="fa-solid fa-mouse-pointer text-accent-500"></i>
+              </div>
+              <div class="text-2xl font-extrabold text-slate-900" id="stat-total-clicks">0</div>
+              <p class="text-[11px] text-emerald-600 mt-1"><i class="fa-solid fa-arrow-trend-up"></i> Dynamic CTA redirects</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider">Click-Through Rate</span>
+                <i class="fa-solid fa-percent text-amber-500"></i>
+              </div>
+              <div class="text-2xl font-extrabold text-slate-900" id="stat-ctr">0.0%</div>
+              <p class="text-[11px] text-slate-400 mt-1">Calculated Clicks / Views</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider">Active Offers</span>
+                <i class="fa-solid fa-box-open text-emerald-500"></i>
+              </div>
+              <div class="text-2xl font-extrabold text-slate-900" id="stat-active-offers">0</div>
+              <p class="text-[11px] text-slate-400 mt-1">Currently live on campaign page</p>
+            </div>
+          </div>
+
+          <!-- Click Log Table -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-4 border-b border-slate-200 flex items-center justify-between">
+              <h3 class="font-bold text-slate-900 text-sm">Recent Click Events (Live Log)</h3>
+              <button id="clear-analytics-btn" class="text-xs text-red-600 hover:text-red-700 font-semibold">Clear Logs</button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-600">
+                <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b border-slate-200">
+                  <tr>
+                    <th class="p-3">Timestamp</th>
+                    <th class="p-3">Offer Title</th>
+                    <th class="p-3">Location Token</th>
+                    <th class="p-3">SubID / ClickID</th>
+                    <th class="p-3">Device / Ref</th>
+                  </tr>
+                </thead>
+                <tbody id="analytics-table-body" class="divide-y divide-slate-100">
+                  <tr>
+                    <td colspan="5" class="p-4 text-center text-slate-400">No click logs recorded yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: OFFER MANAGEMENT -->
+        <div id="tab-offers" class="admin-tab-content space-y-6 hidden">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-slate-900 text-lg">Configured CPA Offers</h3>
+            <button id="add-offer-btn" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5">
+              <i class="fa-solid fa-plus"></i> Add New Offer
+            </button>
+          </div>
+
+          <div id="admin-offers-list" class="space-y-4">
+            <!-- Dynamic Admin Offer Cards -->
+          </div>
+        </div>
+
+        <!-- TAB 3: LANDING PAGE CUSTOMIZER -->
+        <div id="tab-appearance" class="admin-tab-content space-y-6 hidden">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-3">Theme & Brand Settings</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Visual Theme Preset</label>
+                <select id="setting-theme" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500">
+                  <option value="twilight-light">Twilight Light (Default Purple/Pink)</option>
+                  <option value="soft-light">Soft Light (Sky Blue/Rose)</option>
+                  <option value="premium-purple">Premium Purple (Orchid/Violet)</option>
+                  <option value="clean-blue">Clean Blue (Royal Blue/Emerald)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Button Border Radius</label>
+                <select id="setting-btn-radius" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500">
+                  <option value="9999px">Pill / Fully Rounded</option>
+                  <option value="0.75rem">Rounded Corners (12px)</option>
+                  <option value="0.375rem">Slight Rounding (6px)</option>
+                  <option value="0px">Sharp Edges</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Site Title / Brand Name</label>
+                <input type="text" id="setting-brand-name" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Logo Image URL</label>
+                <input type="text" id="setting-logo-url" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+            </div>
+
+            <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-3 pt-4">Hero Content Copy</h3>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Top Badge Pill Text</label>
+                <input type="text" id="setting-hero-badge" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Main Headline</label>
+                <input type="text" id="setting-hero-headline" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Supporting Subtext</label>
+                <textarea id="setting-hero-subtext" rows="3" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Primary CTA Button Label</label>
+                <input type="text" id="setting-hero-cta" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: TRACKING & GEO -->
+        <div id="tab-tracking" class="admin-tab-content space-y-6 hidden">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-3">Geo-Location & Token Configuration</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Default Fallback City</label>
+                <input type="text" id="setting-default-city" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+                <span class="text-[10px] text-slate-400">Replaces {{city}} token when IP detection is absent.</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Default Fallback Country</label>
+                <input type="text" id="setting-default-country" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl">
+              </div>
+            </div>
+
+            <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-3 pt-4">CPA Parameter Preserver</h3>
+            <p class="text-xs text-slate-500">The parameters defined below will automatically be grabbed from the inbound landing page URL and preserved when redirecting to your CPA network links.</p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="font-mono text-xs font-bold text-brand-600">subid / sub_id</span>
+                <p class="text-[10px] text-slate-500">Forwarded automatically</p>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="font-mono text-xs font-bold text-brand-600">clickid / cid</span>
+                <p class="text-[10px] text-slate-500">Forwarded automatically</p>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="font-mono text-xs font-bold text-brand-600">utm_source / source</span>
+                <p class="text-[10px] text-slate-500">Forwarded automatically</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: SYSTEM & FIREBASE STATUS -->
+        <div id="tab-system" class="admin-tab-content space-y-6 hidden">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-3">Firebase Runtime Diagnostics</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl border border-slate-200 flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-bold text-slate-700">Realtime Database Status</p>
+                  <p id="diag-db-status" class="text-xs text-slate-500">Checking connection...</p>
+                </div>
+                <span id="diag-db-pill" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">Unknown</span>
+              </div>
+
+              <div class="p-4 rounded-xl border border-slate-200 flex items-center justify-between">
+                <div>
+                  <p class="text-xs font-bold text-slate-700">Authentication Service</p>
+                  <p id="diag-auth-status" class="text-xs text-slate-500">Checking auth state...</p>
+                </div>
+                <span id="diag-auth-pill" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600">Unknown</span>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-200">
+              <h4 class="font-bold text-xs text-slate-800 mb-2">Export / Backup System JSON Config</h4>
+              <textarea id="json-export-area" readonly rows="6" class="w-full font-mono text-[11px] p-3 bg-slate-900 text-emerald-400 rounded-xl"></textarea>
+            </div>
+          </div>
+        </div>
+
+      </main>
     </div>
   </div>
 
+  <!-- EDIT / ADD OFFER MODAL (ADMIN) -->
+  <div id="offer-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white card-custom max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <h3 id="offer-modal-title" class="font-heading font-bold text-lg text-slate-900">Add New Offer</h3>
+        <button id="close-offer-modal" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+      </div>
 
-  <!-- ========================================================================= -->
-  <!-- 6. ASYNC CORE ENGINE & FIREBASE INTEGRATION (ES MODULE) -->
-  <!-- ========================================================================= -->
+      <form id="offer-form" class="space-y-3">
+        <input type="hidden" id="offer-form-id">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Offer Title</label>
+          <input type="text" id="offer-input-title" required class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="e.g. Local Casual Match Hub">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Offer Description</label>
+          <textarea id="offer-input-desc" required rows="2" class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="Short conversion copy..."></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">CPA Target Destination URL</label>
+          <input type="url" id="offer-input-url" required class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="https://cpanetwork.com/smartlink?aff=123">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">CTA Button Text</label>
+            <input type="text" id="offer-input-cta" required class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="CLAIM FREE ACCESS">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Badge Tag</label>
+            <input type="text" id="offer-input-badge" class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="HOT OFFER">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Rating (1.0 - 5.0)</label>
+            <input type="number" step="0.1" min="1" max="5" id="offer-input-rating" class="w-full p-2 text-sm border border-slate-300 rounded-xl" value="4.9">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Card Image URL</label>
+            <input type="text" id="offer-input-image" class="w-full p-2 text-sm border border-slate-300 rounded-xl" placeholder="https://...">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-2">
+          <input type="checkbox" id="offer-input-active" checked class="w-4 h-4 text-brand-600 rounded">
+          <label for="offer-input-active" class="text-xs font-bold text-slate-700">Set Offer as Active on Landing Page</label>
+        </div>
+
+        <div class="pt-4 flex gap-2">
+          <button type="submit" class="flex-1 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl transition">
+            Save Offer Configuration
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- APPLICATION JAVASCRIPT MODULE Engine -->
   <script type="module">
-    // Firebase Modular SDK imports via CDN
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-    import { 
-      getDatabase, ref, get, set, push, onValue, serverTimestamp 
-    } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, get, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // Global Firebase Configuration
+    /* ==========================================================================
+       1. DEFAULT LOCAL CONFIGURATION & STATE MODEL
+       ========================================================================== */
     const firebaseConfig = {
   apiKey: "AIzaSyDVhHK08A9XYg-RaWozGSorHv0e2pgDzG4",
   authDomain: "arina-468c4.firebaseapp.com",
@@ -257,487 +733,645 @@
   messagingSenderId: "881029049599",
   appId: "1:881029049599:web:a641051e14586202d130ca"
 };
+      settings: {
+        brandName: "TwilightDating",
+        logoUrl: "https://cdn-icons-png.flaticon.com/512/2589/2589175.png",
+        theme: "twilight-light",
+        btnRadius: "9999px",
+        defaultCity: "Miami",
+        defaultCountry: "United States",
+        heroBadge: "#1 Matchmaking Platform for Adults",
+        heroHeadline: "Meet New People & Local Singles",
+        heroSubtext: "Discover genuine local connections. Instant profile access, verified adult members, and private interactions tailored to your location.",
+        heroCta: "JOIN FREE NOW"
+      },
+      offers: [
+        {
+          id: "offer_default_1",
+          title: "Local Verified Matches",
+          description: "Instant access to private adult profiles in your vicinity.",
+          url: "https://example.com/cpa-smartlink-1",
+          ctaText: "VIEW LOCAL MATCHES",
+          badge: "VERIFIED NEAR YOU",
+          rating: "4.9",
+          imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
+          active: true
+        },
+        {
+          id: "offer_default_2",
+          title: "Casual Chat Connections",
+          description: "Private messaging room for adult singles looking for quick dates.",
+          url: "https://example.com/cpa-smartlink-2",
+          ctaText: "ENTER CHAT ROOM",
+          badge: "HIGH ACTIVITY",
+          rating: "4.8",
+          imageUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+          active: true
+        }
+      ]
+    };
 
-    // Initialize Firebase Services safely
-    let app, db;
-    try {
-      app = initializeApp(firebaseConfig);
-      db = getDatabase(app);
-    } catch (e) {
-      console.warn("Firebase config needs valid credentials to operate live sync.");
+    let localState = JSON.parse(JSON.stringify(APP_CONFIG));
+    let firebaseApp = null;
+    let firebaseAuth = null;
+    let firebaseDb = null;
+    let isFirebaseConnected = false;
+    let currentInboundParams = {};
+
+    /* ==========================================================================
+       2. UTILITIES & TOAST ENGINE
+       ========================================================================== */
+    function showToast(message, type = "info") {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bg = type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-red-600' : 'bg-slate-800';
+      toast.className = `${bg} text-white px-4 py-3 rounded-xl shadow-xl text-xs font-semibold flex items-center gap-2 pointer-events-auto transform transition-all duration-300 translate-y-2 opacity-0`;
+      toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-info'}"></i> <span>${escapeHTML(message)}</span>`;
+      container.appendChild(toast);
+      
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
     }
 
-    // Supported European Countries Matrix
-    const EUROPEAN_COUNTRIES = {
-      AL: "Albania", AD: "Andorra", AT: "Austria", BY: "Belarus", BE: "Belgium",
-      BA: "Bosnia and Herzegovina", BG: "Bulgaria", HR: "Croatia", CY: "Cyprus",
-      CZ: "Czech Republic", DK: "Denmark", EE: "Estonia", FI: "Finland", FR: "France",
-      DE: "Germany", GR: "Greece", HU: "Hungary", IS: "Iceland", IE: "Ireland",
-      IT: "Italy", XK: "Kosovo", LV: "Latvia", LI: "Liechtenstein", LT: "Lithuania",
-      LU: "Luxembourg", MT: "Malta", MD: "Moldova", MC: "Monaco", ME: "Montenegro",
-      NL: "Netherlands", MK: "North Macedonia", NO: "Norway", PL: "Poland", PT: "Portugal",
-      RO: "Romania", SM: "San Marino", RS: "Serbia", SK: "Slovakia", SI: "Slovenia",
-      ES: "Spain", SE: "Sweden", CH: "Switzerland", UA: "Ukraine", GB: "United Kingdom",
-      VA: "Vatican City"
-    };
-
-    // Default Fallback Location Data
-    const DEFAULT_GEO = {
-      countryCode: "DE",
-      countryName: "Germany",
-      city: "Berlin",
-      region: "Berlin",
-      timezone: "Europe/Berlin",
-      language: "de",
-      isEuropean: true
-    };
-
-    // Built-in Multilingual Fallback Dictionaries
-    const DICTIONARIES = {
-      en: {
-        age_title: "Age Verification Required",
-        age_desc: "You must be 18 years or older to access this platform. Confirm your age below.",
-        age_confirm: "I am 18 or older - Enter",
-        age_deny: "Exit (Under 18)",
-        online_status: "Active Singles Online",
-        hero_badge: "VERIFIED LOCAL MATCHES",
-        hero_headline: "Connect with Matches Near {city}",
-        hero_subtext: "Discover authentic social opportunities and active profiles verified in {country} today.",
-        hero_cta: "Browse Local Profiles Now",
-        offers_title: "Featured Opportunities Near {city}",
-        offers_subtitle: "Handpicked offers active in {country}.",
-        social_proof_title: "Real Regional Activity in {city}",
-        cookie_text: "We use anonymous cookies and geographic identifiers to optimize local offer presentation.",
-        cookie_accept: "Accept & Continue",
-        footer_rights: "All rights reserved."
-      },
-      de: {
-        age_title: "Altersüberprüfung erforderlich",
-        age_desc: "Sie müssen mindestens 18 Jahre alt sein, um fortzufahren.",
-        age_confirm: "Ich bin 18 oder älter - Eintreten",
-        age_deny: "Verlassen",
-        online_status: "Aktive Singles Online",
-        hero_badge: "BESTÄTIGTE LOKALE MATCHES",
-        hero_headline: "Triff Singles in der Nähe von {city}",
-        hero_subtext: "Entdecke echte Kontakte und verifizierte Profile in {country}.",
-        hero_cta: "Jetzt Profile Ansehen",
-        offers_title: "Beliebte Angebote in {city}",
-        offers_subtitle: "Ausgewählte Möglichkeiten für {country}.",
-        social_proof_title: "Echte lokale Aktivität in {city}",
-        cookie_text: "Wir verwenden anonyme Cookies zur Optimierung der Inhalte.",
-        cookie_accept: "Akzeptieren & Weiter",
-        footer_rights: "Alle Rechte vorbehalten."
-      },
-      fr: {
-        age_title: "Vérification de l'âge",
-        age_desc: "Vous devez avoir 18 ans ou plus pour accéder à ce site.",
-        age_confirm: "J'ai 18 ans ou plus - Entrer",
-        age_deny: "Quitter",
-        online_status: "Célibataires en ligne",
-        hero_badge: "PROFILS VÉRIFIÉS À PROXIMITÉ",
-        hero_headline: "Rencontrez des célibataires près de {city}",
-        hero_subtext: "Découvrez des opportunités réelles et des profils vérifiés en {country}.",
-        hero_cta: "Voir les Profils Maintenant",
-        offers_title: "Opportunités à {city}",
-        offers_subtitle: "Offres sélectionnées pour {country}.",
-        social_proof_title: "Activité locale à {city}",
-        cookie_text: "Nous utilisons des cookies pour personnaliser votre expérience.",
-        cookie_accept: "Accepter & Continuer",
-        footer_rights: "Tous droits réservés."
-      },
-      es: {
-        age_title: "Verificación de Edad",
-        age_desc: "Debes tener 18 años o más para acceder.",
-        age_confirm: "Tengo 18 años o más - Entrar",
-        age_deny: "Salir",
-        online_status: "Solteros Activos En Línea",
-        hero_badge: "CONTACTOS LOCALES VERIFICADOS",
-        hero_headline: "Conecta con Personas Cerca de {city}",
-        hero_subtext: "Descubre perfiles verificados en {country} hoy mismo.",
-        hero_cta: "Ver Perfiles Ahora",
-        offers_title: "Oportunidades en {city}",
-        offers_subtitle: "Ofertas destacadas para {country}.",
-        social_proof_title: "Actividad real en {city}",
-        cookie_text: "Usamos cookies para optimizar el contenido.",
-        cookie_accept: "Aceptar y Continuar",
-        footer_rights: "Todos los derechos reservados."
+    function hideGlobalLoader() {
+      const loader = document.getElementById('global-loader');
+      if(loader) {
+        loader.classList.add('opacity-0');
+        setTimeout(() => loader.classList.add('hidden'), 300);
       }
-    };
+    }
 
-    // State Variables
-    let currentGeo = { ...DEFAULT_GEO };
-    let currentLang = 'en';
-    let currentDict = DICTIONARIES.en;
-
-    // Helper: HTML Sanitization against XSS
     function escapeHTML(str) {
-      if (!str) return '';
-      return String(str).replace(/[&<>"']/g, (m) => ({
+      if(!str) return '';
+      return String(str).replace(/[&<>"']/g, match => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-      })[m]);
+      }[match]));
     }
 
-    // Helper: Detect Device Type
-    function getDeviceType() {
-      const ua = navigator.userAgent;
-      if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) return "tablet";
-      if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) return "mobile";
-      return "desktop";
+    /* Parse query string parameters for CPA tracking forwarding */
+    function parseURLParams() {
+      const params = new URLSearchParams(window.location.search);
+      const obj = {};
+      for (const [key, value] of params.entries()) {
+        obj[key.toLowerCase()] = value;
+      }
+      currentInboundParams = obj;
     }
 
-    // Helper: Preserve Inbound URL Parameters
-    function buildOutboundURL(baseUrl) {
+    /* Safe URL builder that appends subids and clickids */
+    function buildFinalTargetURL(baseUrl) {
+      if (!baseUrl) return "#";
       try {
         const url = new URL(baseUrl);
-        const currentParams = new URLSearchParams(window.location.search);
-        currentParams.forEach((val, key) => url.searchParams.set(key, val));
-        
-        // Append GEO & Tracking context
-        url.searchParams.set('country', currentGeo.countryCode);
-        url.searchParams.set('city', currentGeo.city);
-        url.searchParams.set('device', getDeviceType());
+        Object.keys(currentInboundParams).forEach(paramKey => {
+          url.searchParams.set(paramKey, currentInboundParams[paramKey]);
+        });
         return url.toString();
-      } catch (e) {
+      } catch(e) {
         return baseUrl;
       }
     }
 
-    // Helper: Session Identifier
-    function getSessionId() {
-      let sid = sessionStorage.getItem('ep_session_id');
-      if (!sid) {
-        sid = 'sess_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now();
-        sessionStorage.setItem('ep_session_id', sid);
-      }
-      return sid;
-    }
-
-    // -------------------------------------------------------------------------
-    // GEO LOCATION SYSTEM
-    // -------------------------------------------------------------------------
-    async function detectGeoLocation() {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
-
-        const response = await fetch('https://ipapi.co/json/', { signal: controller.signal });
-        clearTimeout(timeoutId);
-
-        if (!response.ok) throw new Error('GEO Provider HTTP Error');
-        const data = await response.json();
-
-        const countryCode = data.country_code || DEFAULT_GEO.countryCode;
-        const isEuropean = Object.keys(EUROPEAN_COUNTRIES).includes(countryCode);
-
-        currentGeo = {
-          countryCode: countryCode,
-          countryName: data.country_name || EUROPEAN_COUNTRIES[countryCode] || DEFAULT_GEO.countryName,
-          city: data.city || DEFAULT_GEO.city,
-          region: data.region || DEFAULT_GEO.region,
-          timezone: data.timezone || DEFAULT_GEO.timezone,
-          language: (data.languages || 'en').split(',')[0].substring(0, 2).toLowerCase(),
-          isEuropean: isEuropean
-        };
-      } catch (e) {
-        console.warn("GEO API Fallback applied:", e.message);
-        const browserLang = (navigator.language || 'en').substring(0, 2).toLowerCase();
-        currentGeo = {
-          ...DEFAULT_GEO,
-          language: browserLang
-        };
-      }
-
-      // Update Location Badge
-      document.getElementById('detected-location-badge').textContent = `${currentGeo.city}, ${currentGeo.countryCode}`;
-    }
-
-    // -------------------------------------------------------------------------
-    // MULTILINGUAL & TOKEN ENGINE
-    // -------------------------------------------------------------------------
-    function applyLocalization() {
-      // Determine language priority: Detected GEO Lang -> Fallback EN
-      currentLang = DICTIONARIES[currentGeo.language] ? currentGeo.language : 'en';
-      currentDict = DICTIONARIES[currentLang] || DICTIONARIES.en;
-
-      // Token Replacement Helper
-      const replaceTokens = (text) => {
-        if (!text) return '';
-        return text.replace(/{city}/g, escapeHTML(currentGeo.city))
-                   .replace(/{country}/g, escapeHTML(currentGeo.countryName));
-      };
-
-      // Apply Strings to DOM Elements
-      document.getElementById('lang-age-title').textContent = currentDict.age_title;
-      document.getElementById('lang-age-desc').textContent = currentDict.age_desc;
-      document.getElementById('btn-age-confirm').textContent = currentDict.age_confirm;
-      document.getElementById('btn-age-deny').textContent = currentDict.age_deny;
-
-      document.getElementById('lang-online-status').textContent = currentDict.online_status;
-      document.getElementById('hero-badge').textContent = currentDict.hero_badge;
-      document.getElementById('hero-headline').innerHTML = replaceTokens(currentDict.hero_headline).replace(
-        escapeHTML(currentGeo.city), 
-        `<span class="bg-gradient-to-r from-twilight-accent via-twilight-glow to-twilight-highlight bg-clip-text text-transparent">${escapeHTML(currentGeo.city)}</span>`
-      );
-      document.getElementById('hero-subtext').textContent = replaceTokens(currentDict.hero_subtext);
-      document.getElementById('hero-cta-text').textContent = currentDict.hero_cta;
-
-      document.getElementById('offers-title').textContent = replaceTokens(currentDict.offers_title);
-      document.getElementById('offers-subtitle').textContent = replaceTokens(currentDict.offers_subtitle);
-      document.getElementById('social-proof-title').textContent = replaceTokens(currentDict.social_proof_title);
-      document.getElementById('cookie-text').textContent = currentDict.cookie_text;
-      document.getElementById('btn-cookie-accept').textContent = currentDict.cookie_accept;
-      document.getElementById('lang-footer-rights').textContent = currentDict.footer_rights;
-    }
-
-    // -------------------------------------------------------------------------
-    // VISITOR HEARTBEAT & ANALYTICS ENGINE
-    // -------------------------------------------------------------------------
-    function initAnalyticsAndHeartbeat() {
-      const sessionId = getSessionId();
-      const dateStr = new Date().toISOString().split('T')[0];
-
-      // Safe check if Firebase is connected
-      if (!db) return;
-
-      // 1. Log Page View Event
-      try {
-        const eventRef = push(ref(db, `analytics/events/${dateStr}`));
-        set(eventRef, {
-          eventType: 'page_view',
-          sessionId: sessionId,
-          country: currentGeo.countryCode,
-          city: currentGeo.city,
-          language: currentLang,
-          device: getDeviceType(),
-          timestamp: Date.now(),
-          referrer: document.referrer || 'direct'
-        });
-      } catch (err) { console.warn("Analytics event write skipped"); }
-
-      // 2. Continuous Presence Heartbeat
-      const sendHeartbeat = () => {
+    /* ==========================================================================
+       3. FIREBASE INITIALIZATION ENGINE
+       ========================================================================== */
+    function initFirebase() {
+      const cfg = localState.firebase;
+      if (cfg && cfg.apiKey && cfg.apiKey !== "") {
         try {
-          const hbRef = ref(db, `analytics/realtime/${sessionId}`);
-          set(hbRef, {
-            lastSeen: Date.now(),
-            city: currentGeo.city,
-            country: currentGeo.countryCode,
-            device: getDeviceType()
-          });
-        } catch (err) {}
-      };
-
-      sendHeartbeat();
-      setInterval(sendHeartbeat, 25000); // 25s Pulse
+          firebaseApp = initializeApp(cfg);
+          firebaseAuth = getAuth(firebaseApp);
+          firebaseDb = getDatabase(firebaseApp);
+          isFirebaseConnected = true;
+          document.getElementById('firebase-config-warning')?.classList.add('hidden');
+          setupFirebaseListeners();
+        } catch (err) {
+          console.warn("Firebase Init Error, running on local fallback mode:", err);
+          isFirebaseConnected = false;
+        }
+      } else {
+        document.getElementById('firebase-config-warning')?.classList.remove('hidden');
+      }
+      updateDiagnosticUI();
     }
 
-    // Function to track Clicks to Firebase
-    function trackClickEvent(type, targetId = 'general') {
-      if (!db) return;
-      const dateStr = new Date().toISOString().split('T')[0];
-      try {
-        const eventRef = push(ref(db, `analytics/events/${dateStr}`));
-        set(eventRef, {
-          eventType: type,
-          targetId: targetId,
-          sessionId: getSessionId(),
-          country: currentGeo.countryCode,
-          timestamp: Date.now()
-        });
-      } catch (e) {}
+    function setupFirebaseListeners() {
+      if (!isFirebaseConnected) return;
+
+      // Sync Realtime DB config node
+      const configRef = ref(firebaseDb, 'app/settings');
+      onValue(configRef, (snapshot) => {
+        if (snapshot.exists()) {
+          localState.settings = { ...localState.settings, ...snapshot.val() };
+          applyThemeAndAppearance();
+        }
+      });
+
+      // Sync Offers node
+      const offersRef = ref(firebaseDb, 'app/offers');
+      onValue(offersRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const val = snapshot.val();
+          localState.offers = Array.isArray(val) ? val : Object.values(val);
+        } else {
+          localState.offers = [];
+        }
+        renderPublicOffers();
+        renderAdminOffers();
+      });
+
+      // Listen for Admin auth state
+      onAuthStateChanged(firebaseAuth, (user) => {
+        const userEmailSpan = document.getElementById('admin-user-email');
+        if (user) {
+          if (userEmailSpan) userEmailSpan.textContent = user.email;
+          showAdminDashboard();
+        } else {
+          showAdminLogin();
+        }
+      });
     }
 
-    // -------------------------------------------------------------------------
-    // ASYNC FIREBASE LISTENERS (REAL-TIME CONFIG & CONTENT SYNC)
-    // -------------------------------------------------------------------------
-    function bindAsyncFirebaseListeners() {
-      if (!db) {
-        renderFallbackOffers();
+    function updateDiagnosticUI() {
+      const dbStatus = document.getElementById('diag-db-status');
+      const dbPill = document.getElementById('diag-db-pill');
+      const authStatus = document.getElementById('diag-auth-status');
+      const authPill = document.getElementById('diag-auth-pill');
+
+      if (isFirebaseConnected) {
+        if(dbStatus) dbStatus.textContent = "Connected to Firebase Realtime DB";
+        if(dbPill) { dbPill.textContent = "CONNECTED"; dbPill.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700"; }
+        if(authStatus) authStatus.textContent = "Auth SDK Ready";
+        if(authPill) { authPill.textContent = "READY"; authPill.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700"; }
+      } else {
+        if(dbStatus) dbStatus.textContent = "Running on embedded local fallback configuration";
+        if(dbPill) { dbPill.textContent = "LOCAL MODE"; dbPill.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700"; }
+        if(authStatus) authStatus.textContent = "Firebase credentials unconfigured";
+        if(authPill) { authPill.textContent = "UNCONFIGURED"; authPill.className = "px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700"; }
+      }
+
+      const jsonArea = document.getElementById('json-export-area');
+      if (jsonArea) jsonArea.value = JSON.stringify(localState, null, 2);
+    }
+
+    /* ==========================================================================
+       4. PUBLIC LANDING PAGE RENDERING
+       ========================================================================== */
+    function applyThemeAndAppearance() {
+      const s = localState.settings;
+      document.documentElement.setAttribute('data-theme', s.theme || 'twilight-light');
+      document.documentElement.style.setProperty('--radius-btn', s.btnRadius || '9999px');
+
+      // Update text branding
+      document.getElementById('site-brand-name').innerHTML = `${escapeHTML(s.brandName)}<span class="text-brand-600">.</span>`;
+      document.getElementById('site-logo').src = s.logoUrl || localState.settings.logoUrl;
+      
+      // Update Hero Text
+      document.getElementById('hero-badge-text').textContent = s.heroBadge;
+      document.getElementById('hero-headline').childNodes[0].textContent = s.heroHeadline + " ";
+      document.getElementById('hero-subtext').textContent = s.heroSubtext;
+      document.getElementById('hero-cta-btn-text').textContent = s.heroCta;
+
+      // Update Geo display
+      const city = currentInboundParams.city || s.defaultCity;
+      document.getElementById('geo-location-display').textContent = city;
+      document.getElementById('hero-location-text').textContent = `Near ${city}`;
+    }
+
+    function renderPublicOffers() {
+      const container = document.getElementById('offers-grid');
+      const activeOffers = (localState.offers || []).filter(o => o.active);
+      
+      document.getElementById('offers-count-badge').textContent = `${activeOffers.length} offers active near you`;
+
+      if (activeOffers.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center p-8 glass-panel rounded-2xl">
+            <p class="text-slate-500 text-sm">No special offers available at this moment. Please check back shortly.</p>
+          </div>
+        `;
         return;
       }
 
-      // 1. Listen to Remote Settings (/app/settings)
-      onValue(ref(db, 'app/settings'), (snapshot) => {
-        if (!snapshot.exists()) return;
-        const config = snapshot.val();
+      const city = currentInboundParams.city || localState.settings.defaultCity;
 
-        if (config.brandName) {
-          document.getElementById('brand-name').textContent = config.brandName;
-          document.getElementById('footer-brand').textContent = config.brandName;
-        }
-        if (config.heroCtaUrl) {
-          document.getElementById('hero-cta-btn').href = buildOutboundURL(config.heroCtaUrl);
-        }
-        if (config.seoTitle) {
-          document.getElementById('dyn-seo-title').textContent = config.seoTitle;
-          document.getElementById('dyn-og-title').setAttribute('content', config.seoTitle);
-        }
-        if (config.seoDescription) {
-          document.getElementById('dyn-seo-desc').setAttribute('content', config.seoDescription);
-          document.getElementById('dyn-og-desc').setAttribute('content', config.seoDescription);
-        }
-      });
-
-      // 2. Listen to CPA Offers (/offers)
-      onValue(ref(db, 'offers'), (snapshot) => {
-        const container = document.getElementById('offers-grid');
-        container.innerHTML = '';
-
-        if (!snapshot.exists()) {
-          renderFallbackOffers();
-          return;
-        }
-
-        const rawOffers = snapshot.val();
-        const userDevice = getDeviceType();
-
-        // Filter offers according to active state, country, and device
-        const matchedOffers = Object.keys(rawOffers)
-          .map(id => ({ id, ...rawOffers[id] }))
-          .filter(o => o.active !== false)
-          .filter(o => !o.targetCountry || o.targetCountry === 'GLOBAL' || o.targetCountry === currentGeo.countryCode)
-          .filter(o => !o.targetDevice || o.targetDevice === 'ALL' || o.targetDevice === userDevice);
-
-        if (matchedOffers.length === 0) {
-          renderFallbackOffers();
-          return;
-        }
-
-        matchedOffers.forEach(offer => {
-          const finalUrl = buildOutboundURL(offer.destinationUrl || '#');
-          const card = document.createElement('div');
-          card.className = "bg-twilight-900 border border-twilight-700/70 rounded-3xl p-6 flex flex-col justify-between shadow-xl hover:border-twilight-accent/60 transition group";
-          card.innerHTML = `
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] bg-twilight-accent/20 text-twilight-accent border border-twilight-accent/30 px-3 py-1 rounded-full font-bold uppercase tracking-wider">${escapeHTML(offer.badge || 'Featured')}</span>
-                <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-star text-yellow-400 mr-1"></i>${escapeHTML(offer.rating || '4.9')}</span>
-              </div>
-              <h3 class="text-xl font-bold text-white group-hover:text-twilight-accent transition">${escapeHTML(offer.title)}</h3>
-              <p class="text-slate-400 text-xs leading-relaxed">${escapeHTML(offer.description)}</p>
+      container.innerHTML = activeOffers.map(offer => `
+        <div class="glass-panel card-custom p-5 shadow-card hover:shadow-xl transition flex flex-col justify-between border border-white/80">
+          <div class="space-y-3">
+            <div class="relative h-48 w-full rounded-xl overflow-hidden bg-slate-200">
+              <img src="${escapeHTML(offer.imageUrl)}" alt="${escapeHTML(offer.title)}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80'">
+              <span class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                ${escapeHTML(offer.badge || 'SPECIAL')}
+              </span>
+              <span class="absolute bottom-3 right-3 bg-amber-400 text-slate-900 text-xs font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shadow">
+                <i class="fa-solid fa-star text-[10px]"></i> ${escapeHTML(offer.rating || '4.9')}
+              </span>
             </div>
-            <div class="pt-6">
-              <a href="${finalUrl}" target="_blank" rel="noopener noreferrer" data-offer-id="${offer.id}" class="cpa-offer-btn w-full block text-center py-3 bg-twilight-800 hover:bg-gradient-to-r hover:from-twilight-accent hover:to-twilight-glow text-white font-bold text-xs rounded-xl transition shadow-md">
-                ${escapeHTML(offer.ctaText || 'Connect Now')}
-              </a>
+
+            <div>
+              <h3 class="font-heading font-extrabold text-slate-900 text-lg leading-snug">${escapeHTML(offer.title)}</h3>
+              <p class="text-xs text-slate-600 mt-1 leading-relaxed">${escapeHTML(offer.description)}</p>
             </div>
-          `;
-          container.appendChild(card);
-        });
 
-        // Add event listener to CTA offer clicks
-        document.querySelectorAll('.cpa-offer-btn').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            const offerId = e.currentTarget.getAttribute('data-offer-id');
-            trackClickEvent('offer_click', offerId);
-          });
-        });
-      });
-
-      // 3. Listen to Realtime Visitors (/analytics/realtime) for Authentic Stats
-      onValue(ref(db, 'analytics/realtime'), (snapshot) => {
-        if (!snapshot.exists()) {
-          document.getElementById('stat-active-visitors').textContent = "1";
-          document.getElementById('stat-daily-views').textContent = "12";
-          return;
-        }
-
-        const now = Date.now();
-        const activeSessions = Object.values(snapshot.val()).filter(s => (now - s.lastSeen) < 60000);
-        
-        document.getElementById('stat-active-visitors').textContent = activeSessions.length.toString();
-        document.getElementById('stat-daily-views').textContent = (activeSessions.length * 18 + 42).toString();
-      });
-    }
-
-    // Fallback UI if Firebase is empty or unreachable
-    function renderFallbackOffers() {
-      const container = document.getElementById('offers-grid');
-      container.innerHTML = `
-        <div class="bg-twilight-900 border border-twilight-700/70 rounded-3xl p-6 flex flex-col justify-between shadow-xl">
-          <div class="space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] bg-twilight-accent/20 text-twilight-accent px-3 py-1 rounded-full font-bold uppercase">Verified Match</span>
-              <span class="text-xs text-slate-400"><i class="fa-solid fa-star text-yellow-400 mr-1"></i>5.0</span>
+            <div class="flex items-center gap-1.5 text-xs text-emerald-600 font-semibold">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>Active in ${escapeHTML(city)}</span>
             </div>
-            <h3 class="text-xl font-bold text-white">Local Connection Hub</h3>
-            <p class="text-slate-400 text-xs">Direct access to verified local profiles in ${escapeHTML(currentGeo.city)}.</p>
           </div>
-          <div class="pt-6">
-            <a href="#" id="fallback-cta-1" class="w-full block text-center py-3 bg-twilight-accent text-white font-bold text-xs rounded-xl hover:opacity-90 transition">
-              Access Local Matches
-            </a>
+
+          <div class="pt-4 mt-2">
+            <button data-url="${escapeHTML(offer.url)}" data-title="${escapeHTML(offer.title)}" class="cta-trigger w-full py-3 px-4 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm btn-custom shadow hover:shadow-glow transition flex items-center justify-center gap-2">
+              <span>${escapeHTML(offer.ctaText || 'CONTINUE NOW')}</span>
+              <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
           </div>
         </div>
-      `;
-      document.getElementById('fallback-cta-1').href = buildOutboundURL("https://example.com");
+      `).join('');
+
+      // Re-attach CTA click listeners
+      document.querySelectorAll('.cta-trigger').forEach(btn => {
+        btn.addEventListener('click', handleCTARedirect);
+      });
     }
 
-    // -------------------------------------------------------------------------
-    // AGE GATE & COOKIE CONSENT MODAL CONTROLLERS
-    // -------------------------------------------------------------------------
-    function initModals() {
-      // Age Verification Gate
-      const isAgeVerified = localStorage.getItem('ep_age_verified');
-      const ageModal = document.getElementById('age-modal');
+    /* Centralized CTA Redirect Engine */
+    function handleCTARedirect(e) {
+      e.preventDefault();
+      const btn = e.currentTarget;
+      let targetUrl = btn.getAttribute('data-url');
+      const title = btn.getAttribute('data-title') || 'Hero Main CTA';
 
-      if (isAgeVerified === 'true') {
-        ageModal.classList.add('hidden');
+      // Fallback to first active offer if clicked on hero without explicit URL
+      if (!targetUrl) {
+        const active = (localState.offers || []).filter(o => o.active);
+        targetUrl = active.length > 0 ? active[0].url : "https://example.com";
+      }
+
+      const finalUrl = buildFinalTargetURL(targetUrl);
+
+      // Log Click Event
+      logAnalyticsClick(title);
+
+      // UI Loading Feedback
+      const originalText = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Securely Redirecting...`;
+
+      setTimeout(() => {
+        window.location.href = finalUrl;
+      }, 400);
+    }
+
+    function logAnalyticsClick(offerTitle) {
+      const clickEvent = {
+        timestamp: new Date().toISOString(),
+        title: offerTitle,
+        subid: currentInboundParams.subid || currentInboundParams.clickid || 'direct',
+        location: currentInboundParams.city || localState.settings.defaultCity,
+        userAgent: navigator.userAgent.substring(0, 40)
+      };
+
+      // Save locally for stats view
+      let localLogs = JSON.parse(localStorage.getItem('cpa_clicks_log') || '[]');
+      localLogs.unshift(clickEvent);
+      if (localLogs.length > 50) localLogs = localLogs.slice(0, 50);
+      localStorage.setItem('cpa_clicks_log', JSON.stringify(localLogs));
+
+      // Push to Firebase if online
+      if (isFirebaseConnected && firebaseDb) {
+        push(ref(firebaseDb, 'analytics/clicks'), clickEvent).catch(e => console.warn(e));
+      }
+
+      updateAdminDashboardStats();
+    }
+
+    /* ==========================================================================
+       5. AGE GATE & PRIVACY CONTROLLER
+       ========================================================================== */
+    function checkAgeVerification() {
+      const verified = localStorage.getItem('age_verified_18');
+      const modal = document.getElementById('age-modal');
+      if (!verified) {
+        modal.classList.remove('hidden');
+      }
+
+      document.getElementById('age-btn-enter').addEventListener('click', () => {
+        localStorage.setItem('age_verified_18', 'true');
+        modal.classList.add('hidden');
+        showToast('Age verified successfully. Welcome!', 'success');
+      });
+
+      document.getElementById('age-btn-exit').addEventListener('click', () => {
+        window.location.href = 'https://www.google.com';
+      });
+    }
+
+    function checkCookieBanner() {
+      if(!localStorage.getItem('cookie_accepted')) {
+        document.getElementById('privacy-banner').classList.remove('hidden');
+      }
+      document.getElementById('accept-cookies-btn').addEventListener('click', () => {
+        localStorage.setItem('cookie_accepted', 'true');
+        document.getElementById('privacy-banner').classList.add('hidden');
+      });
+    }
+
+    /* ==========================================================================
+       6. ROUTING & VIEW CONTROLLER
+       ========================================================================== */
+    function handleRouting() {
+      const isAdminRoute = window.location.hash === '#admin' || window.location.search.includes('admin=1');
+      const publicApp = document.getElementById('app-public');
+      const adminApp = document.getElementById('app-admin');
+
+      if (isAdminRoute) {
+        publicApp.classList.add('hidden');
+        adminApp.classList.remove('hidden');
+        if (isFirebaseConnected && firebaseAuth.currentUser) {
+          showAdminDashboard();
+        } else if (!isFirebaseConnected) {
+          // If no Firebase, show Dashboard in offline mode
+          showAdminDashboard();
+        } else {
+          showAdminLogin();
+        }
       } else {
-        ageModal.classList.remove('hidden');
+        adminApp.classList.add('hidden');
+        publicApp.classList.remove('hidden');
+        // Record Impression
+        let views = parseInt(localStorage.getItem('cpa_page_views') || '0') + 1;
+        localStorage.setItem('cpa_page_views', views.toString());
       }
+      hideGlobalLoader();
+    }
 
-      document.getElementById('btn-age-confirm').addEventListener('click', () => {
-        localStorage.setItem('ep_age_verified', 'true');
-        ageModal.classList.add('hidden');
-        trackClickEvent('age_gate_passed');
-      });
+    function showAdminLogin() {
+      document.getElementById('admin-login-view').classList.remove('hidden');
+      document.getElementById('admin-dashboard-view').classList.add('hidden');
+    }
 
-      document.getElementById('btn-age-deny').addEventListener('click', () => {
-        window.location.href = "https://www.google.com";
-      });
+    function showAdminDashboard() {
+      document.getElementById('admin-login-view').classList.add('hidden');
+      document.getElementById('admin-dashboard-view').classList.remove('hidden');
+      document.getElementById('admin-sidebar').classList.remove('hidden');
+      populateCustomizerInputs();
+      renderAdminOffers();
+      updateAdminDashboardStats();
+      updateDiagnosticUI();
+    }
 
-      // Cookie Banner
-      const isCookieAccepted = localStorage.getItem('ep_cookie_consent');
-      const cookieBanner = document.getElementById('cookie-banner');
+    /* ==========================================================================
+       7. ADMIN PANEL LOGIC & FORM HANDLERS
+       ========================================================================== */
+    function populateCustomizerInputs() {
+      const s = localState.settings;
+      document.getElementById('setting-theme').value = s.theme || 'twilight-light';
+      document.getElementById('setting-btn-radius').value = s.btnRadius || '9999px';
+      document.getElementById('setting-brand-name').value = s.brandName || '';
+      document.getElementById('setting-logo-url').value = s.logoUrl || '';
+      document.getElementById('setting-hero-badge').value = s.heroBadge || '';
+      document.getElementById('setting-hero-headline').value = s.heroHeadline || '';
+      document.getElementById('setting-hero-subtext').value = s.heroSubtext || '';
+      document.getElementById('setting-hero-cta').value = s.heroCta || '';
+      document.getElementById('setting-default-city').value = s.defaultCity || 'Miami';
+      document.getElementById('setting-default-country').value = s.defaultCountry || 'United States';
+    }
 
-      if (!isCookieAccepted) {
-        cookieBanner.classList.remove('hidden');
-        cookieBanner.classList.add('flex');
+    function renderAdminOffers() {
+      const container = document.getElementById('admin-offers-list');
+      if(!container) return;
+
+      container.innerHTML = localState.offers.map((offer, idx) => `
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <img src="${escapeHTML(offer.imageUrl)}" class="w-12 h-12 rounded-xl object-cover bg-slate-100" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80'">
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="font-bold text-slate-900 text-sm">${escapeHTML(offer.title)}</h4>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${offer.active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}">
+                  ${offer.active ? 'ACTIVE' : 'INACTIVE'}
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 font-mono truncate max-w-xs sm:max-w-md">${escapeHTML(offer.url)}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto justify-end border-t sm:border-0 pt-2 sm:pt-0 border-slate-100">
+            <button onclick="window.editOffer(${idx})" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">Edit</button>
+            <button onclick="window.deleteOffer(${idx})" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold rounded-lg transition">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateAdminDashboardStats() {
+      const views = parseInt(localStorage.getItem('cpa_page_views') || '12');
+      const logs = JSON.parse(localStorage.getItem('cpa_clicks_log') || '[]');
+      const activeCount = (localState.offers || []).filter(o => o.active).length;
+      
+      const ctr = views > 0 ? ((logs.length / views) * 100).toFixed(1) : '0.0';
+
+      document.getElementById('stat-total-views').textContent = views;
+      document.getElementById('stat-total-clicks').textContent = logs.length;
+      document.getElementById('stat-ctr').textContent = `${ctr}%`;
+      document.getElementById('stat-active-offers').textContent = activeCount;
+
+      // Render Table
+      const tableBody = document.getElementById('analytics-table-body');
+      if (tableBody) {
+        if (logs.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">No click logs recorded yet.</td></tr>`;
+        } else {
+          tableBody.innerHTML = logs.slice(0, 10).map(log => `
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 text-slate-500 font-mono">${log.timestamp.substring(11, 19)}</td>
+              <td class="p-3 font-semibold text-slate-800">${escapeHTML(log.title)}</td>
+              <td class="p-3 text-slate-600">${escapeHTML(log.location)}</td>
+              <td class="p-3 font-mono text-brand-600">${escapeHTML(log.subid)}</td>
+              <td class="p-3 text-slate-400 truncate max-w-xs">${escapeHTML(log.userAgent)}</td>
+            </tr>
+          `).join('');
+        }
       }
+    }
 
-      document.getElementById('btn-cookie-accept').addEventListener('click', () => {
-        localStorage.setItem('ep_cookie_consent', 'true');
-        cookieBanner.classList.add('hidden');
-      });
+    /* Save Settings Handler */
+    async function saveAllSettings() {
+      localState.settings.theme = document.getElementById('setting-theme').value;
+      localState.settings.btnRadius = document.getElementById('setting-btn-radius').value;
+      localState.settings.brandName = document.getElementById('setting-brand-name').value;
+      localState.settings.logoUrl = document.getElementById('setting-logo-url').value;
+      localState.settings.heroBadge = document.getElementById('setting-hero-badge').value;
+      localState.settings.heroHeadline = document.getElementById('setting-hero-headline').value;
+      localState.settings.heroSubtext = document.getElementById('setting-hero-subtext').value;
+      localState.settings.heroCta = document.getElementById('setting-hero-cta').value;
+      localState.settings.defaultCity = document.getElementById('setting-default-city').value;
+      localState.settings.defaultCountry = document.getElementById('setting-default-country').value;
 
-      // Primary Hero CTA Tracking
-      document.getElementById('hero-cta-btn').addEventListener('click', () => {
-        trackClickEvent('hero_cta_click');
+      applyThemeAndAppearance();
+
+      if (isFirebaseConnected && firebaseDb) {
+        try {
+          await set(ref(firebaseDb, 'app/settings'), localState.settings);
+          await set(ref(firebaseDb, 'app/offers'), localState.offers);
+          showToast('Settings & Offers synchronized to Firebase Database!', 'success');
+        } catch(e) {
+          showToast('Firebase update failed. Saved locally.', 'error');
+        }
+      } else {
+        showToast('Settings updated locally!', 'success');
+      }
+      updateDiagnosticUI();
+    }
+
+    /* Global Window Functions for Inline Button Events */
+    window.editOffer = function(index) {
+      const offer = localState.offers[index];
+      document.getElementById('offer-form-id').value = index;
+      document.getElementById('offer-input-title').value = offer.title;
+      document.getElementById('offer-input-desc').value = offer.description;
+      document.getElementById('offer-input-url').value = offer.url;
+      document.getElementById('offer-input-cta').value = offer.ctaText;
+      document.getElementById('offer-input-badge').value = offer.badge;
+      document.getElementById('offer-input-rating').value = offer.rating;
+      document.getElementById('offer-input-image').value = offer.imageUrl;
+      document.getElementById('offer-input-active').checked = offer.active;
+      
+      document.getElementById('offer-modal-title').textContent = "Edit CPA Offer";
+      document.getElementById('offer-modal').classList.remove('hidden');
+    };
+
+    window.deleteOffer = function(index) {
+      if (confirm("Are you sure you want to delete this offer?")) {
+        localState.offers.splice(index, 1);
+        renderAdminOffers();
+        renderPublicOffers();
+        saveAllSettings();
+      }
+    };
+
+    /* Tab Switcher */
+    function initTabNavigation() {
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.nav-tab-btn').forEach(b => {
+            b.classList.remove('bg-slate-800', 'text-white');
+            b.classList.add('hover:bg-slate-800', 'hover:text-white');
+          });
+          e.currentTarget.classList.add('bg-slate-800', 'text-white');
+
+          const targetTab = e.currentTarget.getAttribute('data-tab');
+          document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+          document.getElementById(targetTab).classList.remove('hidden');
+          document.getElementById('admin-tab-title').textContent = e.currentTarget.textContent.trim();
+        });
       });
     }
 
-    // -------------------------------------------------------------------------
-    // APPLICATION INITIALIZATION SEQUENCE
-    // -------------------------------------------------------------------------
-    document.addEventListener('DOMContentLoaded', async () => {
-      // Set current dynamic year in footer
-      document.getElementById('footer-year').textContent = new Date().getFullYear();
+    /* ==========================================================================
+       8. INITIALIZATION ATTACHMENTS
+       ========================================================================== */
+    window.addEventListener('DOMContentLoaded', () => {
+      parseURLParams();
+      initFirebase();
+      applyThemeAndAppearance();
+      renderPublicOffers();
+      checkAgeVerification();
+      checkCookieBanner();
+      initTabNavigation();
+      handleRouting();
 
-      // 1. Initialize Modals
-      initModals();
+      window.addEventListener('hashchange', handleRouting);
 
-      // 2. Detect GEO Location
-      await detectGeoLocation();
+      // Admin Login Event
+      document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const pass = document.getElementById('login-password').value;
+        const submitBtn = document.getElementById('login-submit-btn');
 
-      // 3. Apply Localized Content Dictionaries
-      applyLocalization();
+        if (!isFirebaseConnected) {
+          showToast('Bypassing Auth: Firebase credentials unconfigured.', 'info');
+          showAdminDashboard();
+          return;
+        }
 
-      // 4. Initialize Visitor Analytics & Session Heartbeat
-      initAnalyticsAndHeartbeat();
+        try {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Authenticating...';
+          await signInWithEmailAndPassword(firebaseAuth, email, pass);
+          showToast('Authenticated successfully!', 'success');
+        } catch(err) {
+          showToast(`Auth Failed: ${err.message}`, 'error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Authenticate Session';
+        }
+      });
 
-      // 5. Connect Realtime Async Firebase Observers
-      bindAsyncFirebaseListeners();
+      // Admin Logout Event
+      document.getElementById('admin-logout-btn').addEventListener('click', async () => {
+        if (isFirebaseConnected && firebaseAuth) {
+          await signOut(firebaseAuth);
+        }
+        showToast('Signed out of admin session.', 'info');
+        showAdminLogin();
+      });
+
+      // Save Button Event
+      document.getElementById('force-save-btn').addEventListener('click', saveAllSettings);
+
+      // Offer Modal Form Submit
+      document.getElementById('offer-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const idVal = document.getElementById('offer-form-id').value;
+        const offerData = {
+          id: idVal !== "" ? localState.offers[idVal].id : `offer_${Date.now()}`,
+          title: document.getElementById('offer-input-title').value,
+          description: document.getElementById('offer-input-desc').value,
+          url: document.getElementById('offer-input-url').value,
+          ctaText: document.getElementById('offer-input-cta').value,
+          badge: document.getElementById('offer-input-badge').value,
+          rating: document.getElementById('offer-input-rating').value,
+          imageUrl: document.getElementById('offer-input-image').value,
+          active: document.getElementById('offer-input-active').checked
+        };
+
+        if (idVal !== "") {
+          localState.offers[idVal] = offerData;
+        } else {
+          localState.offers.push(offerData);
+        }
+
+        document.getElementById('offer-modal').classList.add('hidden');
+        renderAdminOffers();
+        renderPublicOffers();
+        saveAllSettings();
+      });
+
+      document.getElementById('add-offer-btn').addEventListener('click', () => {
+        document.getElementById('offer-form').reset();
+        document.getElementById('offer-form-id').value = "";
+        document.getElementById('offer-modal-title').textContent = "Add New CPA Offer";
+        document.getElementById('offer-modal').classList.remove('hidden');
+      });
+
+      document.getElementById('close-offer-modal').addEventListener('click', () => {
+        document.getElementById('offer-modal').classList.add('hidden');
+      });
+
+      document.getElementById('clear-analytics-btn')?.addEventListener('click', () => {
+        if (confirm("Clear all click analytics logs?")) {
+          localStorage.removeItem('cpa_clicks_log');
+          updateAdminDashboardStats();
+          showToast('Analytics logs cleared.', 'info');
+        }
+      });
     });
   </script>
 </body>
