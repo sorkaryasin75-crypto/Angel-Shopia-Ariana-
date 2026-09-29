@@ -1,0 +1,17 @@
+{
+  "age_gate_title": "Age Verification Required",
+  "age_gate_desc": "You must be 18 years or older to enter this platform. Please confirm your age.",
+  "age_gate_confirm": "I am 18 or older - Enter",
+  "age_gate_deny": "Exit (Under 18)",
+  "hero_badge": "VERIFIED LOCAL MATCHES",
+  "hero_headline": "Connect with Matches Near {city}",
+  "hero_subtext": "Join thousands of active users in {country} looking for authentic conversations and genuine social networking.",
+  "hero_cta": "Browse Local Profiles Now",
+  "offers_title": "Featured Opportunities in {city}",
+  "social_proof_title": "Recent Activity Near {city}",
+  "cookie_notice": "We use cookie identifiers and analytical tracking to personalize your local experience.",
+  "cookie_accept": "Accept & Continue",
+  "privacy_policy": "Privacy Policy",
+  "terms_service": "Terms of Service",
+  "footer_rights": "All rights reserved."
+}
