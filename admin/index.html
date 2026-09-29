@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Control Center | Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            twilight: {
+              950: '#090714',
+              900: '#0F0C20',
+              800: '#171330',
+              700: '#231D47',
+              accent: '#8B5CF6',
+              highlight: '#EC4899'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-twilight-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased">
+
+  <!-- Authentication Shield Overlay -->
+  <div id="admin-auth-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-twilight-950 p-4">
+    <div class="bg-twilight-900 border border-twilight-700 rounded-3xl max-w-md w-full p-8 shadow-2xl space-y-6">
+      <div class="text-center space-y-2">
+        <div class="w-12 h-12 bg-twilight-accent/20 text-twilight-accent rounded-2xl flex items-center justify-center mx-auto text-xl font-bold">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h2 class="text-2xl font-bold">Admin Authentication</h2>
+        <p class="text-slate-400 text-xs">UID Authorization Required</p>
+      </div>
+
+      <form id="admin-login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Email Address</label>
+          <input type="email" id="login-email" required class="w-full bg-twilight-800 border border-twilight-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-twilight-accent text-white">
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Password</label>
+          <input type="password" id="login-password" required class="w-full bg-twilight-800 border border-twilight-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-twilight-accent text-white">
+        </div>
+        <div id="login-error" class="text-red-400 text-xs hidden"></div>
+        <button type="submit" class="w-full py-3 bg-twilight-accent hover:bg-twilight-accent/90 text-white font-semibold rounded-xl transition shadow-lg shadow-twilight-accent/25">
+          Authenticate System
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Authenticated Admin Workspace -->
+  <div id="admin-workspace" class="flex-grow flex hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-twilight-900 border-r border-twilight-700/60 p-4 flex flex-col justify-between hidden md:flex">
+      <div class="space-y-6">
+        <div class="flex items-center space-x-3 px-2">
+          <div class="w-8 h-8 rounded-lg bg-twilight-accent flex items-center justify-center text-white font-bold text-sm">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <span class="font-bold text-lg">Control Center</span>
+        </div>
+
+        <nav class="space-y-1 text-sm">
+          <a href="#dashboard" class="nav-item active flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-twilight-800 text-twilight-accent font-medium">
+            <i class="fa-solid fa-chart-pie w-5"></i><span>Dashboard</span>
+          </a>
+          <a href="#landing" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-twilight-800/50 text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-pen-to-square w-5"></i><span>Landing Page</span>
+          </a>
+          <a href="#offers" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-twilight-800/50 text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-tags w-5"></i><span>Offers & CPA</span>
+          </a>
+          <a href="#geo" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-twilight-800/50 text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-globe w-5"></i><span>GEO Rules</span>
+          </a>
+          <a href="#ai-engine" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-twilight-800/50 text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-robot w-5"></i><span>AI Upgrade Engine</span>
+          </a>
+          <a href="#audit" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-twilight-800/50 text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-list-check w-5"></i><span>Audit Logs</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="p-3 bg-twilight-800/50 rounded-2xl border border-twilight-700/50 space-y-2">
+        <div class="text-xs text-slate-400 truncate" id="admin-user-display">User: Authenticating...</div>
+        <button id="btn-logout" class="w-full py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-semibold rounded-lg transition">
+          Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Content -->
+    <main class="flex-grow bg-twilight-950 p-6 md:p-10 space-y-8 overflow-y-auto">
+      
+      <!-- View: Dashboard -->
+      <section id="view-dashboard" class="admin-view space-y-8">
+        <div class="flex items-center justify-between">
+          <h1 class="text-2xl font-bold">System Analytics & Activity</h1>
+          <span class="text-xs bg-green-500/10 text-green-400 border border-green-500/20 px-3 py-1 rounded-full font-medium">Realtime Active</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div class="bg-twilight-900 border border-twilight-700/60 p-5 rounded-2xl space-y-2">
+            <span class="text-xs text-slate-400">Live Active Sessions</span>
+            <div id="metric-live" class="text-3xl font-black text-twilight-accent">0</div>
+          </div>
+          <div class="bg-twilight-900 border border-twilight-700/60 p-5 rounded-2xl space-y-2">
+            <span class="text-xs text-slate-400">24h Total Views</span>
+            <div id="metric-views" class="text-3xl font-black text-white">0</div>
+          </div>
+          <div class="bg-twilight-900 border border-twilight-700/60 p-5 rounded-2xl space-y-2">
+            <span class="text-xs text-slate-400">24h Offer Clicks</span>
+            <div id="metric-clicks" class="text-3xl font-black text-twilight-highlight">0</div>
+          </div>
+          <div class="bg-twilight-900 border border-twilight-700/60 p-5 rounded-2xl space-y-2">
+            <span class="text-xs text-slate-400">Conversion Rate</span>
+            <div id="metric-ctr" class="text-3xl font-black text-green-400">0%</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- View: Landing Page Content Manager -->
+      <section id="view-landing" class="admin-view space-y-6 hidden">
+        <h1 class="text-2xl font-bold">Landing Page Control Center</h1>
+        <form id="form-landing-settings" class="bg-twilight-900 border border-twilight-700/60 p-6 rounded-2xl space-y-6 max-w-2xl">
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Brand Name</label>
+            <input type="text" id="setting-brand-name" class="w-full bg-twilight-800 border border-twilight-700 rounded-xl px-4 py-2.5 text-sm text-white">
+          </div>
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Hero Primary CTA Destination URL</label>
+            <input type="url" id="setting-hero-url" class="w-full bg-twilight-800 border border-twilight-700 rounded-xl px-4 py-2.5 text-sm text-white">
+          </div>
+          <button type="submit" class="px-6 py-2.5 bg-twilight-accent text-white font-semibold text-sm rounded-xl hover:opacity-90 transition">
+            Publish Landing Changes
+          </button>
+        </form>
+      </section>
+
+      <!-- View: Offers Manager -->
+      <section id="view-offers" class="admin-view space-y-6 hidden">
+        <div class="flex justify-between items-center">
+          <h1 class="text-2xl font-bold">Offer Management</h1>
+          <button id="btn-create-offer" class="px-4 py-2 bg-twilight-accent text-white font-medium text-xs rounded-xl hover:opacity-90">
+            + New Offer
+          </button>
+        </div>
+        <div class="bg-twilight-900 border border-twilight-700/60 rounded-2xl overflow-hidden">
+          <table class="w-full text-left text-xs text-slate-300">
+            <thead class="bg-twilight-800 text-slate-400 uppercase font-semibold border-b border-twilight-700">
+              <tr>
+                <th class="p-4">Title</th>
+                <th class="p-4">Target Country</th>
+                <th class="p-4">Badge</th>
+                <th class="p-4">Status</th>
+                <th class="p-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="offers-table-body" class="divide-y divide-twilight-800">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- View: AI Upgrade Engine -->
+      <section id="view-ai-engine" class="admin-view space-y-6 hidden">
+        <h1 class="text-2xl font-bold">AI Upgrade & Capability Registry</h1>
+        <div class="bg-twilight-900 border border-twilight-700/60 p-6 rounded-2xl space-y-4">
+          <p class="text-xs text-slate-400">
+            The AI Upgrade Engine inspects application manifests, database schema capabilities, and feature proposals. No code execution occurs without Super Admin validation and deliberate approval.
+          </p>
+          <div id="ai-capabilities-registry" class="space-y-3 pt-2">
+            <!-- Active modules rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- View: Audit Logs -->
+      <section id="view-audit" class="admin-view space-y-6 hidden">
+        <h1 class="text-2xl font-bold">System Audit Logs</h1>
+        <div class="bg-twilight-900 border border-twilight-700/60 rounded-2xl p-4">
+          <div id="audit-log-list" class="space-y-2 text-xs font-mono text-slate-400">
+            <!-- Log entries -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="assets/js/admin.js"></script>
+</body>
+</html>
