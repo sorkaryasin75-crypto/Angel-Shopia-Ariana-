@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Local Match Discovery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            twilight: {
+              900: '#0F0C20',
+              800: '#171330',
+              700: '#231D47',
+              accent: '#8B5CF6',
+              highlight: '#EC4899'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-twilight-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-twilight-highlight selection:text-white">
+
+  <!-- Age Verification Modal Gate -->
+  <div id="age-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+    <div class="bg-twilight-800 border border-twilight-700 rounded-2xl max-w-md w-full p-6 text-center shadow-2xl space-y-5">
+      <div class="w-16 h-16 bg-twilight-accent/20 text-twilight-accent rounded-full flex items-center justify-center mx-auto text-2xl">
+        <i class="fa-solid fa-user-shield"></i>
+      </div>
+      <h2 id="lang-age-title" class="text-2xl font-bold">Age Verification</h2>
+      <p id="lang-age-desc" class="text-slate-400 text-sm">You must be at least 18 years old to access this site.</p>
+      <div class="space-y-3 pt-2">
+        <button id="btn-age-confirm" class="w-full py-3 bg-gradient-to-r from-twilight-accent to-twilight-highlight font-semibold rounded-xl hover:opacity-90 transition shadow-lg shadow-twilight-accent/25">
+          I am 18 or older
+        </button>
+        <button id="btn-age-deny" class="w-full py-3 bg-slate-800 hover:bg-slate-700 font-medium rounded-xl text-slate-400 transition">
+          Exit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Public Layout -->
+  <header class="border-b border-twilight-700/50 bg-twilight-900/80 backdrop-blur sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-twilight-accent to-twilight-highlight flex items-center justify-center text-white font-black text-xl shadow-md">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+        <span id="brand-name" class="font-bold text-xl tracking-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">MatchPoint</span>
+      </div>
+      <div class="flex items-center space-x-2 bg-twilight-800 px-3 py-1.5 rounded-full border border-twilight-700 text-xs text-slate-300">
+        <i class="fa-solid fa-location-dot text-twilight-highlight animate-pulse"></i>
+        <span id="detected-location-badge">Detecting location...</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-12 flex-grow space-y-16">
+    <!-- Hero Section -->
+    <section class="text-center space-y-6 max-w-3xl mx-auto">
+      <div class="inline-flex items-center space-x-2 bg-twilight-accent/10 border border-twilight-accent/30 text-twilight-accent px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
+        <i class="fa-solid fa-bolt"></i>
+        <span id="hero-badge">Verified Local Matches</span>
+      </div>
+      <h1 id="hero-headline" class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+        Connect with People Near You
+      </h1>
+      <p id="hero-subtext" class="text-slate-400 text-base md:text-lg">
+        Discover authentic connection opportunities engineered for your region.
+      </p>
+      <div class="pt-4">
+        <a id="hero-cta-btn" href="#" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-twilight-accent to-twilight-highlight text-white font-bold text-lg rounded-2xl hover:opacity-90 transition shadow-xl shadow-twilight-accent/30 transform hover:-translate-y-0.5">
+          <span id="hero-cta-text">Get Started Now</span>
+          <i class="fa-solid fa-arrow-right ml-3"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- Dynamic Featured Offers Section -->
+    <section class="space-y-8">
+      <div class="text-center space-y-2">
+        <h2 id="offers-title" class="text-2xl font-bold">Featured Opportunities</h2>
+        <div class="w-12 h-1 bg-twilight-accent mx-auto rounded-full"></div>
+      </div>
+      <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically from Firebase -->
+      </div>
+    </section>
+
+    <!-- Aggregated Local Social Proof -->
+    <section class="bg-twilight-800/50 border border-twilight-700/50 rounded-3xl p-8 space-y-6">
+      <h3 id="social-proof-title" class="text-xl font-bold text-center">Local Platform Metrics</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        <div class="p-4 bg-twilight-900/60 rounded-2xl border border-twilight-700/30">
+          <div class="text-3xl font-extrabold text-twilight-accent mb-1" id="stat-active">--</div>
+          <div class="text-xs text-slate-400 uppercase tracking-wider">Active Sessions</div>
+        </div>
+        <div class="p-4 bg-twilight-900/60 rounded-2xl border border-twilight-700/30">
+          <div class="text-3xl font-extrabold text-twilight-highlight mb-1" id="stat-daily">--</div>
+          <div class="text-xs text-slate-400 uppercase tracking-wider">24h Local Visits</div>
+        </div>
+        <div class="p-4 bg-twilight-900/60 rounded-2xl border border-twilight-700/30">
+          <div class="text-3xl font-extrabold text-green-400 mb-1" id="stat-region">--</div>
+          <div class="text-xs text-slate-400 uppercase tracking-wider">Region Match Index</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-twilight-700/50 bg-twilight-900 py-8 text-slate-500 text-xs">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p>&copy; 2026 <span id="footer-brand">MatchPoint</span>. <span id="footer-rights">All rights reserved.</span></p>
+      <div class="flex space-x-6">
+        <a href="#" class="hover:text-slate-300 transition" id="link-privacy">Privacy Policy</a>
+        <a href="#" class="hover:text-slate-300 transition" id="link-terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Privacy Cookie Banner -->
+  <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md bg-twilight-800 border border-twilight-700 p-4 rounded-2xl shadow-2xl z-40 hidden flex-col space-y-3">
+    <p id="cookie-text" class="text-xs text-slate-300">We use local data and cookies to personalize geographic offer selection.</p>
+    <button id="btn-cookie-accept" class="py-2 px-4 bg-twilight-accent hover:bg-twilight-accent/80 text-white font-medium text-xs rounded-xl transition self-end">
+      Accept & Continue
+    </button>
+  </div>
+
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
