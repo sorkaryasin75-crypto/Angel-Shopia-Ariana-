@@ -1,137 +1,327 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title">Local Match Discovery</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title id="meta-title">Meet Singles Near You | Adult Dating</title>
+  <meta id="meta-desc" name="description" content="Connect with verified adult singles in your local area today.">
+  <meta id="og-title" property="og:title" content="Meet Singles Near You">
+  <meta id="og-desc" property="og:description" content="Connect with verified adult singles in your local area today.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <link rel="icon" id="site-favicon" href="https://cdn-icons-png.flaticon.com/512/2589/2589175.png">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            heading: ['"Outfit"', 'sans-serif'],
+          },
           colors: {
-            twilight: {
-              900: '#0F0C20',
-              800: '#171330',
-              700: '#231D47',
-              accent: '#8B5CF6',
-              highlight: '#EC4899'
+            brand: {
+              50: 'var(--color-brand-50)',
+              100: 'var(--color-brand-100)',
+              500: 'var(--color-brand-500)',
+              600: 'var(--color-brand-600)',
+              700: 'var(--color-brand-700)',
+            },
+            accent: {
+              500: 'var(--color-accent-500)',
+              600: 'var(--color-accent-600)',
             }
+          },
+          boxShadow: {
+            'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+            'card': '0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 10px -7px rgba(0, 0, 0, 0.05)',
+            'glow': '0 0 25px -5px var(--color-brand-500)',
           }
         }
       }
     }
   </script>
-</head>
-<body class="bg-twilight-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-twilight-highlight selection:text-white">
 
-  <!-- Age Verification Modal Gate -->
-  <div id="age-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
-    <div class="bg-twilight-800 border border-twilight-700 rounded-2xl max-w-md w-full p-6 text-center shadow-2xl space-y-5">
-      <div class="w-16 h-16 bg-twilight-accent/20 text-twilight-accent rounded-full flex items-center justify-center mx-auto text-2xl">
-        <i class="fa-solid fa-user-shield"></i>
+  <!-- Theme CSS Variables -->
+  <style>
+    :root {
+      /* Twilight Light Theme Default */
+      --color-brand-50: #f5f3ff;
+      --color-brand-100: #ede9fe;
+      --color-brand-500: #7c3aed;
+      --color-brand-600: #6d28d9;
+      --color-brand-700: #5b21b6;
+      --color-accent-500: #ec4899;
+      --color-accent-600: #db2777;
+      --bg-gradient-from: #f8fafc;
+      --bg-gradient-via: #f1f5f9;
+      --bg-gradient-to: #ede9fe;
+      --radius-btn: 9999px;
+      --radius-card: 1.25rem;
+    }
+
+    [data-theme="soft-light"] {
+      --color-brand-50: #f0f9ff;
+      --color-brand-100: #e0f2fe;
+      --color-brand-500: #0284c7;
+      --color-brand-600: #0369a1;
+      --color-brand-700: #075985;
+      --color-accent-500: #f43f5e;
+      --color-accent-600: #e11d48;
+      --bg-gradient-from: #ffffff;
+      --bg-gradient-via: #f0f9ff;
+      --bg-gradient-to: #e0f2fe;
+    }
+
+    [data-theme="premium-purple"] {
+      --color-brand-50: #faf5ff;
+      --color-brand-100: #f3e8ff;
+      --color-brand-500: #9333ea;
+      --color-brand-600: #7e22ce;
+      --color-brand-700: #6b21a8;
+      --color-accent-500: #f43f5e;
+      --color-accent-600: #e11d48;
+      --bg-gradient-from: #fcfaef;
+      --bg-gradient-via: #f5f3ff;
+      --bg-gradient-to: #f3e8ff;
+    }
+
+    [data-theme="clean-blue"] {
+      --color-brand-50: #eff6ff;
+      --color-brand-100: #dbeafe;
+      --color-brand-500: #2563eb;
+      --color-brand-600: #1d4ed8;
+      --color-brand-700: #1e40af;
+      --color-accent-500: #10b981;
+      --color-accent-600: #059669;
+      --bg-gradient-from: #ffffff;
+      --bg-gradient-via: #f8fafc;
+      --bg-gradient-to: #dbeafe;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--bg-gradient-from), var(--bg-gradient-via), var(--bg-gradient-to));
+      min-height: 100vh;
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-custom {
+      border-radius: var(--radius-btn);
+    }
+
+    .card-custom {
+      border-radius: var(--radius-card);
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.4); }
+      50% { box-shadow: 0 0 30px rgba(236, 72, 153, 0.8); }
+    }
+
+    .animate-pulse-glow {
+      animation: pulseGlow 2s infinite;
+    }
+
+    /* Skeleton loader */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s infinite;
+    }
+    @keyframes skeleton-loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body class="font-sans text-slate-800 antialiased flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Global Fullscreen Spinner -->
+  <div id="global-loader" class="fixed inset-0 z-50 bg-white/90 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-300">
+    <div class="relative flex items-center justify-center">
+      <div class="w-16 h-16 border-4 border-brand-100 border-t-brand-600 rounded-full animate-spin"></div>
+      <i class="fa-solid fa-heart text-brand-600 absolute text-xl animate-pulse"></i>
+    </div>
+    <p id="loader-text" class="mt-4 text-sm font-semibold text-slate-600 tracking-wide">Loading secure system...</p>
+  </div>
+
+  <!-- Age Verification Modal (Public) -->
+  <div id="age-modal" class="fixed inset-0 z-40 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="glass-panel card-custom max-w-md w-full p-6 text-center shadow-2xl border border-white/40 transform transition-all animate-bounce-short">
+      <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-black">
+        18+
       </div>
-      <h2 id="lang-age-title" class="text-2xl font-bold">Age Verification</h2>
-      <p id="lang-age-desc" class="text-slate-400 text-sm">You must be at least 18 years old to access this site.</p>
-      <div class="space-y-3 pt-2">
-        <button id="btn-age-confirm" class="w-full py-3 bg-gradient-to-r from-twilight-accent to-twilight-highlight font-semibold rounded-xl hover:opacity-90 transition shadow-lg shadow-twilight-accent/25">
-          I am 18 or older
+      <h2 id="age-modal-title" class="font-heading text-2xl font-bold text-slate-900 mb-2">Age Verification Required</h2>
+      <p id="age-modal-desc" class="text-slate-600 text-sm mb-6 leading-relaxed">
+        This website contains adult dating content. By clicking enter, you confirm that you are at least 18 years of age or the legal age of majority in your jurisdiction.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button id="age-btn-enter" class="flex-1 py-3 px-6 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition shadow-lg hover:shadow-glow">
+          I am 18 or Older
         </button>
-        <button id="btn-age-deny" class="w-full py-3 bg-slate-800 hover:bg-slate-700 font-medium rounded-xl text-slate-400 transition">
+        <button id="age-btn-exit" class="py-3 px-6 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition">
           Exit
         </button>
       </div>
+      <p class="text-xs text-slate-400 mt-4"><i class="fa-solid fa-shield-halved mr-1"></i> Safe & Anonymous Verification</p>
     </div>
   </div>
 
-  <!-- Main Public Layout -->
-  <header class="border-b border-twilight-700/50 bg-twilight-900/80 backdrop-blur sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-twilight-accent to-twilight-highlight flex items-center justify-center text-white font-black text-xl shadow-md">
-          <i class="fa-solid fa-heart"></i>
-        </div>
-        <span id="brand-name" class="font-bold text-xl tracking-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">MatchPoint</span>
-      </div>
-      <div class="flex items-center space-x-2 bg-twilight-800 px-3 py-1.5 rounded-full border border-twilight-700 text-xs text-slate-300">
-        <i class="fa-solid fa-location-dot text-twilight-highlight animate-pulse"></i>
-        <span id="detected-location-badge">Detecting location...</span>
-      </div>
-    </div>
-  </header>
-
-  <main class="max-w-6xl mx-auto px-4 py-12 flex-grow space-y-16">
-    <!-- Hero Section -->
-    <section class="text-center space-y-6 max-w-3xl mx-auto">
-      <div class="inline-flex items-center space-x-2 bg-twilight-accent/10 border border-twilight-accent/30 text-twilight-accent px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
-        <i class="fa-solid fa-bolt"></i>
-        <span id="hero-badge">Verified Local Matches</span>
-      </div>
-      <h1 id="hero-headline" class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
-        Connect with People Near You
-      </h1>
-      <p id="hero-subtext" class="text-slate-400 text-base md:text-lg">
-        Discover authentic connection opportunities engineered for your region.
-      </p>
-      <div class="pt-4">
-        <a id="hero-cta-btn" href="#" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-twilight-accent to-twilight-highlight text-white font-bold text-lg rounded-2xl hover:opacity-90 transition shadow-xl shadow-twilight-accent/30 transform hover:-translate-y-0.5">
-          <span id="hero-cta-text">Get Started Now</span>
-          <i class="fa-solid fa-arrow-right ml-3"></i>
+  <!-- PUBLIC LANDING PAGE WRAPPER -->
+  <div id="app-public" class="flex-grow flex flex-col hidden">
+    <!-- Header -->
+    <header class="w-full py-4 px-4 sm:px-8 border-b border-white/30 glass-panel sticky top-0 z-30">
+      <div class="max-w-6xl mx-auto flex items-center justify-between">
+        <a href="#" class="flex items-center gap-2 text-decoration-none">
+          <img id="site-logo" src="https://cdn-icons-png.flaticon.com/512/2589/2589175.png" alt="Logo" class="h-9 w-auto object-contain">
+          <span id="site-brand-name" class="font-heading font-extrabold text-xl sm:text-2xl tracking-tight text-slate-900">
+            Twilight<span class="text-brand-600">Dating</span>
+          </span>
         </a>
-      </div>
-    </section>
-
-    <!-- Dynamic Featured Offers Section -->
-    <section class="space-y-8">
-      <div class="text-center space-y-2">
-        <h2 id="offers-title" class="text-2xl font-bold">Featured Opportunities</h2>
-        <div class="w-12 h-1 bg-twilight-accent mx-auto rounded-full"></div>
-      </div>
-      <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Rendered dynamically from Firebase -->
-      </div>
-    </section>
-
-    <!-- Aggregated Local Social Proof -->
-    <section class="bg-twilight-800/50 border border-twilight-700/50 rounded-3xl p-8 space-y-6">
-      <h3 id="social-proof-title" class="text-xl font-bold text-center">Local Platform Metrics</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-        <div class="p-4 bg-twilight-900/60 rounded-2xl border border-twilight-700/30">
-          <div class="text-3xl font-extrabold text-twilight-accent mb-1" id="stat-active">--</div>
-          <div class="text-xs text-slate-400 uppercase tracking-wider">Active Sessions</div>
-        </div>
-        <div class="p-4 bg-twilight-900/60 rounded-2xl border border-twilight-700/30">
-          <div class="text-3xl font-extrabold text-twilight-highlight mb-1" id="stat-daily">--</div>
-          <div class="text-xs text-slate-400 uppercase tracking-wider">24h Local Visits</div>
-        </div>
-        <div class="p-4 bg-twilight-900/60 rounded-2xl border border-twilight-700/30">
-          <div class="text-3xl font-extrabold text-green-400 mb-1" id="stat-region">--</div>
-          <div class="text-xs text-slate-400 uppercase tracking-wider">Region Match Index</div>
+        <div class="flex items-center gap-3">
+          <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            <span id="header-status-text">Active Singles Online</span>
+          </span>
+          <span id="geo-pill" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+            <i class="fa-solid fa-location-dot text-brand-500"></i>
+            <span id="geo-location-display">Near You</span>
+          </span>
         </div>
       </div>
-    </section>
-  </main>
+    </header>
 
-  <footer class="border-t border-twilight-700/50 bg-twilight-900 py-8 text-slate-500 text-xs">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-      <p>&copy; 2026 <span id="footer-brand">MatchPoint</span>. <span id="footer-rights">All rights reserved.</span></p>
-      <div class="flex space-x-6">
-        <a href="#" class="hover:text-slate-300 transition" id="link-privacy">Privacy Policy</a>
-        <a href="#" class="hover:text-slate-300 transition" id="link-terms">Terms of Service</a>
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8 sm:py-12 flex flex-col gap-12">
+      
+      <!-- HERO SECTION -->
+      <section class="text-center max-w-3xl mx-auto space-y-6 pt-4">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs sm:text-sm font-semibold">
+          <i class="fa-solid fa-fire text-accent-500"></i>
+          <span id="hero-badge-text">#1 Matchmaking Platform for Adults</span>
+        </div>
+        
+        <h1 id="hero-headline" class="font-heading text-3xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight">
+          Meet New People & Local Singles <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-accent-500" id="hero-location-text">Near You</span>
+        </h1>
+        
+        <p id="hero-subtext" class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          Discover genuine local connections. Instant profile access, verified adult members, and private interactions tailored to your location.
+        </p>
+
+        <!-- Dynamic Primary CTA -->
+        <div class="pt-2">
+          <button id="hero-primary-cta" class="cta-trigger w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-brand-600 to-accent-500 hover:from-brand-700 hover:to-accent-600 text-white font-extrabold text-lg sm:text-xl btn-custom shadow-xl hover:shadow-glow transition-all transform hover:-translate-y-0.5 animate-pulse-glow flex items-center justify-center gap-3 mx-auto">
+            <span id="hero-cta-btn-text">JOIN FREE NOW</span>
+            <i class="fa-solid fa-arrow-right text-base"></i>
+          </button>
+        </div>
+
+        <!-- Trust Features Bar -->
+        <div class="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center border-t border-slate-200/60 mt-8">
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">100%</p>
+            <p class="text-xs text-slate-500">Verified Profiles</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">Free</p>
+            <p class="text-xs text-slate-500">Quick Registration</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">24/7</p>
+            <p class="text-xs text-slate-500">Active Matches</p>
+          </div>
+          <div class="p-2">
+            <p class="font-heading font-bold text-lg text-slate-900">Private</p>
+            <p class="text-xs text-slate-500">Safe Environment</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dynamic OFFERS CONTAINER -->
+      <section class="space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-200/80 pb-3">
+          <h2 class="font-heading text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-star text-amber-400"></i> Featured Opportunities
+          </h2>
+          <span class="text-xs font-medium text-slate-500" id="offers-count-badge">Loading offers...</span>
+        </div>
+
+        <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Dynamic Offer Cards Render Here -->
+        </div>
+      </section>
+
+      <!-- SOCIAL PROOF SECTION -->
+      <section id="social-proof-section" class="glass-panel card-custom p-6 sm:p-8 shadow-card border border-white/60">
+        <div class="text-center max-w-xl mx-auto space-y-3 mb-6">
+          <h3 id="sp-headline" class="font-heading text-xl font-bold text-slate-900">Real Connections Every Day</h3>
+          <p id="sp-subtext" class="text-sm text-slate-600">Thousands of local members are active right now looking for private conversations and casual meetups.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div class="p-4 rounded-xl bg-white/60 border border-slate-100">
+            <div class="text-2xl font-extrabold text-brand-600 mb-1" id="sp-stat-1">14,290+</div>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Members</div>
+          </div>
+          <div class="p-4 rounded-xl bg-white/60 border border-slate-100">
+            <div class="text-2xl font-extrabold text-accent-500 mb-1" id="sp-stat-2">98.4%</div>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Satisfaction Rate</div>
+          </div>
+          <div class="p-4 rounded-xl bg-white/60 border border-slate-100">
+            <div class="text-2xl font-extrabold text-emerald-600 mb-1" id="sp-stat-3">&lt; 2 Mins</div>
+            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Average Match Time</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Cookie / Privacy Banner -->
+    <div id="privacy-banner" class="fixed bottom-0 inset-x-0 z-30 bg-slate-900/95 text-white p-4 shadow-2xl backdrop-blur-md hidden transition-all">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left leading-relaxed">
+          We use cookies and analytical tracking to ensure optimal redirection performance and offer customization. By browsing, you agree to our policies.
+        </p>
+        <button id="accept-cookies-btn" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-lg whitespace-nowrap transition">
+          Accept & Continue
+        </button>
       </div>
     </div>
-  </footer>
 
-  <!-- Privacy Cookie Banner -->
-  <div id="cookie-banner" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-md bg-twilight-800 border border-twilight-700 p-4 rounded-2xl shadow-2xl z-40 hidden flex-col space-y-3">
-    <p id="cookie-text" class="text-xs text-slate-300">We use local data and cookies to personalize geographic offer selection.</p>
-    <button id="btn-cookie-accept" class="py-2 px-4 bg-twilight-accent hover:bg-twilight-accent/80 text-white font-medium text-xs rounded-xl transition self-end">
-      Accept & Continue
-    </button>
-  </div>
-
-  <script type="module" src="assets/js/app.js"></script>
+    <!-- FOOTER -->
+    <footer class="w-full border-t border-slate-200/80 bg-white/50 backdrop-blur-md py-8 px-4 mt-auto">
+      <div class="max-w-6xl mx-auto text-center space-y-4">
+        <div class="flex flex-wrap justify-center gap-6 text-xs font-medium text-slate-600">
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-privacy">Privacy Policy</a>
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-terms">Terms of Service</a>
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-cookie">Cookie Policy</a>
+          <a href="#" class="hover:text-brand-600 transition" id="footer-link-contact">Contact & Support</a>
+        </div>
+        <p class="text-xs text-slate-400 max-w-2xl mx-auto leading-relaxed" id="footer-disclaimer">
+          18+ ADULT CONTENT NOTICE: All members and models appearing on this service are 18 years of age or older. This site serves as a promotional landing hub for verified third-party CPA adult dating networks.
+        </p>
+        <p class="text-xs text-slate-400 font-semibold" id="footer-copyright">
+          &copy; <span id="year-span">2026</span> TwilightDating System. All rights reserved.
+        }
+      });
+    });
+  </script>
 </body>
 </html>
